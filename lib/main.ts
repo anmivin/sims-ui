@@ -1,10 +1,10 @@
-export {Button} from './sims4/Button';
-export {Checkbox} from './sims4/Checkbox';
-export {TextField} from './sims4/TextField';
-export {Button2} from './sims2/Button2';
-export {Checkbox2} from './sims2/Checkbox2';
-export {TextField2} from './sims2/TextField2'
-export {Modal2} from './sims2/Modal2'
-export {Modal} from './sims4/Modal'
-export {IconButton} from './sims4/IconButton'
-export {MenuButton} from './sims4/MenuButton'
+export { Button } from "./Inputs/Button/Modern";
+export { Checkbox } from "./Inputs/Checkbox/Modern";
+export { TextField } from "./Inputs/TextField/Modern";
+export { Button2 } from "./Inputs/Button/Old";
+export { Checkbox2 } from "./Inputs/Checkbox/Old";
+export { TextField2 } from "./Inputs/TextField/Old";
+export { Modal2 } from "./Surfaces/Modal/Old";
+export { Modal } from "./Surfaces/Modal/Modern";
+export { IconButton } from "./Inputs/IconButton/Modern";
+export { MenuButton } from "./Navigation/MenuButton/Modern";
