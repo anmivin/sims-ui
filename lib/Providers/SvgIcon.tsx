@@ -1,25 +1,13 @@
-"use client";
+
 import * as React from "react";
 import capitalize from "../utils/capitalize";
-import { styled } from "../zero-styled";
+import styled from "@emotion/styled";
 import memoTheme from "../utils/memoTheme";
 import { useDefaultProps } from "../DefaultPropsProvider";
 import { getSvgIconUtilityClass } from "./svgIconClasses";
 
-const SvgIconRoot = styled("svg", {
-  name: "MuiSvgIcon",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      ownerState.color !== "inherit" && styles[`color${capitalize(ownerState.color)}`],
-      styles[`fontSize${capitalize(ownerState.fontSize)}`],
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
+const SvgIconRoot = styled("svg")(
+{
     userSelect: "none",
     width: "1em",
     height: "1em",
@@ -73,65 +61,31 @@ const SvgIconRoot = styled("svg", {
         style: { color: undefined },
       },
     ],
-  }))
-);
+  });
 
-const SvgIcon = React.forwardRef(function SvgIcon(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: "MuiSvgIcon" });
+const SvgIcon = (props: SvgIconOwnProps) => {
+
   const {
     children,
-    className,
-    color = "inherit",
-    component = "svg",
-    fontSize = "medium",
     htmlColor,
-    inheritViewBox = false,
-    titleAccess,
     viewBox = "0 0 24 24",
     ...other
   } = props;
 
   const hasSvgAsChild = React.isValidElement(children) && children.type === "svg";
 
-  const ownerState = {
-    ...props,
-    color,
-    component,
-    fontSize,
-    instanceFontSize: inProps.fontSize,
-    inheritViewBox,
-    viewBox,
-    hasSvgAsChild,
-  };
-
-  const more = {};
-
-  if (!inheritViewBox) {
-    more.viewBox = viewBox;
-  }
-
   return (
     <SvgIconRoot
-      as={component}
+      viewBox={viewBox}
       focusable='false'
       color={htmlColor}
-      aria-hidden={titleAccess ? undefined : true}
-      role={titleAccess ? "img" : undefined}
-      ref={ref}
-      {...more}
       {...other}
-      {...(hasSvgAsChild && children.props)}
-      ownerState={ownerState}
     >
       {hasSvgAsChild ? children.props.children : children}
-      {titleAccess ? <title>{titleAccess}</title> : null}
+
     </SvgIconRoot>
   );
-});
-
-if (SvgIcon) {
-  SvgIcon.muiName = "SvgIcon";
-}
+};
 
 export default SvgIcon;
 
@@ -146,11 +100,6 @@ export interface SvgIconOwnProps {
    */
   htmlColor?: string;
 
-  /**
-   * Provides a human-readable title for the element that contains it.
-   * https://www.w3.org/TR/SVG-access/#Equivalent
-   */
-  titleAccess?: string;
   /**
    * Allows you to redefine what the coordinates without units mean inside an SVG element.
    * For example, if the SVG element is 500 (width) by 200 (height),

@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import React, { ReactNode } from "react";
 import { IconButton } from "sims-ui";
 import CloseIcon from "../../icons/CloseIcon copy";
-import { Button } from "sims-ui";
+import { ModernButton } from "sims-ui";
 const StyledWrapper = styled.div`
   font-family: The Sims Sans;
   width: 600px;
@@ -63,8 +63,8 @@ export const Modal = ({ title, children }: ModalProps) => {
         {children}
       </Content>
       <Footer>
-        <Button fullWidth>sdfsdfsfd</Button>
-        <Button fullWidth>sdfsdfsfd</Button>
+        <ModernButton fullWidth>sdfsdfsfd</ModernButton>
+        <ModernButton fullWidth>sdfsdfsfd</ModernButton>
       </Footer>
     </StyledWrapper>
   );

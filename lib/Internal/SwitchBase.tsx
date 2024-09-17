@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import useControlled from "../utils/useControlled";
 import ButtonBase from "./ButtonBase";
 
 import styled from "@emotion/styled";
@@ -44,14 +43,7 @@ export interface SwitchBaseProps
    * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes) applied to the `input` element.
    */
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  /**
-   * Pass a ref to the `input` element.
-   */
-  inputRef?: React.Ref<any>;
-  /**
-   * Name attribute of the `input` element.
-   */
-  name?: string;
+
   /**
    * Callback fired when the state is changed.
    *
@@ -70,7 +62,7 @@ export interface SwitchBaseProps
   /**
    * The value of the component. The DOM API casts this to a string.
    */
-  value?: unknown;
+  value?: string | number | readonly string[] | undefined;
 }
 
 const SwitchBaseRoot = styled(ButtonBase)({
@@ -97,30 +89,26 @@ const SwitchBaseInput = styled("input")({
   zIndex: 1,
 });
 
-const SwitchBase = React.forwardRef(function SwichBase(props: SwitchBaseProps, ref) {
+const SwitchBase = (props: SwitchBaseProps) => {
+
   const {
     checked: checkedProp,
     checkedIcon,
     defaultChecked,
-    disabled: disabledProp,
-    edge = false,
+    disabled,
     icon,
-    id,
     inputProps,
-    inputRef,
-    name,
     onBlur,
     onChange,
     onFocus,
     required = false,
     type,
     value,
+    edge,
     ...other
   } = props;
-  const [checked, setCheckedState] = useControlled({
-    controlled: checkedProp,
-    default: Boolean(defaultChecked),
-  });
+
+  const [checked, setCheckedState] = React.useState(defaultChecked)
 
   const handleFocus = (event) => {
     if (onFocus) {
@@ -148,35 +136,21 @@ const SwitchBase = React.forwardRef(function SwichBase(props: SwitchBaseProps, r
     }
   };
 
-  let disabled = disabledProp;
-
-  const hasLabelFor = type === "checkbox" || type === "radio";
-
-  const ownerState = {
-    ...props,
-    checked,
-    disabled,
-    edge,
-  };
 
   return (
     <SwitchBaseRoot
-      component='span'
-      centerRipple
+/*       component='span' */
       disabled={disabled}
-      role={undefined}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      ref={ref}
+      className={edge === 'start' ? "-start" : undefined}
       {...other}
     >
       <SwitchBaseInput
         checked={checkedProp}
         defaultChecked={defaultChecked}
         disabled={disabled}
-        id={hasLabelFor ? id : undefined}
         onChange={handleInputChange}
-        ref={inputRef}
         required={required}
         type={type}
         value={value}
@@ -185,6 +159,6 @@ const SwitchBase = React.forwardRef(function SwichBase(props: SwitchBaseProps, r
       {checked ? checkedIcon : icon}
     </SwitchBaseRoot>
   );
-});
+};
 
 export default SwitchBase;

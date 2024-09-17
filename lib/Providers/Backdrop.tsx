@@ -16,15 +16,15 @@ const BackdropRoot = styled("div")({
   height: "100%",
 });
 
-const Backdrop = React.forwardRef(function Backdrop(props: BackdropOwnProps, ref) {
-  const { children, invisible = false, open } = props;
+const Backdrop = (props: BackdropOwnProps) => {
+  const { children } = props;
 
   return (
-    <BackdropRoot {...props} ref={ref}>
+    <BackdropRoot {...props} >
       {children}
     </BackdropRoot>
   );
-});
+};
 
 export default Backdrop;
 
@@ -44,5 +44,4 @@ export interface BackdropOwnProps {
    * If `true`, the component is shown.
    */
   open: boolean;
-  ref?: React.Ref<unknown>;
 }

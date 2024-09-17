@@ -12,6 +12,10 @@ export const colors = {
     checkboxChecked: " linear-gradient(180deg, #5db823 40%, #269331);",
     checkboxUnchecked: "linear-gradient(180deg, #f9f9f9 40%, #dddddd)",
     selectedButton: "linear-gradient(180deg, #92ce31 20%, #3bb435)",
+    scrollBarTrack: '#e4e4e4',
+    scrollBarThumb: "linear-gradient(180deg, #fafbfc 20%, #e8eff2)",
+    scrollBarThumbHover: "linear-gradient(180deg, #c7ee7d 20%, #a8e15f)",
+    scrollBarBorder: '#b6b7b8'
   },
   sims2: {
     dark: "#121B61",

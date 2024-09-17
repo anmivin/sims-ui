@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -14,14 +13,8 @@ import FilledInput from "../mui/mui-material/src/FilledInput";
 import OutlinedInput from "../OutlinedInput";
 import useThemeProps from "../mui/mui-material/src/styles/useThemeProps";
 import useForkRef from "../utils/useForkRef";
-import { styled } from "../zero-styled";
+import styled from "@emotion/styled";
 import rootShouldForwardProp from "../mui/mui-material/src/styles/rootShouldForwardProp";
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  return classes;
-};
 
 const styledRootConfig = {
   name: "MuiSelect",
@@ -922,11 +915,6 @@ export interface BaseSelectProps<Value = unknown>
   defaultValue?: Value;
 
   /**
-   * The `id` of the wrapper element or the `select` element when `native`.
-   */
-  id?: string;
-
-  /**
    * See [OutlinedInput#label](https://mui.com/material-ui/api/outlined-input/#props)
    */
   label?: React.ReactNode;
@@ -946,20 +934,6 @@ export interface BaseSelectProps<Value = unknown>
    * @param {object} [child] The react element that was selected when `native` is `false` (default).
    */
   onChange?: SelectInputProps<Value>["onChange"];
-
-  /**
-   * If `true`, the component is shown.
-   * You can only use it when the `native` prop is `false` (default).
-   */
-  open?: boolean;
-  /**
-   * Render the selected value.
-   * You can only use it when the `native` prop is `false` (default).
-   *
-   * @param {any} value The `value` provided to the component.
-   * @returns {ReactNode}
-   */
-  renderValue?: (value: Value) => React.ReactNode;
 
   /**
    * The `input` value. Providing an empty string will select no options.

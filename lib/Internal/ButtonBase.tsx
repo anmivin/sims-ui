@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import styled from "@emotion/styled";
-import useForkRef from "../utils/useForkRef";
 
 export interface ButtonBaseProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -36,18 +35,14 @@ export const ButtonBaseRoot = styled("button")({
   },
 });
 
-const ButtonBase = React.forwardRef(function ButtonBase(props: ButtonBaseProps, ref) {
+const ButtonBase = (props: ButtonBaseProps) => {
   const { children, disabled = false, ...other } = props;
 
-  const buttonRef = React.useRef(null);
-
-  const handleRef = useForkRef(ref, buttonRef);
-
   return (
-    <ButtonBaseRoot ref={handleRef} className={disabled ? "-disabled" : undefined} {...other}>
+    <ButtonBaseRoot className={disabled ? "-disabled" : undefined} {...other}>
       {children}
     </ButtonBaseRoot>
   );
-});
+};
 
 export default ButtonBase;

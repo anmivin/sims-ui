@@ -1,14 +1,17 @@
 import {
-  Button,
-  Button2,
-  Checkbox,
-  Checkbox2,
+  ModernButton,
+  OldButton,
+  OldCheckbox,
+/*   Button2, */
+  ModernCheckbox,
+/*   Checkbox2,
   TextField,
   TextField2,
   Modal2,
   Modal,
   IconButton,
   MenuButton,
+  Che */
 } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 import { CloxeIcon } from "../lib/icons/closeIcon";
@@ -17,60 +20,14 @@ import "./App.css";
 function App() {
   return (
     <>
+    <OldCheckbox label='sda'/>
+    <OldButton>кнопа кнопа</OldButton>
+    <ModernCheckbox label='asdasd'/>
+    <ModernButton>asddaads</ModernButton>
       {/*       <div style={{ width: "899px", height: "200px", backgroundColor: "#c8d223" }}> */}
-      <div
-        style={{
-          display: "flex",
-          overflowX: "auto" /* enable horizontal scroll */,
-          /* width: "100%"  */
-          backgroundColor: "#c8d5e6",
-          height: "100px",
-          overflowY: "auto",
-        }}
-      >
-        <div
-          style={{
-            width: "100%",
-            minWidth: "640px",
-            backgroundColor: "#c369211",
-            height: "100px",
-          }}
-        >
-          lflfl
-        </div>
-        {/* <div
-          style={{
-            width: "100%",
-            minWidth: "100px",
-            backgroundColor: "#c369211",
-            height: "100px",
-          }}
-        >
-          lflfl
-        </div>
-        <div
-          style={{
-            width: "100%",
-            minWidth: "100px",
-            backgroundColor: "#c369211",
-            height: "100px",
-          }}
-        >
-          lflfl
-        </div>
-        <div
-          style={{
-            width: "100%",
-            minWidth: "100px",
-            backgroundColor: "#c369211",
-            height: "100px",
-          }}
-        >
-          lflfl
-        </div> */}
-      </div>
+
       {/*       </div> */}
-      {/*  <div
+     <div
         style={{
           backgroundColor: "#c8d5e6",
           padding: "60px",
@@ -84,7 +41,7 @@ function App() {
         laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
         voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
         cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      </div> */}
+      </div> 
       {/*       <div
         style={{
           backgroundColor: "#c8d5e6",
