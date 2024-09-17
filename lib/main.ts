@@ -1,10 +1,11 @@
-export { Button } from "./Inputs/Button/Modern";
-export { Checkbox } from "./Inputs/Checkbox/Modern";
+export { ModernButton } from "./Inputs/Button/Modern";
+export { ModernCheckbox } from "./Inputs/Checkbox/Modern";
 export { TextField } from "./Inputs/TextField/Modern";
-export { Button2 } from "./Inputs/Button/Old";
-export { Checkbox2 } from "./Inputs/Checkbox/Old";
+export { OldButton } from "./Inputs/Button/Old";
+export { OldCheckbox } from "./Inputs/Checkbox/Old";
 export { TextField2 } from "./Inputs/TextField/Old";
 export { Modal2 } from "./Surfaces/Modal/Old";
 export { Modal } from "./Surfaces/Modal/Modern";
 export { IconButton } from "./Inputs/IconButton/Modern";
 export { MenuButton } from "./Navigation/MenuButton/Modern";
+export {default as Che} from './Inputs/Checkbox/Checkbox'

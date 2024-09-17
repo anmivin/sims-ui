@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -14,14 +13,8 @@ import FilledInput from "../mui/mui-material/src/FilledInput";
 import OutlinedInput from "../OutlinedInput";
 import useThemeProps from "../mui/mui-material/src/styles/useThemeProps";
 import useForkRef from "../utils/useForkRef";
-import { styled } from "../zero-styled";
+import styled from "@emotion/styled";
 import rootShouldForwardProp from "../mui/mui-material/src/styles/rootShouldForwardProp";
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  return classes;
-};
 
 const styledRootConfig = {
   name: "MuiSelect",
@@ -388,7 +381,7 @@ const useUtilityClasses = (ownerState) => {
 /**
  * @ignore - internal component.
  */
-const SelectInput = React.forwardRef(function SelectInput(props, ref) {
+const SelectInput = (props: Se) => {
   const {
     "aria-describedby": ariaDescribedby,
     "aria-label": ariaLabel,
@@ -424,16 +417,8 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     ...other
   } = props;
 
-  const [value, setValueState] = useControlled({
-    controlled: valueProp,
-    default: defaultValue,
-    name: "Select",
-  });
-  const [openState, setOpenState] = useControlled({
-    controlled: openProp,
-    default: defaultOpen,
-    name: "Select",
-  });
+  const [value, setValueState] = React.useState(defaultValue);
+  const [openState, setOpenState] = React.useState(defaultOpen);
 
   const inputRef = React.useRef(null);
   const displayRef = React.useRef(null);
@@ -596,36 +581,8 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (!readOnly) {
-      const validKeys = [
-        " ",
-        "ArrowUp",
-        "ArrowDown",
-        // The native select doesn't respond to enter on macOS, but it's recommended by
-        // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
-        "Enter",
-      ];
-
-      if (validKeys.includes(event.key)) {
-        event.preventDefault();
-        update(true, event);
-      }
-    }
-  };
 
   const open = displayNode !== null && openState;
-
-  const handleBlur = (event) => {
-    // if open event.stopImmediatePropagation
-    if (!open && onBlur) {
-      // Preact support, target is read only property on a native event.
-      Object.defineProperty(event, "target", { writable: true, value: { value, name } });
-      onBlur(event);
-    }
-  };
-
-  delete other["aria-invalid"];
 
   let display;
   let displaySingle;
@@ -647,26 +604,11 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
       return null;
     }
 
-    if (process.env.NODE_ENV !== "production") {
-      if (isFragment(child)) {
-        console.error(
-          [
-            "MUI: The Select component doesn't accept a Fragment as a child.",
-            "Consider providing an array instead.",
-          ].join("\n")
-        );
-      }
-    }
-
+   
     let selected;
 
     if (multiple) {
-      if (!Array.isArray(value)) {
-        throw new MuiError(
-          "MUI: The `value` prop must be an array " +
-            "when using the `Select` component with `multiple`."
-        );
-      }
+      
 
       selected = value.some((v) => areEqualValues(v, child.props.value));
       if (selected && computeDisplay) {
@@ -684,7 +626,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     }
 
     return React.cloneElement(child, {
-      "aria-selected": selected ? "true" : "false",
       onClick: handleItemClick(child),
       onKeyUp: (event) => {
         if (event.key === " ") {
@@ -705,29 +646,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     });
   });
 
-  if (process.env.NODE_ENV !== "production") {
-    // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    React.useEffect(() => {
-      if (!foundMatch && !multiple && value !== "") {
-        const values = childrenArray.map((child) => child.props.value);
-        console.warn(
-          [
-            `MUI: You have provided an out-of-range value \`${value}\` for the select ${
-              name ? `(name="${name}") ` : ""
-            }component.`,
-            "Consider providing a value that matches one of the available options or ''.",
-            `The available values are ${
-              values
-                .filter((x) => x != null)
-                .map((x) => `\`${x}\``)
-                .join(", ") || '""'
-            }.`,
-          ].join("\n")
-        );
-      }
-    }, [foundMatch, childrenArray, multiple, name, value]);
-  }
 
   if (computeDisplay) {
     if (multiple) {
@@ -763,22 +681,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
 
   const buttonId = SelectDisplayProps.id || (name ? `mui-component-select-${name}` : undefined);
 
-  const ownerState = {
-    ...props,
-    variant,
-    value,
-    open,
-    error,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
-  const paperProps = {
-    ...MenuProps.PaperProps,
-    ...MenuProps.slotProps?.paper,
-  };
-
-  const listboxId = useId();
 
   return (
     <React.Fragment>
@@ -787,20 +689,11 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         ref={handleDisplayRef}
         tabIndex={tabIndex}
         role='combobox'
-        aria-controls={listboxId}
-        aria-disabled={disabled ? "true" : undefined}
-        aria-expanded={open ? "true" : "false"}
-        aria-haspopup='listbox'
-        aria-label={ariaLabel}
-        aria-labelledby={[labelId, buttonId].filter(Boolean).join(" ") || undefined}
-        aria-describedby={ariaDescribedby}
         onKeyDown={handleKeyDown}
         onMouseDown={disabled || readOnly ? null : handleMouseDown}
         onBlur={handleBlur}
         onFocus={onFocus}
         {...SelectDisplayProps}
-        ownerState={ownerState}
-        className={clsx(SelectDisplayProps.className, classes.select, className)}
         // The id is required for proper a11y
         id={buttonId}
       >
@@ -821,12 +714,10 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         onChange={handleChange}
         tabIndex={-1}
         disabled={disabled}
-        className={classes.nativeInput}
         autoFocus={autoFocus}
         {...other}
-        ownerState={ownerState}
       />
-      <SelectIcon as={IconComponent} className={classes.icon} ownerState={ownerState} />
+      <SelectIcon as={IconComponent} />
       <Menu
         id={`menu-${name || ""}`}
         anchorEl={anchorElement}
@@ -840,25 +731,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
           vertical: "top",
           horizontal: "center",
         }}
-        {...MenuProps}
-        MenuListProps={{
-          "aria-labelledby": labelId,
-          role: "listbox",
-          "aria-multiselectable": multiple ? "true" : undefined,
-          disableListWrap: true,
-          id: listboxId,
-          ...MenuProps.MenuListProps,
-        }}
-        slotProps={{
-          ...MenuProps.slotProps,
-          paper: {
-            ...paperProps,
-            style: {
-              minWidth: menuMinWidth,
-              ...(paperProps != null ? paperProps.style : null),
-            },
-          },
-        }}
       >
         {items}
       </Menu>
@@ -871,7 +743,6 @@ export default SelectInput;
 import { MenuProps } from "./Menu";
 
 export interface SelectInputProps<Value = unknown> {
-  autoFocus?: boolean;
   autoWidth: boolean;
   defaultOpen?: boolean;
   disabled?: boolean;
@@ -881,27 +752,17 @@ export interface SelectInputProps<Value = unknown> {
   ) => void;
   MenuProps?: Partial<MenuProps>;
   multiple: boolean;
-  onBlur?: React.FocusEventHandler<any>;
   onChange?: (event: SelectChangeEvent<Value>, child: React.ReactNode) => void;
-  onClose?: (event: React.SyntheticEvent) => void;
-  onFocus?: React.FocusEventHandler<any>;
-  onOpen?: (event: React.SyntheticEvent) => void;
   open?: boolean;
-  renderValue?: (value: SelectInputProps<Value>["value"]) => React.ReactNode;
   value?: Value;
-  variant?: "standard" | "outlined" | "filled";
 }
 
-export default SelectInput;
 
-import { InternalStandardProps as StandardProps, Theme } from "..";
-import { InputProps } from "../mui/mui-material/src/Input";
-import { SelectChangeEvent, SelectInputProps } from "./SelectInput";
+import { InputProps } from "./Input";
 
-export { SelectChangeEvent };
 
 export interface BaseSelectProps<Value = unknown>
-  extends StandardProps<InputProps, "value" | "onChange"> {
+  extends Omit<InputProps, "value" | "onChange"> {
   /**
    * If `true`, the width of the popover will automatically be set according to the items inside the
    * menu, otherwise it will be at least the width of the select input.
@@ -920,11 +781,6 @@ export interface BaseSelectProps<Value = unknown>
    * The default value. Use when the component is not controlled.
    */
   defaultValue?: Value;
-
-  /**
-   * The `id` of the wrapper element or the `select` element when `native`.
-   */
-  id?: string;
 
   /**
    * See [OutlinedInput#label](https://mui.com/material-ui/api/outlined-input/#props)
@@ -948,20 +804,6 @@ export interface BaseSelectProps<Value = unknown>
   onChange?: SelectInputProps<Value>["onChange"];
 
   /**
-   * If `true`, the component is shown.
-   * You can only use it when the `native` prop is `false` (default).
-   */
-  open?: boolean;
-  /**
-   * Render the selected value.
-   * You can only use it when the `native` prop is `false` (default).
-   *
-   * @param {any} value The `value` provided to the component.
-   * @returns {ReactNode}
-   */
-  renderValue?: (value: Value) => React.ReactNode;
-
-  /**
    * The `input` value. Providing an empty string will select no options.
    * Set to an empty string `''` if you don't want any of the available options to be selected.
    *
@@ -969,11 +811,5 @@ export interface BaseSelectProps<Value = unknown>
    * If the value is not an object, the string representation must match with the string representation of the option in order to be selected.
    */
   value?: Value | "";
-  /**
-   * The variant to use.
-   * @default 'outlined'
-   */
-  variant?: SelectVariants;
-}
 
-export type SelectVariants = "outlined" | "standard" | "filled";
+}

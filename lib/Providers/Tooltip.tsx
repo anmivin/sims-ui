@@ -2,13 +2,11 @@ import * as React from "react";
 
 import useTimeout, { Timeout } from "../utils/useTimeout";
 
-import { useRtl } from "@mui/system/RtlProvider";
 import isFocusVisible from "@mui/utils/isFocusVisible";
-import appendOwnerState from "@mui/utils/appendOwnerState";
+
 import getReactNodeRef from "@mui/utils/getReactNodeRef";
 import styled from "@emotion/styled";
 
-import { useDefaultProps } from "../DefaultPropsProvider";
 
 import Grow from "./Grow";
 import Popper from "./Popper";
@@ -17,96 +15,49 @@ import useForkRef from "../utils/useForkRef";
 import useId from "../utils/useId";
 import useControlled from "../utils/useControlled";
 
-function round(value) {
-  return Math.round(value * 1e5) / 1e5;
-}
 
 const TooltipPopper = styled(Popper)({
   zIndex: (theme.vars || theme).zIndex.tooltip,
   pointerEvents: "none",
-  variants: [
-    {
-      props: ({ ownerState }) => !ownerState.disableInteractive,
-      style: {
-        pointerEvents: "auto",
-      },
+  '-disableInteractive': {
+    pointerEvents: "auto",
+  },
+'-closed': {
+  pointerEvents: "none",
+},
+'-arrow': {
+  [`&[data-popper-placement*="bottom"] .arrow`]: {
+    top: 0,
+    marginTop: "-0.71em",
+    "&::before": {
+      transformOrigin: "0 100%",
     },
-    {
-      props: ({ open }) => !open,
-      style: {
-        pointerEvents: "none",
-      },
+  },
+  [`&[data-popper-placement*="top"] .arrow`]: {
+    bottom: 0,
+    marginBottom: "-0.71em",
+    "&::before": {
+      transformOrigin: "100% 0",
     },
-    {
-      props: ({ ownerState }) => ownerState.arrow,
-      style: {
-        [`&[data-popper-placement*="bottom"] .${tooltipClasses.arrow}`]: {
-          top: 0,
-          marginTop: "-0.71em",
-          "&::before": {
-            transformOrigin: "0 100%",
-          },
-        },
-        [`&[data-popper-placement*="top"] .${tooltipClasses.arrow}`]: {
-          bottom: 0,
-          marginBottom: "-0.71em",
-          "&::before": {
-            transformOrigin: "100% 0",
-          },
-        },
-        [`&[data-popper-placement*="right"] .${tooltipClasses.arrow}`]: {
-          height: "1em",
-          width: "0.71em",
-          "&::before": {
-            transformOrigin: "100% 100%",
-          },
-        },
-        [`&[data-popper-placement*="left"] .${tooltipClasses.arrow}`]: {
-          height: "1em",
-          width: "0.71em",
-          "&::before": {
-            transformOrigin: "0 0",
-          },
-        },
-      },
+  },
+  [`&[data-popper-placement*="right"] .arrow`]: {
+    height: "1em",
+    width: "0.71em",
+    "&::before": {
+      transformOrigin: "100% 100%",
     },
-    {
-      props: ({ ownerState }) => ownerState.arrow && !ownerState.isRtl,
-      style: {
-        [`&[data-popper-placement*="right"] .${tooltipClasses.arrow}`]: {
-          left: 0,
-          marginLeft: "-0.71em",
-        },
-      },
+  },
+  [`&[data-popper-placement*="left"] .arrow`]: {
+    height: "1em",
+    width: "0.71em",
+    "&::before": {
+      transformOrigin: "0 0",
     },
-    {
-      props: ({ ownerState }) => ownerState.arrow && !!ownerState.isRtl,
-      style: {
-        [`&[data-popper-placement*="right"] .${tooltipClasses.arrow}`]: {
-          right: 0,
-          marginRight: "-0.71em",
-        },
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.arrow && !ownerState.isRtl,
-      style: {
-        [`&[data-popper-placement*="left"] .${tooltipClasses.arrow}`]: {
-          right: 0,
-          marginRight: "-0.71em",
-        },
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.arrow && !!ownerState.isRtl,
-      style: {
-        [`&[data-popper-placement*="left"] .${tooltipClasses.arrow}`]: {
-          left: 0,
-          marginLeft: "-0.71em",
-        },
-      },
-    },
-  ],
+  },
+    
+  }
+
+
 });
 
 const TooltipTooltip = styled("div")({
@@ -158,7 +109,6 @@ const TooltipArrow = styled("span")({
 
 let hystersisOpen = false;
 const hystersisTimer = new Timeout();
-let cursorPosition = { x: 0, y: 0 };
 
 function composeEventHandler(handler, eventHandler) {
   return (event, ...params) => {
@@ -169,11 +119,10 @@ function composeEventHandler(handler, eventHandler) {
   };
 }
 
-const Tooltip = React.forwardRef(function Tooltip(props: TooltipProps, ref) {
+const Tooltip = (props: TooltipProps) => {
   const {
     arrow = false,
     children: childrenProp,
-    describeChild = false,
     disableInteractive: disableInteractiveProp = false,
     enterDelay = 100,
     id: idProp,
@@ -200,12 +149,7 @@ const Tooltip = React.forwardRef(function Tooltip(props: TooltipProps, ref) {
   const leaveTimer = useTimeout();
   const touchTimer = useTimeout();
 
-  const [openState, setOpenState] = useControlled({
-    controlled: openProp,
-    default: false,
-    name: "Tooltip",
-    state: "open",
-  });
+  const [openState, setOpenState] = React.useState(false);
 
   let open = openState;
 
@@ -398,23 +342,6 @@ const Tooltip = React.forwardRef(function Tooltip(props: TooltipProps, ref) {
     ...(followCursor ? { onMouseMove: handleMouseMove } : {}),
   };
 
-  if (process.env.NODE_ENV !== "production") {
-    childrenProps["data-mui-internal-clone-element"] = true;
-
-    // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/rules-of-hooks -- process.env never changes
-    React.useEffect(() => {
-      if (childNode && !childNode.getAttribute("data-mui-internal-clone-element")) {
-        console.error(
-          [
-            "MUI: The `children` component of the Tooltip is not forwarding its props correctly.",
-            "Please make sure that props are spread on the same element that the ref is applied to.",
-          ].join("\n")
-        );
-      }
-    }, [childNode]);
-  }
-
   const interactiveWrapperListeners = {};
 
   if (!disableTouchListener) {
@@ -441,14 +368,6 @@ const Tooltip = React.forwardRef(function Tooltip(props: TooltipProps, ref) {
       interactiveWrapperListeners.onBlur = handleBlur;
     }
   }
-
-  const ownerState = {
-    ...props,
-    arrow,
-    disableInteractive,
-    placement,
-    touch: ignoreNonTouchEvents.current,
-  };
 
   const TransitionComponent = Grow;
 
@@ -479,7 +398,7 @@ const Tooltip = React.forwardRef(function Tooltip(props: TooltipProps, ref) {
       </TooltipPopper>
     </React.Fragment>
   );
-});
+};
 
 export default Tooltip;
 
@@ -494,12 +413,6 @@ export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
    */
   children: React.ReactElement<unknown, any>;
 
-  /**
-   * Set to `true` if the `title` acts as an accessible description.
-   * By default the `title` acts as an accessible label for the child.
-   * @default false
-   */
-  describeChild?: boolean;
 
   /**
    * Makes a tooltip not interactive, i.e. it will close when the user
@@ -515,11 +428,7 @@ export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
    */
   enterDelay?: number;
 
-  /**
-   * This prop is used to help implement the accessibility logic.
-   * If you don't provide this prop. It falls back to a randomly generated id.
-   */
-  id?: string;
+
   /**
    * The number of milliseconds to wait before hiding the tooltip.
    * This prop won't impact the leave touch delay (`leaveTouchDelay`).

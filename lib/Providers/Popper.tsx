@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import {
   chainPropTypes,
@@ -9,11 +8,10 @@ import {
   unstable_useForkRef as useForkRef,
 } from "@mui/utils";
 import { createPopper, Instance, Modifier, Placement, State, VirtualElement } from "@popperjs/core";
-import PropTypes from "prop-types";
-import composeClasses from "@mui/utils/composeClasses";
+
 import useSlotProps from "@mui/utils/useSlotProps";
-import Portal from "./Portal";
-import { getPopperUtilityClass } from "./Popper/popperClasses";
+import Portal from "../Internal/Portal";
+
 import { WithOptionalOwnerState } from "../utils/types";
 import { PolymorphicComponent } from "../utils/PolymorphicComponent";
 import {
@@ -26,25 +24,6 @@ import {
   PopperTransitionProps,
   PopperTypeMap,
 } from "./Popper/BasePopper.types";
-
-function flipPlacement(placement?: PopperPlacementType, direction?: "ltr" | "rtl") {
-  if (direction === "ltr") {
-    return placement;
-  }
-
-  switch (placement) {
-    case "bottom-end":
-      return "bottom-start";
-    case "bottom-start":
-      return "bottom-end";
-    case "top-end":
-      return "top-start";
-    case "top-start":
-      return "top-end";
-    default:
-      return placement;
-  }
-}
 
 function resolveAnchorEl(
   anchorEl:
@@ -65,15 +44,6 @@ function isHTMLElement(element: HTMLElement | VirtualElement): element is HTMLEl
 function isVirtualElement(element: HTMLElement | VirtualElement): element is VirtualElement {
   return !isHTMLElement(element);
 }
-
-const useUtilityClasses = (ownerState: any) => {
-  const { classes } = ownerState;
-  const slots = {
-    root: ["root"],
-  };
-
-  return composeClasses(slots, getPopperUtilityClass, classes);
-};
 
 const defaultPopperOptions = {};
 
@@ -109,12 +79,11 @@ const PopperTooltip = React.forwardRef(function PopperTooltip<
   }, [handlePopperRef]);
   React.useImperativeHandle(popperRefProp, () => popperRef.current!, []);
 
-  const rtlPlacement = flipPlacement(initialPlacement, direction);
   /**
    * placement initialized from prop but can change during lifetime if modifiers.flip.
    * modifiers.flip is essentially a flip for controlled/uncontrolled behavior
    */
-  const [placement, setPlacement] = React.useState<Placement | undefined>(rtlPlacement);
+  const [placement, setPlacement] = React.useState<Placement | undefined>(initialPlacement);
   const [resolvedAnchorElement, setResolvedAnchorElement] = React.useState<
     HTMLElement | VirtualElement | null | undefined
   >(resolveAnchorEl(anchorEl));
@@ -139,32 +108,6 @@ const PopperTooltip = React.forwardRef(function PopperTooltip<
     const handlePopperUpdate = (data: State) => {
       setPlacement(data.placement);
     };
-
-    if (process.env.NODE_ENV !== "production") {
-      if (
-        resolvedAnchorElement &&
-        isHTMLElement(resolvedAnchorElement) &&
-        resolvedAnchorElement.nodeType === 1
-      ) {
-        const box = resolvedAnchorElement.getBoundingClientRect();
-
-        if (
-          process.env.NODE_ENV !== "test" &&
-          box.top === 0 &&
-          box.left === 0 &&
-          box.right === 0 &&
-          box.bottom === 0
-        ) {
-          console.warn(
-            [
-              "MUI: The `anchorEl` prop provided to the component is invalid.",
-              "The anchor element should be part of the document layout.",
-              "Make sure the element is present in the document or that it's not display none.",
-            ].join("\n")
-          );
-        }
-      }
-    }
 
     let popperModifiers: Partial<Modifier<any, any>>[] = [
       {
@@ -197,7 +140,7 @@ const PopperTooltip = React.forwardRef(function PopperTooltip<
     }
 
     const popper = createPopper(resolvedAnchorElement, tooltipRef.current!, {
-      placement: rtlPlacement,
+      placement: initialPlacement,
       ...popperOptions,
       modifiers: popperModifiers,
     });
@@ -216,24 +159,9 @@ const PopperTooltip = React.forwardRef(function PopperTooltip<
     childProps.TransitionProps = TransitionProps;
   }
 
-  const classes = useUtilityClasses(props);
-  const Root = slots.root ?? "div";
+  const Root = "div";
 
-  const rootProps: WithOptionalOwnerState<PopperRootSlotProps> = useSlotProps({
-    elementType: Root,
-    externalSlotProps: slotProps.root,
-    externalForwardedProps: other,
-    additionalProps: {
-      role: "tooltip",
-      ref: ownRef,
-    },
-    ownerState: props,
-    className: classes.root,
-  });
-
-  return (
-    <Root {...rootProps}>{typeof children === "function" ? children(childProps) : children}</Root>
-  );
+  return <Root>{typeof children === "function" ? children(childProps) : children}</Root>;
 }) as PolymorphicComponent<PopperTooltipTypeMap>;
 
 /**
@@ -330,283 +258,14 @@ const Popper = React.forwardRef(function Popper<RootComponentType extends React.
   );
 }) as PolymorphicComponent<PopperTypeMap>;
 
-Popper.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │ To update them, edit the TypeScript types and run `pnpm proptypes`. │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * An HTML element, [virtualElement](https://popper.js.org/docs/v2/virtual-elements/),
-   * or a function that returns either.
-   * It's used to set the position of the popper.
-   * The return value will passed as the reference object of the Popper instance.
-   */
-  anchorEl: chainPropTypes(
-    PropTypes.oneOfType([HTMLElementType, PropTypes.object, PropTypes.func]),
-    (props) => {
-      if (props.open) {
-        const resolvedAnchorEl = resolveAnchorEl(props.anchorEl);
-
-        if (
-          resolvedAnchorEl &&
-          isHTMLElement(resolvedAnchorEl) &&
-          resolvedAnchorEl.nodeType === 1
-        ) {
-          const box = resolvedAnchorEl.getBoundingClientRect();
-
-          if (
-            process.env.NODE_ENV !== "test" &&
-            box.top === 0 &&
-            box.left === 0 &&
-            box.right === 0 &&
-            box.bottom === 0
-          ) {
-            return new Error(
-              [
-                "MUI: The `anchorEl` prop provided to the component is invalid.",
-                "The anchor element should be part of the document layout.",
-                "Make sure the element is present in the document or that it's not display none.",
-              ].join("\n")
-            );
-          }
-        } else if (
-          !resolvedAnchorEl ||
-          typeof resolvedAnchorEl.getBoundingClientRect !== "function" ||
-          (isVirtualElement(resolvedAnchorEl) &&
-            resolvedAnchorEl.contextElement != null &&
-            resolvedAnchorEl.contextElement.nodeType !== 1)
-        ) {
-          return new Error(
-            [
-              "MUI: The `anchorEl` prop provided to the component is invalid.",
-              "It should be an HTML element instance or a virtualElement ",
-              "(https://popper.js.org/docs/v2/virtual-elements/).",
-            ].join("\n")
-          );
-        }
-      }
-
-      return null;
-    }
-  ),
-  /**
-   * Popper render function or node.
-   */
-  children: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.node,
-    PropTypes.func,
-  ]),
-  /**
-   * An HTML element or function that returns one.
-   * The `container` will have the portal children appended to it.
-   *
-   * You can also provide a callback, which is called in a React layout effect.
-   * This lets you set the container from a ref, and also makes server-side rendering possible.
-   *
-   * By default, it uses the body of the top-level document object,
-   * so it's simply `document.body` most of the time.
-   */
-  container: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    HTMLElementType,
-    PropTypes.func,
-  ]),
-  /**
-   * Direction of the text.
-   * @default 'ltr'
-   */
-  direction: PropTypes.oneOf(["ltr", "rtl"]),
-  /**
-   * The `children` will be under the DOM hierarchy of the parent component.
-   * @default false
-   */
-  disablePortal: PropTypes.bool,
-  /**
-   * Always keep the children in the DOM.
-   * This prop can be useful in SEO situation or
-   * when you want to maximize the responsiveness of the Popper.
-   * @default false
-   */
-  keepMounted: PropTypes.bool,
-  /**
-   * Popper.js is based on a "plugin-like" architecture,
-   * most of its features are fully encapsulated "modifiers".
-   *
-   * A modifier is a function that is called each time Popper.js needs to
-   * compute the position of the popper.
-   * For this reason, modifiers should be very performant to avoid bottlenecks.
-   * To learn how to create a modifier, [read the modifiers documentation](https://popper.js.org/docs/v2/modifiers/).
-   */
-  modifiers: PropTypes.arrayOf(
-    PropTypes.shape({
-      data: PropTypes.object,
-      effect: PropTypes.func,
-      enabled: PropTypes.bool,
-      fn: PropTypes.func,
-      name: PropTypes.any,
-      options: PropTypes.object,
-      phase: PropTypes.oneOf([
-        "afterMain",
-        "afterRead",
-        "afterWrite",
-        "beforeMain",
-        "beforeRead",
-        "beforeWrite",
-        "main",
-        "read",
-        "write",
-      ]),
-      requires: PropTypes.arrayOf(PropTypes.string),
-      requiresIfExists: PropTypes.arrayOf(PropTypes.string),
-    })
-  ),
-  /**
-   * If `true`, the component is shown.
-   */
-  open: PropTypes.bool.isRequired,
-  /**
-   * Popper placement.
-   * @default 'bottom'
-   */
-  placement: PropTypes.oneOf([
-    "auto-end",
-    "auto-start",
-    "auto",
-    "bottom-end",
-    "bottom-start",
-    "bottom",
-    "left-end",
-    "left-start",
-    "left",
-    "right-end",
-    "right-start",
-    "right",
-    "top-end",
-    "top-start",
-    "top",
-  ]),
-  /**
-   * Options provided to the [`Popper.js`](https://popper.js.org/docs/v2/constructors/#options) instance.
-   * @default {}
-   */
-  popperOptions: PropTypes.shape({
-    modifiers: PropTypes.array,
-    onFirstUpdate: PropTypes.func,
-    placement: PropTypes.oneOf([
-      "auto-end",
-      "auto-start",
-      "auto",
-      "bottom-end",
-      "bottom-start",
-      "bottom",
-      "left-end",
-      "left-start",
-      "left",
-      "right-end",
-      "right-start",
-      "right",
-      "top-end",
-      "top-start",
-      "top",
-    ]),
-    strategy: PropTypes.oneOf(["absolute", "fixed"]),
-  }),
-  /**
-   * A ref that points to the used popper instance.
-   */
-  popperRef: refType,
-  /**
-   * The props used for each slot inside the Popper.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    root: PropTypes.elementType,
-  }),
-  /**
-   * Help supporting a react-transition-group/Transition component.
-   * @default false
-   */
-  transition: PropTypes.bool,
-} as any;
-
 export default Popper;
 
-import { SxProps } from "@mui/system";
-import { useRtl } from "@mui/system/RtlProvider";
-import refType from "@mui/utils/refType";
-import HTMLElementType from "@mui/utils/HTMLElementType";
-import PropTypes from "prop-types";
-import * as React from "react";
-import BasePopper from "./Popper/BasePopper";
-import { PopperProps as BasePopperProps } from "./Popper/BasePopper.types";
-import { Theme } from "../styles";
-import { styled } from "../zero-styled";
-import { useDefaultProps } from "../DefaultPropsProvider";
+const PopperRoot = styled(BasePopper)({});
 
-export interface PopperProps extends Omit<BasePopperProps, "direction"> {
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component?: React.ElementType;
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   *
-   * @deprecated use the `slots` prop instead. This prop will be removed in v7. [How to migrate](/material-ui/migration/migrating-from-deprecated-apis/).
-   * @default {}
-   */
-  components?: {
-    Root?: React.ElementType;
-  };
-  /**
-   * The props used for each slot inside the Popper.
-   *
-   * @deprecated use the `slotProps` prop instead. This prop will be removed in v7. [How to migrate](/material-ui/migration/migrating-from-deprecated-apis/).
-   * @default {}
-   */
-  componentsProps?: BasePopperProps["slotProps"];
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx?: SxProps<Theme>;
-}
-
-const PopperRoot = styled(BasePopper, {
-  name: "MuiPopper",
-  slot: "Root",
-  overridesResolver: (props, styles) => styles.root,
-})({});
-
-/**
- *
- * Demos:
- *
- * - [Autocomplete](https://mui.com/material-ui/react-autocomplete/)
- * - [Menu](https://mui.com/material-ui/react-menu/)
- * - [Popper](https://mui.com/material-ui/react-popper/)
- *
- * API:
- *
- * - [Popper API](https://mui.com/material-ui/api/popper/)
- */
 const Popper = React.forwardRef(function Popper(
   inProps: PopperProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
-  const isRtl = useRtl();
-  const props = useDefaultProps({
-    props: inProps,
-    name: "MuiPopper",
-  });
-
   const {
     anchorEl,
     component,
@@ -626,7 +285,7 @@ const Popper = React.forwardRef(function Popper(
     ...other
   } = props;
 
-  const RootComponent = slots?.root ?? components?.Root;
+  const RootComponent = "div";
   const otherProps = {
     anchorEl,
     container,
@@ -643,7 +302,7 @@ const Popper = React.forwardRef(function Popper(
   return (
     <PopperRoot
       as={component}
-      direction={isRtl ? "rtl" : "ltr"}
+      direction={"ltr"}
       slots={{ root: RootComponent }}
       slotProps={slotProps ?? componentsProps}
       {...otherProps}
@@ -652,218 +311,10 @@ const Popper = React.forwardRef(function Popper(
   );
 }) as React.ForwardRefExoticComponent<PopperProps & React.RefAttributes<HTMLDivElement>>;
 
-Popper.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │ To update them, edit the TypeScript types and run `pnpm proptypes`. │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * An HTML element, [virtualElement](https://popper.js.org/docs/v2/virtual-elements/),
-   * or a function that returns either.
-   * It's used to set the position of the popper.
-   * The return value will passed as the reference object of the Popper instance.
-   */
-  anchorEl: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    HTMLElementType,
-    PropTypes.object,
-    PropTypes.func,
-  ]),
-  /**
-   * Popper render function or node.
-   */
-  children: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.node,
-    PropTypes.func,
-  ]),
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   *
-   * @deprecated use the `slots` prop instead. This prop will be removed in v7. [How to migrate](/material-ui/migration/migrating-from-deprecated-apis/).
-   * @default {}
-   */
-  components: PropTypes.shape({
-    Root: PropTypes.elementType,
-  }),
-  /**
-   * The props used for each slot inside the Popper.
-   *
-   * @deprecated use the `slotProps` prop instead. This prop will be removed in v7. [How to migrate](/material-ui/migration/migrating-from-deprecated-apis/).
-   * @default {}
-   */
-  componentsProps: PropTypes.shape({
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * An HTML element or function that returns one.
-   * The `container` will have the portal children appended to it.
-   *
-   * You can also provide a callback, which is called in a React layout effect.
-   * This lets you set the container from a ref, and also makes server-side rendering possible.
-   *
-   * By default, it uses the body of the top-level document object,
-   * so it's simply `document.body` most of the time.
-   */
-  container: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    HTMLElementType,
-    PropTypes.func,
-  ]),
-  /**
-   * The `children` will be under the DOM hierarchy of the parent component.
-   * @default false
-   */
-  disablePortal: PropTypes.bool,
-  /**
-   * Always keep the children in the DOM.
-   * This prop can be useful in SEO situation or
-   * when you want to maximize the responsiveness of the Popper.
-   * @default false
-   */
-  keepMounted: PropTypes.bool,
-  /**
-   * Popper.js is based on a "plugin-like" architecture,
-   * most of its features are fully encapsulated "modifiers".
-   *
-   * A modifier is a function that is called each time Popper.js needs to
-   * compute the position of the popper.
-   * For this reason, modifiers should be very performant to avoid bottlenecks.
-   * To learn how to create a modifier, [read the modifiers documentation](https://popper.js.org/docs/v2/modifiers/).
-   */
-  modifiers: PropTypes.arrayOf(
-    PropTypes.shape({
-      data: PropTypes.object,
-      effect: PropTypes.func,
-      enabled: PropTypes.bool,
-      fn: PropTypes.func,
-      name: PropTypes.any,
-      options: PropTypes.object,
-      phase: PropTypes.oneOf([
-        "afterMain",
-        "afterRead",
-        "afterWrite",
-        "beforeMain",
-        "beforeRead",
-        "beforeWrite",
-        "main",
-        "read",
-        "write",
-      ]),
-      requires: PropTypes.arrayOf(PropTypes.string),
-      requiresIfExists: PropTypes.arrayOf(PropTypes.string),
-    })
-  ),
-  /**
-   * If `true`, the component is shown.
-   */
-  open: PropTypes.bool.isRequired,
-  /**
-   * Popper placement.
-   * @default 'bottom'
-   */
-  placement: PropTypes.oneOf([
-    "auto-end",
-    "auto-start",
-    "auto",
-    "bottom-end",
-    "bottom-start",
-    "bottom",
-    "left-end",
-    "left-start",
-    "left",
-    "right-end",
-    "right-start",
-    "right",
-    "top-end",
-    "top-start",
-    "top",
-  ]),
-  /**
-   * Options provided to the [`Popper.js`](https://popper.js.org/docs/v2/constructors/#options) instance.
-   * @default {}
-   */
-  popperOptions: PropTypes.shape({
-    modifiers: PropTypes.array,
-    onFirstUpdate: PropTypes.func,
-    placement: PropTypes.oneOf([
-      "auto-end",
-      "auto-start",
-      "auto",
-      "bottom-end",
-      "bottom-start",
-      "bottom",
-      "left-end",
-      "left-start",
-      "left",
-      "right-end",
-      "right-start",
-      "right",
-      "top-end",
-      "top-start",
-      "top",
-    ]),
-    strategy: PropTypes.oneOf(["absolute", "fixed"]),
-  }),
-  /**
-   * A ref that points to the used popper instance.
-   */
-  popperRef: refType,
-  /**
-   * The props used for each slot inside the Popper.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    root: PropTypes.elementType,
-  }),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * Help supporting a react-transition-group/Transition component.
-   * @default false
-   */
-  transition: PropTypes.bool,
-} as any;
-
 export default Popper;
 
-import * as React from "react";
-import { Instance, Options, OptionsGeneric, VirtualElement } from "@popperjs/core";
+import { Instance, VirtualElement } from "@popperjs/core";
 import { PortalProps } from "./Portal";
-import { SlotComponentProps } from "../utils/types";
-import { PolymorphicProps } from "../utils/PolymorphicComponent";
-
-export type PopperPlacementType = Options["placement"];
-
-export interface PopperRootSlotPropsOverrides {}
-
-export interface PopperTransitionProps {
-  in: boolean;
-  onEnter: () => void;
-  onExited: () => void;
-}
-
-export interface PopperChildrenProps {
-  placement: PopperPlacementType;
-  TransitionProps?: PopperTransitionProps;
-}
 
 export interface PopperOwnProps {
   /**
@@ -904,77 +355,7 @@ export interface PopperOwnProps {
    */
   placement?: PopperPlacementType;
   /**
-   * Options provided to the [`Popper.js`](https://popper.js.org/docs/v2/constructors/#options) instance.
-   * @default {}
-   */
-  popperOptions?: Partial<OptionsGeneric<any>>;
-  /**
    * A ref that points to the used popper instance.
    */
   popperRef?: React.Ref<Instance>;
-  /**
-   * The props used for each slot inside the Popper.
-   * @default {}
-   */
-  slotProps?: {
-    root?: SlotComponentProps<"div", PopperRootSlotPropsOverrides, PopperOwnerState>;
-  };
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots?: PopperSlots;
-  /**
-   * Help supporting a react-transition-group/Transition component.
-   * @default false
-   */
-  transition?: boolean;
-}
-
-export interface PopperSlots {
-  /**
-   * The component that renders the root.
-   * @default 'div'
-   */
-  root?: React.ElementType;
-}
-
-export type PopperOwnerState = PopperOwnProps;
-
-export interface PopperTypeMap<
-  AdditionalProps = {},
-  RootComponentType extends React.ElementType = "div"
-> {
-  props: PopperOwnProps & AdditionalProps;
-  defaultComponent: RootComponentType;
-}
-
-export type PopperProps<
-  RootComponentType extends React.ElementType = PopperTypeMap["defaultComponent"]
-> = PolymorphicProps<PopperTypeMap<{}, RootComponentType>, RootComponentType>;
-
-export type PopperTooltipOwnProps = Omit<
-  PopperOwnProps,
-  "container" | "keepMounted" | "transition"
-> & {
-  TransitionProps?: PopperTransitionProps;
-};
-
-export interface PopperTooltipTypeMap<
-  AdditionalProps = {},
-  RootComponentType extends React.ElementType = "div"
-> {
-  props: PopperTooltipOwnProps & AdditionalProps;
-  defaultComponent: RootComponentType;
-}
-
-export type PopperTooltipProps<
-  RootComponentType extends React.ElementType = PopperTooltipTypeMap["defaultComponent"]
-> = PolymorphicProps<PopperTooltipTypeMap<{}, RootComponentType>, RootComponentType>;
-
-export interface PopperRootSlotProps {
-  className?: string;
-  ref: React.Ref<any>;
-  ownerState: PopperOwnerState;
 }

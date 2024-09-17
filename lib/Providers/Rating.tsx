@@ -1,21 +1,10 @@
-"use client";
 import * as React from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
+
 import clamp from "@mui/utils/clamp";
-import visuallyHidden from "@mui/utils/visuallyHidden";
-import chainPropTypes from "@mui/utils/chainPropTypes";
-import composeClasses from "@mui/utils/composeClasses";
-import { useRtl } from "@mui/system/RtlProvider";
+
 import isFocusVisible from "@mui/utils/isFocusVisible";
-import { capitalize, useForkRef, useControlled, unstable_useId as useId } from "../utils";
-import Star from "../internal/svg-icons/Star";
-import StarBorder from "../internal/svg-icons/StarBorder";
-import { styled } from "../zero-styled";
-import memoTheme from "../utils/memoTheme";
-import { useDefaultProps } from "../DefaultPropsProvider";
-import slotShouldForwardProp from "../styles/slotShouldForwardProp";
-import ratingClasses, { getRatingUtilityClass } from "./Rating/ratingClasses";
+
+import styled from "@emotion/styled";
 
 function getDecimalPrecision(num) {
   const decimalPart = num.toString().split(".")[1];
@@ -31,176 +20,51 @@ function roundValueToPrecision(value, precision) {
   return Number(nearest.toFixed(getDecimalPrecision(precision)));
 }
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, size, readOnly, disabled, emptyValueFocused, focusVisible } = ownerState;
-
-  const slots = {
-    root: [
-      "root",
-      `size${capitalize(size)}`,
-      disabled && "disabled",
-      focusVisible && "focusVisible",
-      readOnly && "readOnly",
-    ],
-    label: ["label", "pristine"],
-    labelEmptyValue: [emptyValueFocused && "labelEmptyValueActive"],
-    icon: ["icon"],
-    iconEmpty: ["iconEmpty"],
-    iconFilled: ["iconFilled"],
-    iconHover: ["iconHover"],
-    iconFocus: ["iconFocus"],
-    iconActive: ["iconActive"],
-    decimal: ["decimal"],
-    visuallyHidden: ["visuallyHidden"],
-  };
-
-  return composeClasses(slots, getRatingUtilityClass, classes);
-};
-
-const RatingRoot = styled("span", {
-  name: "MuiRating",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      { [`& .${ratingClasses.visuallyHidden}`]: styles.visuallyHidden },
-      styles.root,
-      styles[`size${capitalize(ownerState.size)}`],
-      ownerState.readOnly && styles.readOnly,
-    ];
+const RatingRoot = styled("span")({
+  display: "inline-flex",
+  // Required to position the pristine input absolutely
+  position: "relative",
+  fontSize: theme.typography.pxToRem(24),
+  color: "#faaf00",
+  cursor: "pointer",
+  textAlign: "left",
+  width: "min-content",
+  WebkitTapHighlightColor: "transparent",
+  "-disabled": {
+    opacity: (theme.vars || theme).palette.action.disabledOpacity,
+    pointerEvents: "none",
   },
-})(
-  memoTheme(({ theme }) => ({
-    display: "inline-flex",
-    // Required to position the pristine input absolutely
-    position: "relative",
-    fontSize: theme.typography.pxToRem(24),
-    color: "#faaf00",
-    cursor: "pointer",
-    textAlign: "left",
-    width: "min-content",
-    WebkitTapHighlightColor: "transparent",
-    [`&.${ratingClasses.disabled}`]: {
-      opacity: (theme.vars || theme).palette.action.disabledOpacity,
-      pointerEvents: "none",
-    },
-    [`&.${ratingClasses.focusVisible} .${ratingClasses.iconActive}`]: {
-      outline: "1px solid #999",
-    },
-    [`& .${ratingClasses.visuallyHidden}`]: visuallyHidden,
-    variants: [
-      {
-        props: {
-          size: "small",
-        },
-        style: {
-          fontSize: theme.typography.pxToRem(18),
-        },
-      },
-      {
-        props: {
-          size: "large",
-        },
-        style: {
-          fontSize: theme.typography.pxToRem(30),
-        },
-      },
-      {
-        // TODO v6: use the .Mui-readOnly global state class
-        props: ({ ownerState }) => ownerState.readOnly,
-        style: {
-          pointerEvents: "none",
-        },
-      },
-    ],
-  }))
-);
-
-const RatingLabel = styled("label", {
-  name: "MuiRating",
-  slot: "Label",
-  overridesResolver: ({ ownerState }, styles) => [
-    styles.label,
-    ownerState.emptyValueFocused && styles.labelEmptyValueActive,
-  ],
-})({
-  cursor: "inherit",
-  variants: [
-    {
-      props: ({ ownerState }) => ownerState.emptyValueFocused,
-      style: {
-        top: 0,
-        bottom: 0,
-        position: "absolute",
-        outline: "1px solid #999",
-        width: "100%",
-      },
-    },
-  ],
 });
 
-const RatingIcon = styled("span", {
-  name: "MuiRating",
-  slot: "Icon",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.icon,
-      ownerState.iconEmpty && styles.iconEmpty,
-      ownerState.iconFilled && styles.iconFilled,
-      ownerState.iconHover && styles.iconHover,
-      ownerState.iconFocus && styles.iconFocus,
-      ownerState.iconActive && styles.iconActive,
-    ];
+const RatingLabel = styled("label")({
+  cursor: "inherit",
+  "-emptyValueFocused": {
+    top: 0,
+    bottom: 0,
+    position: "absolute",
+    outline: "1px solid #999",
+    width: "100%",
   },
-})(
-  memoTheme(({ theme }) => ({
-    // Fit wrapper to actual icon size.
-    display: "flex",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-    // Fix mouseLeave issue.
-    // https://github.com/facebook/react/issues/4492
-    pointerEvents: "none",
-    variants: [
-      {
-        props: ({ ownerState }) => ownerState.iconActive,
-        style: {
-          transform: "scale(1.2)",
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.iconEmpty,
-        style: {
-          color: (theme.vars || theme).palette.action.disabled,
-        },
-      },
-    ],
-  }))
-);
+});
 
-const RatingDecimal = styled("span", {
-  name: "MuiRating",
-  slot: "Decimal",
-  shouldForwardProp: (prop) => slotShouldForwardProp(prop) && prop !== "iconActive",
-  overridesResolver: (props, styles) => {
-    const { iconActive } = props;
-
-    return [styles.decimal, iconActive && styles.iconActive];
+const RatingIcon = styled("span")({
+  // Fit wrapper to actual icon size.
+  display: "flex",
+  transition: "",
+  pointerEvents: "none",
+  "-iconActive": {
+    transform: "scale(1.2)",
   },
-})({
+  "-iconEmpty": {
+    color: "gray",
+  },
+});
+
+const RatingDecimal = styled("span")({
   position: "relative",
-  variants: [
-    {
-      props: ({ iconActive }) => iconActive,
-      style: {
-        transform: "scale(1.2)",
-      },
-    },
-  ],
+  "-iconActive": {
+    transform: "scale(1.2)",
+  },
 });
 
 function IconContainer(props) {
@@ -329,8 +193,7 @@ function defaultLabelText(value) {
   return `${value || "0"} Star${value !== 1 ? "s" : ""}`;
 }
 
-const Rating = React.forwardRef(function Rating(inProps, ref) {
-  const props = useDefaultProps({ name: "MuiRating", props: inProps });
+const Rating = (props: RatingProps) => {
   const {
     className,
     defaultValue = null,
@@ -340,30 +203,19 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
     getLabelText = defaultLabelText,
     highlightSelectedOnly = false,
     icon = defaultIcon,
-    IconContainerComponent = IconContainer,
     max = 5,
-    name: nameProp,
     onChange,
-    onChangeActive,
     onMouseLeave,
     onMouseMove,
     precision = 1,
-    readOnly = false,
-    size = "medium",
     value: valueProp,
     ...other
   } = props;
 
-  const name = useId(nameProp);
-
-  const [valueDerived, setValueState] = useControlled({
-    controlled: valueProp,
-    default: defaultValue,
-    name: "Rating",
-  });
+  const [valueDerived, setValueState] = React.useState(defaultValue);
 
   const valueRounded = roundValueToPrecision(valueDerived, precision);
-  const isRtl = useRtl();
+
   const [{ hover, focus }, setState] = React.useState({
     hover: -1,
     focus: -1,
@@ -392,11 +244,7 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
 
     let percent;
 
-    if (isRtl) {
-      percent = (right - event.clientX) / containerWidth;
-    } else {
-      percent = (event.clientX - left) / containerWidth;
-    }
+    percent = (event.clientX - left) / containerWidth;
 
     let newHover = roundValueToPrecision(max * percent + precision / 2, precision);
     newHover = clamp(newHover, precision, max);
@@ -411,12 +259,7 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
     );
 
     setFocusVisible(false);
-
-    if (onChangeActive && hover !== newHover) {
-      onChangeActive(event, newHover);
-    }
   };
-
   const handleMouseLeave = (event) => {
     if (onMouseLeave) {
       onMouseLeave(event);
@@ -427,20 +270,10 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
       hover: newHover,
       focus: newHover,
     });
-
-    if (onChangeActive && hover !== newHover) {
-      onChangeActive(event, newHover);
-    }
   };
 
   const handleChange = (event) => {
     let newValue = event.target.value === "" ? null : parseFloat(event.target.value);
-
-    // Give mouse priority over keyboard
-    // Fix https://github.com/mui/material-ui/issues/22827
-    if (hover !== -1) {
-      newValue = hover;
-    }
 
     setValueState(newValue);
 
@@ -450,12 +283,6 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
   };
 
   const handleClear = (event) => {
-    // Ignore keyboard events
-    // https://github.com/facebook/react/issues/7407
-    if (event.clientX === 0 && event.clientY === 0) {
-      return;
-    }
-
     setState({
       hover: -1,
       focus: -1,
@@ -508,38 +335,22 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
     focusVisible,
     getLabelText,
     icon,
-    IconContainerComponent,
     max,
     precision,
-    readOnly,
-    size,
   };
-
-  const classes = useUtilityClasses(ownerState);
 
   return (
     <RatingRoot
       ref={handleRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={clsx(
-        classes.root,
-        {
-          // TODO v6: remove this class as it duplicates with the global state class Mui-readOnly
-          "MuiRating-readOnly": readOnly,
-        },
-        className
-      )}
       ownerState={ownerState}
-      role={readOnly ? "img" : null}
-      aria-label={readOnly ? getLabelText(value) : null}
       {...other}
     >
       {Array.from(new Array(max)).map((_, index) => {
         const itemValue = index + 1;
 
         const ratingItemProps = {
-          classes,
           disabled,
           emptyIcon,
           focus,
@@ -547,28 +358,20 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
           highlightSelectedOnly,
           hover,
           icon,
-          IconContainerComponent,
-          name,
+
           onBlur: handleBlur,
           onChange: handleChange,
           onClick: handleClear,
           onFocus: handleFocus,
           ratingValue: value,
           ratingValueRounded: valueRounded,
-          readOnly,
-          ownerState,
         };
 
         const isActive = itemValue === Math.ceil(value) && (hover !== -1 || focus !== -1);
         if (precision < 1) {
           const items = Array.from(new Array(1 / precision));
           return (
-            <RatingDecimal
-              key={itemValue}
-              className={clsx(classes.decimal, { [classes.iconActive]: isActive })}
-              ownerState={ownerState}
-              iconActive={isActive}
-            >
+            <RatingDecimal key={itemValue} ownerState={ownerState} iconActive={isActive}>
               {items.map(($, indexDecimal) => {
                 const itemDecimalValue = roundValueToPrecision(
                   itemValue - 1 + (indexDecimal + 1) * precision,
@@ -611,185 +414,28 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
           />
         );
       })}
-      {!readOnly && !disabled && (
-        <RatingLabel
-          className={clsx(classes.label, classes.labelEmptyValue)}
-          ownerState={ownerState}
-        >
+      {!disabled && (
+        <RatingLabel ownerState={ownerState}>
           <input
-            className={classes.visuallyHidden}
             value=''
             id={`${name}-empty`}
             type='radio'
-            name={name}
             checked={valueRounded == null}
             onFocus={() => setEmptyValueFocused(true)}
             onBlur={() => setEmptyValueFocused(false)}
             onChange={handleChange}
           />
-          <span className={classes.visuallyHidden}>{emptyLabelText}</span>
+          <span>{emptyLabelText}</span>
         </RatingLabel>
       )}
     </RatingRoot>
   );
-});
-
-Rating.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The default value. Use when the component is not controlled.
-   * @default null
-   */
-  defaultValue: PropTypes.number,
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled: PropTypes.bool,
-  /**
-   * The icon to display when empty.
-   * @default <StarBorder fontSize="inherit" />
-   */
-  emptyIcon: PropTypes.node,
-  /**
-   * The label read when the rating input is empty.
-   * @default 'Empty'
-   */
-  emptyLabelText: PropTypes.node,
-  /**
-   * Accepts a function which returns a string value that provides a user-friendly name for the current value of the rating.
-   * This is important for screen reader users.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @param {number} value The rating label's value to format.
-   * @returns {string}
-   * @default function defaultLabelText(value) {
-   *   return `${value || '0'} Star${value !== 1 ? 's' : ''}`;
-   * }
-   */
-  getLabelText: PropTypes.func,
-  /**
-   * If `true`, only the selected icon will be highlighted.
-   * @default false
-   */
-  highlightSelectedOnly: PropTypes.bool,
-  /**
-   * The icon to display.
-   * @default <Star fontSize="inherit" />
-   */
-  icon: PropTypes.node,
-  /**
-   * The component containing the icon.
-   * @default function IconContainer(props) {
-   *   const { value, ...other } = props;
-   *   return <span {...other} />;
-   * }
-   */
-  IconContainerComponent: PropTypes.elementType,
-  /**
-   * Maximum rating.
-   * @default 5
-   */
-  max: PropTypes.number,
-  /**
-   * The name attribute of the radio `input` elements.
-   * This input `name` should be unique within the page.
-   * Being unique within a form is insufficient since the `name` is used to generated IDs.
-   */
-  name: PropTypes.string,
-  /**
-   * Callback fired when the value changes.
-   * @param {React.SyntheticEvent} event The event source of the callback.
-   * @param {number|null} value The new value.
-   */
-  onChange: PropTypes.func,
-  /**
-   * Callback function that is fired when the hover state changes.
-   * @param {React.SyntheticEvent} event The event source of the callback.
-   * @param {number} value The new value.
-   */
-  onChangeActive: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onMouseLeave: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onMouseMove: PropTypes.func,
-  /**
-   * The minimum increment value change allowed.
-   * @default 1
-   */
-  precision: chainPropTypes(PropTypes.number, (props) => {
-    if (props.precision < 0.1) {
-      return new Error(
-        [
-          "MUI: The prop `precision` should be above 0.1.",
-          "A value below this limit has an imperceptible impact.",
-        ].join("\n")
-      );
-    }
-    return null;
-  }),
-  /**
-   * Removes all hover effects and pointer events.
-   * @default false
-   */
-  readOnly: PropTypes.bool,
-  /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(["small", "medium", "large"]),
-    PropTypes.string,
-  ]),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The rating value.
-   */
-  value: PropTypes.number,
 };
 
 export default Rating;
 
-import * as React from "react";
-import { SxProps } from "@mui/system";
-import { OverridableStringUnion } from "@mui/types";
-import { InternalStandardProps as StandardProps, Theme } from "..";
-import { RatingClasses } from "./Rating/ratingClasses";
-
-export interface IconContainerProps extends React.HTMLAttributes<HTMLSpanElement> {
-  value: number;
-}
-
-export interface RatingPropsSizeOverrides {}
-
 export interface RatingProps
-  extends StandardProps<React.HTMLAttributes<HTMLSpanElement>, "children" | "onChange"> {
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes?: Partial<RatingClasses>;
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children" | "onChange"> {
   /**
    * The default value. Use when the component is not controlled.
    * @default null
@@ -832,25 +478,13 @@ export interface RatingProps
    * @default <Star fontSize="inherit" />
    */
   icon?: React.ReactNode;
-  /**
-   * The component containing the icon.
-   * @default function IconContainer(props) {
-   *   const { value, ...other } = props;
-   *   return <span {...other} />;
-   * }
-   */
-  IconContainerComponent?: React.ElementType<IconContainerProps>;
+
   /**
    * Maximum rating.
    * @default 5
    */
   max?: number;
-  /**
-   * The name attribute of the radio `input` elements.
-   * This input `name` should be unique within the page.
-   * Being unique within a form is insufficient since the `name` is used to generated IDs.
-   */
-  name?: string;
+
   /**
    * Callback fired when the value changes.
    * @param {React.SyntheticEvent} event The event source of the callback.
@@ -858,40 +492,12 @@ export interface RatingProps
    */
   onChange?: (event: React.SyntheticEvent, value: number | null) => void;
   /**
-   * Callback function that is fired when the hover state changes.
-   * @param {React.SyntheticEvent} event The event source of the callback.
-   * @param {number} value The new value.
-   */
-  onChangeActive?: (event: React.SyntheticEvent, value: number) => void;
-  /**
    * The minimum increment value change allowed.
    * @default 1
    */
   precision?: number;
   /**
-   * Removes all hover effects and pointer events.
-   * @default false
-   */
-  readOnly?: boolean;
-  /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size?: OverridableStringUnion<"small" | "medium" | "large", RatingPropsSizeOverrides>;
-  /**
    * The rating value.
    */
   value?: number | null;
 }
-
-/**
- *
- * Demos:
- *
- * - [Rating](https://mui.com/material-ui/react-rating/)
- *
- * API:
- *
- * - [Rating API](https://mui.com/material-ui/api/rating/)
- */
-export default function Rating(props: RatingProps): React.JSX.Element;
