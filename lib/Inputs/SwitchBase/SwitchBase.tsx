@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { ReactNode, useState } from "react";
 const SwitchBaseRoot = styled.button({
-  display: "inline-flex",
+  display: "flex",
   alignItems: "center",
   justifyContent: "center",
   position: "relative",
@@ -21,46 +21,11 @@ const SwitchBaseRoot = styled.button({
   textDecoration: "none",
   // So we take precedent over the style of a native <a /> element.
   color: "inherit",
-  "&::-moz-focus-inner": {
-    borderStyle: "none", // Remove Firefox dotted outline.
-  },
-  [`&.${buttonBaseClasses.disabled}`]: {
+  '& disabled': {
     pointerEvents: "none", // Disable link interactions
     cursor: "default",
   },
   borderRadius: "50%",
-  variants: [
-    {
-      props: {
-        edge: "start",
-        size: "small",
-      },
-      style: {
-        marginLeft: -3,
-      },
-    },
-    {
-      props: ({ edge, ownerState }) => edge === "start" && ownerState.size !== "small",
-      style: {
-        marginLeft: -12,
-      },
-    },
-    {
-      props: {
-        edge: "end",
-        size: "small",
-      },
-      style: {
-        marginRight: -3,
-      },
-    },
-    {
-      props: ({ edge, ownerState }) => edge === "end" && ownerState.size !== "small",
-      style: {
-        marginRight: -12,
-      },
-    },
-  ],
 });
 
 const SwitchBaseInput = styled("input")({
@@ -76,58 +41,65 @@ const SwitchBaseInput = styled("input")({
   zIndex: 1,
 });
 
-const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
+interface SwitchBaseProps{
+  autoFocus: boolean,
+  checked: boolean,
+  checkedIcon: ReactNode,
+  defaultChecked: boolean,
+  disabled: boolean,
+   icon: ReactNode,
+  id: string,
+  inputProps: object,
+  name: string,
+  onBlur: () => void,
+  onChange: () => void,
+   onFocus: () => void,
+  required: boolean,
+  sx: object,
+   type: string,
+  value: string | number | readonly string[] | undefined,
+};
+
+const SwitchBase = React.forwardRef(function SwitchBase(props:SwitchBaseProps, ref) {
   const {
     autoFocus,
     checked: checkedProp,
     checkedIcon,
-    className,
     defaultChecked,
     disabled: disabledProp,
-    disableFocusRipple = false,
-    edge = false,
     icon,
     id,
     inputProps,
-    inputRef,
     name,
     onBlur,
     onChange,
     onFocus,
-    readOnly,
     required = false,
-    tabIndex,
-    type,
+      type,
     value,
     ...other
   } = props;
-  const [checked, setCheckedState] = useControlled({
+  const [checked, setCheckedState] = useState({
     controlled: checkedProp,
     default: Boolean(defaultChecked),
     name: "SwitchBase",
     state: "checked",
   });
 
-  const muiFormControl = useFormControl();
-
+ 
   const handleFocus = (event) => {
     if (onFocus) {
-      onFocus(event);
+      onFocus(/* event */);
     }
 
-    if (muiFormControl && muiFormControl.onFocus) {
-      muiFormControl.onFocus(event);
-    }
   };
 
   const handleBlur = (event) => {
     if (onBlur) {
-      onBlur(event);
+      onBlur(/* event */);
     }
 
-    if (muiFormControl && muiFormControl.onBlur) {
-      muiFormControl.onBlur(event);
-    }
+   
   };
 
   const handleInputChange = (event) => {
@@ -142,59 +114,34 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
 
     if (onChange) {
       // TODO v6: remove the second argument.
-      onChange(event, newChecked);
+      onChange(/* event */);
     }
   };
 
-  let disabled = disabledProp;
+  const disabled = disabledProp;
 
-  if (muiFormControl) {
-    if (typeof disabled === "undefined") {
-      disabled = muiFormControl.disabled;
-    }
-  }
+ 
 
   const hasLabelFor = type === "checkbox" || type === "radio";
 
-  const ownerState = {
-    ...props,
-    checked,
-    disabled,
-    disableFocusRipple,
-    edge,
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   return (
     <SwitchBaseRoot
-      component='span'
-      className={clsx(classes.root, className)}
-      centerRipple
-      focusRipple={!disableFocusRipple}
-      disabled={disabled}
-      tabIndex={null}
+         disabled={disabled}
       role={undefined}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      ownerState={ownerState}
-      ref={ref}
-      {...other}
+       {...other}
     >
       <SwitchBaseInput
         autoFocus={autoFocus}
         checked={checkedProp}
         defaultChecked={defaultChecked}
-        className={classes.input}
         disabled={disabled}
         id={hasLabelFor ? id : undefined}
         name={name}
         onChange={handleInputChange}
-        readOnly={readOnly}
-        ref={inputRef}
         required={required}
-        ownerState={ownerState}
-        tabIndex={tabIndex}
         type={type}
         {...(type === "checkbox" && value === undefined ? {} : { value })}
         {...inputProps}
@@ -204,69 +151,5 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
   );
 });
 
-const CheckboxRoot = styled(SwitchBase, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === "classes",
-  name: "MuiCheckbox",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
 
-    return [
-      styles.root,
-      ownerState.indeterminate && styles.indeterminate,
-      styles[`size${capitalize(ownerState.size)}`],
-      ownerState.color !== "default" && styles[`color${capitalize(ownerState.color)}`],
-    ];
-  },
-})(({ theme }) => ({
-  color: (theme.vars || theme).palette.text.secondary,
-  variants: [
-    {
-      props: { color: "default", disableRipple: false },
-      style: {
-        "&:hover": {
-          backgroundColor: theme.vars
-            ? `rgba(${theme.vars.palette.action.activeChannel} / ${theme.vars.palette.action.hoverOpacity})`
-            : alpha(theme.palette.action.active, theme.palette.action.hoverOpacity),
-        },
-      },
-    },
-    ...Object.entries(theme.palette)
-      .filter(([, palette]) => palette && palette.main)
-      .map(([color]) => ({
-        props: { color, disableRipple: false },
-        style: {
-          "&:hover": {
-            backgroundColor: theme.vars
-              ? `rgba(${theme.vars.palette[color].mainChannel} / ${theme.vars.palette.action.hoverOpacity})`
-              : alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
-          },
-        },
-      })),
-    ...Object.entries(theme.palette)
-      .filter(([, palette]) => palette && palette.main)
-      .map(([color]) => ({
-        props: { color },
-        style: {
-          [`&.${checkboxClasses.checked}, &.${checkboxClasses.indeterminate}`]: {
-            color: (theme.vars || theme).palette[color].main,
-          },
-          [`&.${checkboxClasses.disabled}`]: {
-            color: (theme.vars || theme).palette.action.disabled,
-          },
-        },
-      })),
-    {
-      // Should be last to override other colors
-      props: { disableRipple: false },
-      style: {
-        // Reset on touch devices, it doesn't add specificity
-        "&:hover": {
-          "@media (hover: none)": {
-            backgroundColor: "transparent",
-          },
-        },
-      },
-    },
-  ],
-}));
+export default SwitchBase

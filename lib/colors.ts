@@ -17,5 +17,20 @@ export const colors = {
     dark: "#121B61",
     medium: "#95A6DE",
     light: "#CDD6FF",
+
+    blueMenu: "#7997d4",
+    greenIcon: "#bfff8e",
+    buttonMenu: "#aebdff",
+    lightNenu: "#ccd6ff",
+    middleMenu: "#8ca6da",
+    darkMenu: "#5167bb",
+    textMenu: "#050671",
+    turquois: "#04fefe",
+    greenBase: "#00ff00",
+
+    blueSurface: "#95a7da",
+    lightSurface: "#b6c0f1",
+
+    alertBrown: "#C9B57F",
   },
 };

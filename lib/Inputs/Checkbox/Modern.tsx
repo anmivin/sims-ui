@@ -1,8 +1,24 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, {useState} from "react";
+import SwitchBase from '../SwitchBase/SwitchBase'
 interface CheckboxProps {
   label: string;
 }
+
+const Che = styled.div`
+ background: linear-gradient(180deg, #5db823 40%, #269331);
+    transition: background 1s ease-in-out;
+    position: relative;
+    border: none;
+    :before {
+      content: "x";
+      font-size: 1.5em;
+      color: #fff;
+      position: absolute;
+      right: 1px;
+      top: -5px;
+    }
+`
 
 const StyledChecbox = styled.input`
   :checked {
@@ -55,17 +71,34 @@ const Icon = styled.div`
 `;
 
 export const Checkbox = ({ label }: CheckboxProps) => {
-  /*   const [isChecked, setIsChecked] = useState(false); */
+    const [isChecked, setIsChecked] = useState(false); 
   return (
     <div className='checkbox-wrapper'>
-      <StyledLabel>
+      <SwitchBase   autoFocus={false}
+  checked={isChecked}
+  checkedIcon={<Che/>}
+  defaultChecked={false}
+  disabled={false}
+   icon={<>sad</>}
+  id='sadas'
+  inputProps={{}}
+  name='name'
+  onBlur={() => {}}
+  onChange={() => setIsChecked(!isChecked)}
+   onFocus={() => {}}
+  required={false}
+  sx={{}} value={undefined}
+   type='checkbox'
+  />
+{/*       <StyledLabel>
         <StyledChecbox
           type='checkbox'
-          /*           checked={isChecked}
-          onChange={() => setIsChecked((prev) => !prev)} */
+                  checked={isChecked}
+          onChange={() => setIsChecked((prev) => !prev)} 
         />
+      
         <CheckboxWrapper>{label}</CheckboxWrapper>
-      </StyledLabel>
+      </StyledLabel> */}
     </div>
   );
 };

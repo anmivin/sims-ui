@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React, { ReactNode } from "react";
 import { IconButton } from "sims-ui";
-import CloseIcon from "../icons/CloseIcon copy";
+import CloseIcon from "../../icons/CloseIcon copy";
 import { Button } from "sims-ui";
 const StyledWrapper = styled.div`
   font-family: The Sims Sans;
