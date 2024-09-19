@@ -1,133 +1,86 @@
-"use client";
 import * as React from "react";
-import { isFragment } from "react-is";
 
 import getValidReactChildren from "@mui/utils/getValidReactChildren";
-import { styled } from "../zero-styled";
-import memoTheme from "../utils/memoTheme";
-import { useDefaultProps } from "../DefaultPropsProvider";
-import capitalize from "../utils/capitalize";
-import toggleButtonGroupClasses, {
-  getToggleButtonGroupUtilityClass,
-} from "./toggleButtonGroupClasses";
-import ToggleButtonGroupContext from "./ToggleButtonGroupContext";
-import ToggleButtonGroupButtonContext from "./ToggleButtonGroupButtonContext";
-import toggleButtonClasses from "../ToggleButton/toggleButtonClasses";
+import styled from "@emotion/styled";
 
-const ToggleButtonGroupRoot = styled("div", {
-  name: "MuiToggleButtonGroup",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      { [`& .${toggleButtonGroupClasses.grouped}`]: styles.grouped },
-      {
-        [`& .${toggleButtonGroupClasses.grouped}`]:
-          styles[`grouped${capitalize(ownerState.orientation)}`],
-      },
-      {
-        [`& .${toggleButtonGroupClasses.firstButton}`]: styles.firstButton,
-      },
-      {
-        [`& .${toggleButtonGroupClasses.lastButton}`]: styles.lastButton,
-      },
-      {
-        [`& .${toggleButtonGroupClasses.middleButton}`]: styles.middleButton,
-      },
-      styles.root,
-      ownerState.orientation === "vertical" && styles.vertical,
-      ownerState.fullWidth && styles.fullWidth,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    display: "inline-flex",
-    borderRadius: (theme.vars || theme).shape.borderRadius,
-    variants: [
-      {
-        props: { orientation: "vertical" },
-        style: {
-          flexDirection: "column",
-          [`& .${toggleButtonGroupClasses.grouped}`]: {
-            [`&.${toggleButtonGroupClasses.selected} + .${toggleButtonGroupClasses.grouped}.${toggleButtonGroupClasses.selected}`]:
-              {
-                borderTop: 0,
-                marginTop: 0,
-              },
+const ToggleButtonGroupRoot = styled("div")({
+  display: "inline-flex",
+  variants: [
+    {
+      props: { orientation: "vertical" },
+      style: {
+        flexDirection: "column",
+        [`& .${toggleButtonGroupClasses.grouped}`]: {
+          [`&.${toggleButtonGroupClasses.selected} + .${toggleButtonGroupClasses.grouped}.${toggleButtonGroupClasses.selected}`]:
+            {
+              borderTop: 0,
+              marginTop: 0,
+            },
+        },
+        [`& .${toggleButtonGroupClasses.firstButton},& .${toggleButtonGroupClasses.middleButton}`]:
+          {
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
           },
-          [`& .${toggleButtonGroupClasses.firstButton},& .${toggleButtonGroupClasses.middleButton}`]:
-            {
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-            },
-          [`& .${toggleButtonGroupClasses.lastButton},& .${toggleButtonGroupClasses.middleButton}`]:
-            {
-              marginTop: -1,
-              borderTop: "1px solid transparent",
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-            },
-          [`& .${toggleButtonGroupClasses.lastButton}.${toggleButtonClasses.disabled},& .${toggleButtonGroupClasses.middleButton}.${toggleButtonClasses.disabled}`]:
-            {
-              borderTop: "1px solid transparent",
-            },
+        [`& .${toggleButtonGroupClasses.lastButton},& .${toggleButtonGroupClasses.middleButton}`]: {
+          marginTop: -1,
+          borderTop: "1px solid transparent",
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
         },
-      },
-      {
-        props: { fullWidth: true },
-        style: {
-          width: "100%",
-        },
-      },
-      {
-        props: { orientation: "horizontal" },
-        style: {
-          [`& .${toggleButtonGroupClasses.grouped}`]: {
-            [`&.${toggleButtonGroupClasses.selected} + .${toggleButtonGroupClasses.grouped}.${toggleButtonGroupClasses.selected}`]:
-              {
-                borderLeft: 0,
-                marginLeft: 0,
-              },
+        [`& .${toggleButtonGroupClasses.lastButton}.${toggleButtonClasses.disabled},& .${toggleButtonGroupClasses.middleButton}.${toggleButtonClasses.disabled}`]:
+          {
+            borderTop: "1px solid transparent",
           },
-          [`& .${toggleButtonGroupClasses.firstButton},& .${toggleButtonGroupClasses.middleButton}`]:
+      },
+    },
+    {
+      props: { fullWidth: true },
+      style: {
+        width: "100%",
+      },
+    },
+    {
+      props: { orientation: "horizontal" },
+      style: {
+        [`& .${toggleButtonGroupClasses.grouped}`]: {
+          [`&.${toggleButtonGroupClasses.selected} + .${toggleButtonGroupClasses.grouped}.${toggleButtonGroupClasses.selected}`]:
             {
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
-            },
-          [`& .${toggleButtonGroupClasses.lastButton},& .${toggleButtonGroupClasses.middleButton}`]:
-            {
-              marginLeft: -1,
-              borderLeft: "1px solid transparent",
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
-            },
-          [`& .${toggleButtonGroupClasses.lastButton}.${toggleButtonClasses.disabled},& .${toggleButtonGroupClasses.middleButton}.${toggleButtonClasses.disabled}`]:
-            {
-              borderLeft: "1px solid transparent",
+              borderLeft: 0,
+              marginLeft: 0,
             },
         },
+        [`& .${toggleButtonGroupClasses.firstButton},& .${toggleButtonGroupClasses.middleButton}`]:
+          {
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+        [`& .${toggleButtonGroupClasses.lastButton},& .${toggleButtonGroupClasses.middleButton}`]: {
+          marginLeft: -1,
+          borderLeft: "1px solid transparent",
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        },
+        [`& .${toggleButtonGroupClasses.lastButton}.${toggleButtonClasses.disabled},& .${toggleButtonGroupClasses.middleButton}.${toggleButtonClasses.disabled}`]:
+          {
+            borderLeft: "1px solid transparent",
+          },
       },
-    ],
-  }))
-);
+    },
+  ],
+});
 
-const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: "MuiToggleButtonGroup" });
+const ToggleButtonGroup = (props: ToggleButtonGroupProps) => {
   const {
     children,
-    className,
-    color = "standard",
     disabled = false,
     exclusive = false,
     fullWidth = false,
     onChange,
     orientation = "horizontal",
-    size = "medium",
     value,
     ...other
   } = props;
-  const ownerState = { ...props, disabled, fullWidth, orientation, size };
 
   const handleChange = React.useCallback(
     (event, buttonValue) => {
@@ -165,12 +118,10 @@ const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, r
     () => ({
       onChange: exclusive ? handleExclusiveChange : handleChange,
       value,
-      size,
       fullWidth,
-      color,
       disabled,
     }),
-    [exclusive, handleExclusiveChange, handleChange, value, size, fullWidth, color, disabled]
+    [exclusive, handleExclusiveChange, handleChange, value, fullWidth, disabled]
   );
 
   const validChildren = getValidReactChildren(children);
@@ -184,29 +135,18 @@ const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, r
       return "";
     }
     if (isFirstButton) {
-      return classes.firstButton;
+      return "-firstButton";
     }
     if (isLastButton) {
-      return classes.lastButton;
+      return "-lastButton";
     }
-    return classes.middleButton;
+    return "-middleButton";
   };
 
   return (
-    <ToggleButtonGroupRoot role='group' ref={ref} ownerState={ownerState} {...other}>
+    <ToggleButtonGroupRoot role='group' {...other}>
       <ToggleButtonGroupContext.Provider value={context}>
         {validChildren.map((child, index) => {
-          if (process.env.NODE_ENV !== "production") {
-            if (isFragment(child)) {
-              console.error(
-                [
-                  "MUI: The ToggleButtonGroup component doesn't accept a Fragment as a child.",
-                  "Consider providing an array instead.",
-                ].join("\n")
-              );
-            }
-          }
-
           return (
             <ToggleButtonGroupButtonContext.Provider
               key={index}
@@ -219,30 +159,14 @@ const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, r
       </ToggleButtonGroupContext.Provider>
     </ToggleButtonGroupRoot>
   );
-});
+};
 
 export default ToggleButtonGroup;
 
-type ToggleButtonPositionClassName = string;
-
-/**
- * @ignore - internal component.
- */
-const ToggleButtonGroupButtonContext = React.createContext<
-  ToggleButtonPositionClassName | undefined
->(undefined);
-
-if (process.env.NODE_ENV !== "production") {
-  ToggleButtonGroupButtonContext.displayName = "ToggleButtonGroupButtonContext";
-}
-
-export default ToggleButtonGroupButtonContext;
-
-import { OverridableStringUnion } from "@mui/types";
-import { InternalStandardProps as StandardProps } from "..";
+export const ToggleButtonGroupButtonContext = React.createContext<string | undefined>(undefined);
 
 export interface ToggleButtonGroupProps
-  extends StandardProps<React.HTMLAttributes<HTMLDivElement>, "onChange" | "children"> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "children"> {
   /**
    * The content of the component.
    */
@@ -278,12 +202,6 @@ export interface ToggleButtonGroupProps
    */
   orientation?: "horizontal" | "vertical";
   /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size?: OverridableStringUnion<"small" | "medium" | "large", ToggleButtonGroupPropsSizeOverrides>;
-
-  /**
    * The currently selected value within the group or an array of selected
    * values when `exclusive` is false.
    *
@@ -294,7 +212,7 @@ export interface ToggleButtonGroupProps
 
 // Determine if the toggle button value matches, or is contained in, the
 // candidate group value.
-export default function isValueSelected(value, candidate) {
+export const isValueSelected = (value, candidate) => {
   if (candidate === undefined || value === undefined) {
     return false;
   }
@@ -304,4 +222,4 @@ export default function isValueSelected(value, candidate) {
   }
 
   return value === candidate;
-}
+};

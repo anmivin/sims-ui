@@ -1,12 +1,9 @@
 import styled from "@emotion/styled";
-import 
-  ownerDocument
-from "../utils/ownerDocument";
+import ownerDocument from "../utils/ownerDocument";
 
 export interface ManagedModalProps {
   disableScrollLock?: boolean;
 }
-
 
 function findIndexOf<T>(items: readonly T[], callback: (item: T) => boolean): number {
   let idx = -1;
@@ -19,8 +16,6 @@ function findIndexOf<T>(items: readonly T[], callback: (item: T) => boolean): nu
   });
   return idx;
 }
-
-
 
 interface Modal {
   mount: Element;
@@ -84,10 +79,9 @@ export class ModalManager {
     containerInfo.modals.splice(containerInfo.modals.indexOf(modal), 1);
     this.modals.splice(modalIndex, 1);
 
-  
     if (containerInfo.modals.length === 0) {
       this.containers.splice(containerIndex, 1);
-    } 
+    }
     return modalIndex;
   }
 
@@ -96,9 +90,7 @@ export class ModalManager {
   }
 }
 
-import extractEventHandlers from "@mui/utils/extractEventHandlers";
 import { EventHandlers } from "../utils/types";
-
 
 function getContainer(container: UseModalParameters["container"]) {
   return typeof container === "function" ? container() : container;
@@ -110,24 +102,19 @@ function getContainer(container: UseModalParameters["container"]) {
 const manager = new ModalManager();
 
 const useModal = (parameters: UseModalParameters): UseModalReturnValue => {
-  const {
-    container,
-    children,
-    onClose,
-    open,
-    rootRef,
-  } = parameters;
+  const { container, onClose, open } = parameters;
 
-  const modal = React.useRef<{ modalRef: HTMLDivElement; mount: HTMLElement }>({});
+  const modal = React.useRef<{ modalRef: HTMLDivElement; mount: HTMLElement } | null>(null);
   const mountNodeRef = React.useRef<HTMLElement | null>(null);
   const modalRef = React.useRef<HTMLDivElement>(null);
-  const handleRef = useForkRef(modalRef, rootRef);
 
   const getDoc = () => ownerDocument(mountNodeRef.current);
   const getModal = () => {
-    modal.current.modalRef = modalRef.current!;
-    modal.current.mount = mountNodeRef.current!;
-    return modal.current;
+    if (modal.current) {
+      modal.current.modalRef = modalRef.current!;
+      modal.current.mount = mountNodeRef.current!;
+      return modal.current;
+    }
   };
 
   const handleMounted = () => {
@@ -138,8 +125,10 @@ const useModal = (parameters: UseModalParameters): UseModalReturnValue => {
 
   const handleOpen = () => {
     const resolvedContainer = getContainer(container) || getDoc().body;
-
-    manager.add(getModal(), resolvedContainer);
+    const modal = getModal();
+    if (modal) {
+      manager.add(modal, resolvedContainer);
+    }
 
     // The element was already mounted.
     if (modalRef.current) {
@@ -147,7 +136,10 @@ const useModal = (parameters: UseModalParameters): UseModalReturnValue => {
     }
   };
 
-  const isTopModal = React.useCallback(() => manager.isTopModal(getModal()), [manager]);
+  const isTopModal = React.useCallback(
+    () => (getModal() ? manager.isTopModal(getModal()) : false),
+    [manager]
+  );
 
   const handlePortalRef = (node: HTMLElement) => {
     mountNodeRef.current = node;
@@ -158,7 +150,7 @@ const useModal = (parameters: UseModalParameters): UseModalReturnValue => {
 
     if (open && isTopModal()) {
       handleMounted();
-    } 
+    }
   };
 
   const handleClose = React.useCallback(() => {
@@ -179,7 +171,6 @@ const useModal = (parameters: UseModalParameters): UseModalReturnValue => {
     }
   }, [open, handleClose, handleOpen]);
 
-
   const createHandleBackdropClick = (otherHandlers: EventHandlers) => (event: React.MouseEvent) => {
     otherHandlers.onClick?.(event);
 
@@ -191,15 +182,6 @@ const useModal = (parameters: UseModalParameters): UseModalReturnValue => {
       onClose();
     }
   };
-
-  const getRootProps = (): UseModalRootSlotOwnProps => {
-   
-    return {
-
-      ref: handleRef,
-    };
-  };
-
   const getBackdropProps = <TOther extends EventHandlers = {}>(
     otherHandlers: TOther = {} as TOther
   ): UseModalBackdropSlotOwnProps => {
@@ -214,14 +196,11 @@ const useModal = (parameters: UseModalParameters): UseModalReturnValue => {
   };
 
   return {
-    getRootProps,
     getBackdropProps,
-    rootRef: handleRef,
     portalRef: handlePortalRef,
     isTopModal,
   };
-}
-
+};
 
 export interface UseModalRootSlotOwnProps {
   ref: React.RefCallback<Element> | null;
@@ -232,7 +211,6 @@ export interface UseModalBackdropSlotOwnProps {
   onClick: React.MouseEventHandler;
   open?: boolean;
 }
-
 
 export type UseModalParameters = {
   /**
@@ -247,17 +225,10 @@ export type UseModalParameters = {
    * If `true`, the component is shown.
    */
   open: boolean;
-  rootRef: React.Ref<Element>;
   container?: Element | (() => Element | null) | null;
 };
 
 export interface UseModalReturnValue {
-  /**
-   * Resolver for the root slot's props.
-   * @param externalProps props for the root slot
-   * @returns props that should be spread on the root slot
-   */
-  getRootProps: () => UseModalRootSlotOwnProps;
   /**
    * Resolver for the backdrop slot's props.
    * @param externalProps props for the backdrop slot
@@ -266,11 +237,6 @@ export interface UseModalReturnValue {
   getBackdropProps: <TOther extends EventHandlers = {}>(
     externalProps?: TOther
   ) => UseModalBackdropSlotOwnProps;
-  /**
-  /**
-   * A ref to the component's root DOM element.
-   */
-  rootRef: React.RefCallback<Element> | null;
   /**
    * A ref to the component's portal DOM element.
    */
@@ -307,31 +273,12 @@ const ModalBackdrop = styled(Backdrop)`
 `;
 
 const Modal = (props: ModalProps) => {
-  const {
-    children,
-    hideBackdrop = false,
-    onClose,
-    open,
-    container,
-    ...other
-  } = props;
+  const { children, hideBackdrop = false, onClose, open, container, ...other } = props;
 
-  const propsWithDefaults = {
+  const { getBackdropProps } = useModal({
     ...props,
-    hideBackdrop,
-
-  };
-
-  const {
-    getRootProps,
-    getBackdropProps,
-  } = useModal({
-    ...propsWithDefaults,
-    rootRef: ref,
-    onClose
-
+    onClose,
   });
-
 
   if (!open) {
     return null;
@@ -339,10 +286,8 @@ const Modal = (props: ModalProps) => {
 
   return (
     <Portal container={container}>
-      <ModalRoot {...getRootProps()} {...other}>
-        {!hideBackdrop ? (
-          <ModalBackdrop open={true} {...getBackdropProps()}/>
-        ) : null}
+      <ModalRoot {...other}>
+        {!hideBackdrop ? <ModalBackdrop open={true} {...getBackdropProps()} /> : null}
 
         {children}
       </ModalRoot>
@@ -375,7 +320,7 @@ export interface ModalProps {
    * If `true`, the component is shown.
    */
   open: boolean;
-    /**
+  /**
    * An HTML element or function that returns one.
    * The `container` will have the portal children appended to it.
    *
@@ -385,5 +330,5 @@ export interface ModalProps {
    * By default, it uses the body of the top-level document object,
    * so it's simply `document.body` most of the time.
    */
-    container?: Element | (() => Element | null) | null;
+  container?: Element | (() => Element | null) | null;
 }

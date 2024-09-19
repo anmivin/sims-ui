@@ -1,6 +1,5 @@
 import * as React from 'react';
-import useForkRef from "../../utils/useForkRef";
-
+import RadioGroupContext from './RadioGroupContext'
 
 export interface RadioGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   /**
@@ -63,7 +62,7 @@ const RadioGroup = (props: RadioGroupProps) => {
 
 
   const contextValue = React.useMemo(
-    () => ({
+    () => {console.log('context');return {
       onChange(event) {
         setValueState(event.target.value);
 
@@ -72,7 +71,7 @@ const RadioGroup = (props: RadioGroupProps) => {
         }
       },
       value,
-    }),
+    }},
     [onChange, setValueState, value]
   );
 
@@ -90,18 +89,3 @@ const RadioGroup = (props: RadioGroupProps) => {
 
 
 export default RadioGroup;
-
-
-
-
-export interface RadioGroupContextValue {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
-  value: any;
-}
-
-export const RadioGroupContext = React.createContext<RadioGroupContextValue | undefined>(undefined);
-
-
-export const useRadioGroup = (): RadioGroupContextValue | undefined => {
-  return React.useContext(RadioGroupContext);
-}

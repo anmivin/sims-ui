@@ -1,12 +1,7 @@
 import * as React from "react";
 
 import useTimeout, { Timeout } from "../utils/useTimeout";
-
-import isFocusVisible from "@mui/utils/isFocusVisible";
-
-import getReactNodeRef from "@mui/utils/getReactNodeRef";
 import styled from "@emotion/styled";
-
 
 import Grow from "./Grow";
 import Popper from "./Popper";
@@ -17,7 +12,7 @@ import useControlled from "../utils/useControlled";
 
 
 const TooltipPopper = styled(Popper)({
-  zIndex: (theme.vars || theme).zIndex.tooltip,
+  zIndex: 10,
   pointerEvents: "none",
   '-disableInteractive': {
     pointerEvents: "auto",
@@ -135,7 +130,6 @@ const Tooltip = (props: TooltipProps) => {
     ...other
   } = props;
 
-  // to prevent runtime errors, developers will need to provide a child as a React element anyway.
   const children = React.isValidElement(childrenProp) ? childrenProp : <span>{childrenProp}</span>;
 
   const [childNode, setChildNode] = React.useState();
@@ -344,12 +338,12 @@ const Tooltip = (props: TooltipProps) => {
 
   const interactiveWrapperListeners = {};
 
-  if (!disableTouchListener) {
+
     childrenProps.onTouchStart = handleTouchStart;
     childrenProps.onTouchEnd = handleTouchEnd;
-  }
 
-  if (!disableHoverListener) {
+
+
     childrenProps.onMouseOver = composeEventHandler(handleMouseOver, childrenProps.onMouseOver);
     childrenProps.onMouseLeave = composeEventHandler(handleMouseLeave, childrenProps.onMouseLeave);
 
@@ -357,9 +351,9 @@ const Tooltip = (props: TooltipProps) => {
       interactiveWrapperListeners.onMouseOver = handleMouseOver;
       interactiveWrapperListeners.onMouseLeave = handleMouseLeave;
     }
-  }
 
-  if (!disableFocusListener) {
+
+
     childrenProps.onFocus = composeEventHandler(handleFocus, childrenProps.onFocus);
     childrenProps.onBlur = composeEventHandler(handleBlur, childrenProps.onBlur);
 
@@ -367,7 +361,7 @@ const Tooltip = (props: TooltipProps) => {
       interactiveWrapperListeners.onFocus = handleFocus;
       interactiveWrapperListeners.onBlur = handleBlur;
     }
-  }
+  
 
   const TransitionComponent = Grow;
 
@@ -391,7 +385,7 @@ const Tooltip = (props: TooltipProps) => {
           >
             <TooltipTooltip>
               {title}
-              {arrow ? <TooltipArrow ref={setArrowRef} /> : null}
+              {arrow ? <TooltipArrow /> : null}
             </TooltipTooltip>
           </TransitionComponent>
         )}

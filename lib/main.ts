@@ -10,3 +10,6 @@ export { IconButton } from "./Inputs/IconButton/Modern";
 export { MenuButton } from "./Navigation/MenuButton/Modern";
 export {default as Che} from './Inputs/Checkbox/Checkbox'
 export {default as OldRadio} from './Inputs/Radio/Old'
+export {default as CircularProgressModern} from './Display/CircularProgress/Modern'
+export {default as CircularProgressOld} from './Display/CircularProgress/Old'
+export {default as ModernRadio} from './Inputs/Radio/Modern'

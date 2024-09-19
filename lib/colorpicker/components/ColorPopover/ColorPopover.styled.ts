@@ -1,12 +1,12 @@
-import { styled } from '@mui/material/styles'
+import styled from "@emotion/styled";
 
 const Styled = {
-  Container: styled('div')(() => {
+  Container: styled("div")(() => {
     return {
       width: 300,
-      padding: 8
-    }
-  })
-}
+      padding: 8,
+    };
+  }),
+};
 
-export { Styled }
+export { Styled };

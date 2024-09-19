@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import ButtonBase from "./ButtonBase";
+import ButtonBase from "../Internal/ButtonBase";
 
 import styled from "@emotion/styled";
 
@@ -34,7 +34,7 @@ const TabRoot = styled(ButtonBase)({
   },
 });
 
-const Tab = React.forwardRef(function Tab(props: TabOwnProps, ref) {
+const Tab = (props: TabOwnProps) => {
   const {
     disabled = false,
     icon: iconProp,
@@ -109,7 +109,7 @@ const Tab = React.forwardRef(function Tab(props: TabOwnProps, ref) {
       {indicator}
     </TabRoot>
   );
-});
+};
 
 export default Tab;
 
