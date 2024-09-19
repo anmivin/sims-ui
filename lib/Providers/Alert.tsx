@@ -230,31 +230,11 @@ export interface AlertProps extends Omit<PaperProps, "variant">, AlertSlotsAndSl
    * @default 'success'
    */
   severity?: OverridableStringUnion<AlertColor, AlertPropsColorOverrides>;
-  /**
-   * Override the icon displayed before the children.
-   * Unless provided, the icon is mapped to the value of the `severity` prop.
-   * Set to `false` to remove the `icon`.
-   */
-  icon?: React.ReactNode;
 
-  /**
-   * The component maps the `severity` prop to a range of different icons,
-   * for instance success to `<SuccessOutlined>`.
-   * If you wish to change this mapping, you can provide your own.
-   * Alternatively, you can use the `icon` prop to override the icon displayed.
-   */
-  iconMapping?: Partial<
-    Record<OverridableStringUnion<AlertColor, AlertPropsColorOverrides>, React.ReactNode>
-  >;
   /**
    * Callback fired when the component requests to be closed.
    * When provided and no `action` prop is set, a close icon button is displayed that triggers the callback when clicked.
    * @param {React.SyntheticEvent} event The event source of the callback.
    */
   onClose?: (event: React.SyntheticEvent) => void;
-  /**
-   * The variant to use.
-   * @default 'standard'
-   */
-  variant?: OverridableStringUnion<"standard" | "filled" | "outlined", AlertPropsVariantOverrides>;
 }

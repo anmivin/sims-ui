@@ -1,10 +1,9 @@
 import * as React from "react";
 
-import CancelIcon from "../internal/svg-icons/Cancel";
 import useForkRef from "../utils/useForkRef";
 
-import ButtonBase from "./ButtonBase";
-import styled from "@emotion/styled/macro";
+import ButtonBase, { ButtonBaseProps } from "../Internal/ButtonBase";
+import styled from "@emotion/styled";
 
 const ChipRoot = styled("div")({
   maxWidth: "100%",
@@ -64,6 +63,7 @@ const Chip = React.forwardRef(function Chip(props: ChipOwnProps, ref) {
     icon: iconProp,
     label,
     onDelete,
+    onClick,
     ...other
   } = props;
 
@@ -96,7 +96,6 @@ const Chip = React.forwardRef(function Chip(props: ChipOwnProps, ref) {
       disabled={clickable && disabled ? true : undefined}
       onClick={onClick}
       ref={handleRef}
-      tabIndex={skipFocusWhenDisabled && disabled ? -1 : tabIndex}
       ownerState={ownerState}
       {...other}
     >
@@ -109,7 +108,7 @@ const Chip = React.forwardRef(function Chip(props: ChipOwnProps, ref) {
 
 export default Chip;
 
-export interface ChipOwnProps {
+export interface ChipOwnProps extends ButtonBaseProps {
   /**
    * This prop isn't supported.
    * Use the `component` prop if you need to change the children structure.

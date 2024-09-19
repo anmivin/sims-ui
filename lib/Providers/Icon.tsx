@@ -17,14 +17,9 @@ const IconRoot = styled("span")({
 });
 
 const Icon = React.forwardRef(function Icon(props: IconOwnProps, ref) {
-  const { fontSize = "medium", ...other } = props;
+  const { ...other } = props;
 
-  const ownerState = {
-    ...props,
-    fontSize,
-  };
-
-  return <IconRoot as={Component} ownerState={ownerState} aria-hidden ref={ref} {...other} />;
+  return <IconRoot {...other} />;
 });
 
 export default Icon;
@@ -34,12 +29,4 @@ export interface IconOwnProps {
    * The name of the icon font ligature.
    */
   children?: React.ReactNode;
-  /**
-   * The fontSize applied to the icon. Defaults to 24px, but can be configure to inherit font size.
-   * @default 'medium'
-   */
-  fontSize?: OverridableStringUnion<
-    "inherit" | "large" | "medium" | "small",
-    IconPropsSizeOverrides
-  >;
 }

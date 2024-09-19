@@ -1,11 +1,8 @@
 import * as React from "react";
 
-import { darken, lighten } from "@mui/system/colorManipulator";
-import { keyframes, css, styled } from "../zero-styled";
-import memoTheme from "../utils/memoTheme";
+import { keyframes, css } from "@emotion/react";
+import styled from "@emotion/styled";
 import createSimplePaletteValueFilter from "../utils/createSimplePaletteValueFilter";
-import { useDefaultProps } from "../DefaultPropsProvider";
-import capitalize from "../utils/capitalize";
 
 const TRANSITION_DURATION = 4; // seconds
 const indeterminate1Keyframe = keyframes`
@@ -78,54 +75,8 @@ const bufferAnimation =
       `
     : null;
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, variant, color } = ownerState;
 
-  const slots = {
-    root: ["root", `color${capitalize(color)}`, variant],
-    dashed: ["dashed", `dashedColor${capitalize(color)}`],
-    bar1: [
-      "bar",
-      `barColor${capitalize(color)}`,
-      (variant === "indeterminate" || variant === "query") && "bar1Indeterminate",
-      variant === "determinate" && "bar1Determinate",
-      variant === "buffer" && "bar1Buffer",
-    ],
-    bar2: [
-      "bar",
-      variant !== "buffer" && `barColor${capitalize(color)}`,
-      variant === "buffer" && `color${capitalize(color)}`,
-      (variant === "indeterminate" || variant === "query") && "bar2Indeterminate",
-      variant === "buffer" && "bar2Buffer",
-    ],
-  };
-
-  return composeClasses(slots, getLinearProgressUtilityClass, classes);
-};
-
-const getColorShade = (theme, color) => {
-  if (theme.vars) {
-    return theme.vars.palette.LinearProgress[`${color}Bg`];
-  }
-  return theme.palette.mode === "light"
-    ? lighten(theme.palette[color].main, 0.62)
-    : darken(theme.palette[color].main, 0.5);
-};
-
-const LinearProgressRoot = styled("span", {
-  name: "MuiLinearProgress",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[`color${capitalize(ownerState.color)}`],
-      styles[ownerState.variant],
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
+const LinearProgressRoot = styled("span")({
     position: "relative",
     overflow: "hidden",
     display: "block",
@@ -169,19 +120,9 @@ const LinearProgressRoot = styled("span", {
         style: { transform: "rotate(180deg)" },
       },
     ],
-  }))
-);
+  });
 
-const LinearProgressDashed = styled("span", {
-  name: "MuiLinearProgress",
-  slot: "Dashed",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.dashed, styles[`dashedColor${capitalize(ownerState.color)}`]];
-  },
-})(
-  memoTheme(({ theme }) => ({
+const LinearProgressDashed = styled("span")({
     position: "absolute",
     marginTop: 0,
     height: "100%",
@@ -196,24 +137,14 @@ const LinearProgressDashed = styled("span", {
           backgroundImage: `radial-gradient(currentColor 0%, currentColor 16%, transparent 42%)`,
         },
       },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => {
-          const backgroundColor = getColorShade(theme, color);
-          return {
-            props: { color },
-            style: {
-              backgroundImage: `radial-gradient(${backgroundColor} 0%, ${backgroundColor} 16%, transparent 42%)`,
-            },
-          };
-        }),
+      
     ],
-  })),
-  bufferAnimation || {
+  }),
+  ...bufferAnimation || {
     // At runtime for Pigment CSS, `bufferAnimation` will be null and the generated keyframe will be used.
     animation: `${bufferKeyframe} 3s infinite linear`,
   }
-);
+;
 
 const LinearProgressBar1 = styled("span")({
   width: "100%",
@@ -274,22 +205,7 @@ const LinearProgressBar1 = styled("span")({
   ],
 });
 
-const LinearProgressBar2 = styled("span", {
-  name: "MuiLinearProgress",
-  slot: "Bar2",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.bar,
-      styles[`barColor${capitalize(ownerState.color)}`],
-      (ownerState.variant === "indeterminate" || ownerState.variant === "query") &&
-        styles.bar2Indeterminate,
-      ownerState.variant === "buffer" && styles.bar2Buffer,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
+const LinearProgressBar2 = styled("span")({
     width: "100%",
     position: "absolute",
     left: 0,
@@ -298,14 +214,6 @@ const LinearProgressBar2 = styled("span", {
     transition: "transform 0.2s linear",
     transformOrigin: "left",
     variants: [
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            "--LinearProgressBar2-barColor": (theme.vars || theme).palette[color].main,
-          },
-        })),
       {
         props: ({ ownerState }) =>
           ownerState.variant !== "buffer" && ownerState.color !== "inherit",
@@ -321,15 +229,6 @@ const LinearProgressBar2 = styled("span", {
           opacity: 0.3,
         },
       },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color, variant: "buffer" },
-          style: {
-            backgroundColor: getColorShade(theme, color),
-            transition: `transform .${TRANSITION_DURATION}s linear`,
-          },
-        })),
       {
         props: ({ ownerState }) =>
           ownerState.variant === "indeterminate" || ownerState.variant === "query",
@@ -345,34 +244,17 @@ const LinearProgressBar2 = styled("span", {
         },
       },
     ],
-  }))
-);
+  });
 
-/**
- * ## ARIA
- *
- * If the progress bar is describing the loading progress of a particular region of a page,
- * you should use `aria-describedby` to point to the progress bar, and set the `aria-busy`
- * attribute to `true` on that region until it has finished loading.
- */
-const LinearProgress = React.forwardRef(function LinearProgress(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: "MuiLinearProgress" });
+
+const LinearProgress = (props: LinearProgressProps) =>  {
   const {
-    className,
-    color = "primary",
     value,
     valueBuffer,
     variant = "indeterminate",
     ...other
   } = props;
-  const ownerState = {
-    ...props,
-    color,
-    variant,
-  };
 
-  const classes = useUtilityClasses(ownerState);
-  const isRtl = useRtl();
 
   const rootProps = {};
   const inlineStyles = { bar1: {}, bar2: {} };
@@ -383,59 +265,37 @@ const LinearProgress = React.forwardRef(function LinearProgress(inProps, ref) {
       rootProps["aria-valuemin"] = 0;
       rootProps["aria-valuemax"] = 100;
       let transform = value - 100;
-      if (isRtl) {
-        transform = -transform;
-      }
       inlineStyles.bar1.transform = `translateX(${transform}%)`;
-    } else if (process.env.NODE_ENV !== "production") {
-      console.error(
-        "MUI: You need to provide a value prop " +
-          "when using the determinate or buffer variant of LinearProgress ."
-      );
     }
   }
   if (variant === "buffer") {
     if (valueBuffer !== undefined) {
       let transform = (valueBuffer || 0) - 100;
-      if (isRtl) {
-        transform = -transform;
-      }
       inlineStyles.bar2.transform = `translateX(${transform}%)`;
-    } else if (process.env.NODE_ENV !== "production") {
-      console.error(
-        "MUI: You need to provide a valueBuffer prop " +
-          "when using the buffer variant of LinearProgress."
-      );
     }
   }
 
   return (
     <LinearProgressRoot
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
       role='progressbar'
       {...rootProps}
-      ref={ref}
       {...other}
     >
       {variant === "buffer" ? (
-        <LinearProgressDashed className={classes.dashed} ownerState={ownerState} />
+        <LinearProgressDashed />
       ) : null}
       <LinearProgressBar1
-        className={classes.bar1}
-        ownerState={ownerState}
         style={inlineStyles.bar1}
       />
       {variant === "determinate" ? null : (
         <LinearProgressBar2
-          className={classes.bar2}
-          ownerState={ownerState}
+
           style={inlineStyles.bar2}
         />
       )}
     </LinearProgressRoot>
   );
-});
+};
 
 export default LinearProgress;
 

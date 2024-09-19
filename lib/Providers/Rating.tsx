@@ -1,8 +1,6 @@
 import * as React from "react";
 
-import clamp from "@mui/utils/clamp";
-
-import isFocusVisible from "@mui/utils/isFocusVisible";
+import clamp from "../utils/clamp";
 
 import styled from "@emotion/styled";
 
@@ -24,14 +22,14 @@ const RatingRoot = styled("span")({
   display: "inline-flex",
   // Required to position the pristine input absolutely
   position: "relative",
-  fontSize: theme.typography.pxToRem(24),
+  fontSize: "24px",
   color: "#faaf00",
   cursor: "pointer",
   textAlign: "left",
   width: "min-content",
   WebkitTapHighlightColor: "transparent",
   "-disabled": {
-    opacity: (theme.vars || theme).palette.action.disabledOpacity,
+    opacity: "0.5",
     pointerEvents: "none",
   },
 });
@@ -67,59 +65,31 @@ const RatingDecimal = styled("span")({
   },
 });
 
-function IconContainer(props) {
-  const { value, ...other } = props;
-  return <span {...other} />;
-}
-
-IconContainer.propTypes = {
-  value: PropTypes.number.isRequired,
-};
-
-function RatingItem(props) {
+function RatingItem(props: RatingItemProps) {
   const {
-    classes,
     disabled,
     emptyIcon,
     focus,
     getLabelText,
-    highlightSelectedOnly,
     hover,
     icon,
-    IconContainerComponent,
     isActive,
     itemValue,
-    labelProps,
-    name,
-    onBlur,
     onChange,
     onClick,
-    onFocus,
-    readOnly,
-    ownerState,
     ratingValue,
     ratingValueRounded,
   } = props;
 
-  const isFilled = highlightSelectedOnly ? itemValue === ratingValue : itemValue <= ratingValue;
+  const isFilled = itemValue <= ratingValue;
   const isHovered = itemValue <= hover;
   const isFocused = itemValue <= focus;
   const isChecked = itemValue === ratingValueRounded;
 
-  const id = useId();
   const container = (
     <RatingIcon
-      as={IconContainerComponent}
       value={itemValue}
-      className={clsx(classes.icon, {
-        [classes.iconEmpty]: !isFilled,
-        [classes.iconFilled]: isFilled,
-        [classes.iconHover]: isHovered,
-        [classes.iconFocus]: isFocused,
-        [classes.iconActive]: isActive,
-      })}
       ownerState={{
-        ...ownerState,
         iconEmpty: !isFilled,
         iconFilled: isFilled,
         iconHover: isHovered,
@@ -131,67 +101,41 @@ function RatingItem(props) {
     </RatingIcon>
   );
 
-  if (readOnly) {
-    return <span {...labelProps}>{container}</span>;
-  }
-
   return (
     <React.Fragment>
-      <RatingLabel
-        ownerState={{ ...ownerState, emptyValueFocused: undefined }}
-        htmlFor={id}
-        {...labelProps}
-      >
+      <RatingLabel>
         {container}
-        <span className={classes.visuallyHidden}>{getLabelText(itemValue)}</span>
+        <span>{itemValue}</span>
       </RatingLabel>
       <input
-        className={classes.visuallyHidden}
-        onFocus={onFocus}
-        onBlur={onBlur}
         onChange={onChange}
         onClick={onClick}
         disabled={disabled}
         value={itemValue}
-        id={id}
         type='radio'
-        name={name}
         checked={isChecked}
       />
     </React.Fragment>
   );
 }
 
-RatingItem.propTypes = {
-  classes: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  emptyIcon: PropTypes.node,
-  focus: PropTypes.number.isRequired,
-  getLabelText: PropTypes.func.isRequired,
-  highlightSelectedOnly: PropTypes.bool.isRequired,
-  hover: PropTypes.number.isRequired,
-  icon: PropTypes.node,
-  IconContainerComponent: PropTypes.elementType.isRequired,
-  isActive: PropTypes.bool.isRequired,
-  itemValue: PropTypes.number.isRequired,
-  labelProps: PropTypes.object,
-  name: PropTypes.string,
-  onBlur: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onFocus: PropTypes.func.isRequired,
-  ownerState: PropTypes.object.isRequired,
-  ratingValue: PropTypes.number,
-  ratingValueRounded: PropTypes.number,
-  readOnly: PropTypes.bool.isRequired,
-};
-
-const defaultIcon = <Star fontSize='inherit' />;
-const defaultEmptyIcon = <StarBorder fontSize='inherit' />;
-
-function defaultLabelText(value) {
-  return `${value || "0"} Star${value !== 1 ? "s" : ""}`;
+interface RatingItemProps {
+  disabled: boolean;
+  emptyIcon: React.ReactNode;
+  focus: number;
+  getLabelText: () => void;
+  hover: number;
+  icon: React.ReactNode;
+  isActive: boolean;
+  itemValue: number;
+  onChange: (e: any) => void;
+  onClick: () => void;
+  ratingValue: number;
+  ratingValueRounded: number;
 }
+
+const defaultIcon = <></>;
+const defaultEmptyIcon = <></>;
 
 const Rating = (props: RatingProps) => {
   const {
@@ -200,28 +144,23 @@ const Rating = (props: RatingProps) => {
     disabled = false,
     emptyIcon = defaultEmptyIcon,
     emptyLabelText = "Empty",
-    getLabelText = defaultLabelText,
-    highlightSelectedOnly = false,
     icon = defaultIcon,
     max = 5,
     onChange,
     onMouseLeave,
     onMouseMove,
-    precision = 1,
     value: valueProp,
     ...other
   } = props;
 
   const [valueDerived, setValueState] = React.useState(defaultValue);
 
-  const valueRounded = roundValueToPrecision(valueDerived, precision);
-
   const [{ hover, focus }, setState] = React.useState({
     hover: -1,
     focus: -1,
   });
 
-  let value = valueRounded;
+  let value = valueDerived;
   if (hover !== -1) {
     value = hover;
   }
@@ -232,7 +171,6 @@ const Rating = (props: RatingProps) => {
   const [focusVisible, setFocusVisible] = React.useState(false);
 
   const rootRef = React.useRef();
-  const handleRef = useForkRef(rootRef, ref);
 
   const handleMouseMove = (event) => {
     if (onMouseMove) {
@@ -341,7 +279,6 @@ const Rating = (props: RatingProps) => {
 
   return (
     <RatingRoot
-      ref={handleRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       ownerState={ownerState}
@@ -415,10 +352,9 @@ const Rating = (props: RatingProps) => {
         );
       })}
       {!disabled && (
-        <RatingLabel ownerState={ownerState}>
+        <RatingLabel>
           <input
             value=''
-            id={`${name}-empty`}
             type='radio'
             checked={valueRounded == null}
             onFocus={() => setEmptyValueFocused(true)}
@@ -448,7 +384,6 @@ export interface RatingProps
   disabled?: boolean;
   /**
    * The icon to display when empty.
-   * @default <StarBorder fontSize="inherit" />
    */
   emptyIcon?: React.ReactNode;
   /**
@@ -457,25 +392,7 @@ export interface RatingProps
    */
   emptyLabelText?: React.ReactNode;
   /**
-   * Accepts a function which returns a string value that provides a user-friendly name for the current value of the rating.
-   * This is important for screen reader users.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @param {number} value The rating label's value to format.
-   * @returns {string}
-   * @default function defaultLabelText(value) {
-   *   return `${value || '0'} Star${value !== 1 ? 's' : ''}`;
-   * }
-   */
-  getLabelText?: (value: number) => string;
-  /**
-   * If `true`, only the selected icon will be highlighted.
-   * @default false
-   */
-  highlightSelectedOnly?: boolean;
-  /**
    * The icon to display.
-   * @default <Star fontSize="inherit" />
    */
   icon?: React.ReactNode;
 
@@ -491,11 +408,7 @@ export interface RatingProps
    * @param {number|null} value The new value.
    */
   onChange?: (event: React.SyntheticEvent, value: number | null) => void;
-  /**
-   * The minimum increment value change allowed.
-   * @default 1
-   */
-  precision?: number;
+
   /**
    * The rating value.
    */

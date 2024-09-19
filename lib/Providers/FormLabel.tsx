@@ -1,141 +1,36 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import formControlState from '../FormControl/formControlState';
-import useFormControl from '../FormControl/useFormControl';
-import capitalize from '../utils/capitalize';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import formLabelClasses, { getFormLabelUtilityClasses } from './formLabelClasses';
+import * as React from "react";
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, color, focused, disabled, error, filled, required } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      `color${capitalize(color)}`,
-      disabled && 'disabled',
-      error && 'error',
-      filled && 'filled',
-      focused && 'focused',
-      required && 'required',
-    ],
-    asterisk: ['asterisk', error && 'error'],
-  };
+import styled from "@emotion/styled";
 
-  return composeClasses(slots, getFormLabelUtilityClasses, classes);
-};
+export const FormLabelRoot = styled("label")({
+  lineHeight: "1.5em",
+  padding: 0,
+  position: "relative",
 
-export const FormLabelRoot = styled('label', {
-  name: 'MuiFormLabel',
-  slot: 'Root',
-  overridesResolver: ({ ownerState }, styles) => {
-    return {
-      ...styles.root,
-      ...(ownerState.color === 'secondary' && styles.colorSecondary),
-      ...(ownerState.filled && styles.filled),
-    };
-  },
-})(
-  memoTheme(({ theme }) => ({
-    color: (theme.vars || theme).palette.text.secondary,
-    ...theme.typography.body1,
-    lineHeight: '1.4375em',
-    padding: 0,
-    position: 'relative',
-    variants: [
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            [`&.${formLabelClasses.focused}`]: {
-              color: (theme.vars || theme).palette[color].main,
-            },
-          },
-        })),
-      {
-        props: {},
-        style: {
-          [`&.${formLabelClasses.disabled}`]: {
-            color: (theme.vars || theme).palette.text.disabled,
-          },
-          [`&.${formLabelClasses.error}`]: {
-            color: (theme.vars || theme).palette.error.main,
-          },
-        },
-      },
-    ],
-  })),
-);
-
-const AsteriskComponent = styled('span', {
-  name: 'MuiFormLabel',
-  slot: 'Asterisk',
-  overridesResolver: (props, styles) => styles.asterisk,
-})(
-  memoTheme(({ theme }) => ({
-    [`&.${formLabelClasses.error}`]: {
-      color: (theme.vars || theme).palette.error.main,
+  "-disabled": {
+    color: "gray",
+    "-error": {
+      color: "red",
     },
-  })),
-);
+  },
+});
 
-const FormLabel = React.forwardRef(function FormLabel(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiFormLabel' });
-  const {
-    children,
-    className,
-    color,
-    component = 'label',
-    disabled,
-    error,
-    filled,
-    focused,
-    required,
-    ...other
-  } = props;
+const AsteriskComponent = styled("span")({
+  "-error": {
+    color: "red",
+  },
+});
 
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['color', 'required', 'focused', 'disabled', 'error', 'filled'],
-  });
-
-  const ownerState = {
-    ...props,
-    color: fcs.color || 'primary',
-    component,
-    disabled: fcs.disabled,
-    error: fcs.error,
-    filled: fcs.filled,
-    focused: fcs.focused,
-    required: fcs.required,
-  };
-
-  const classes = useUtilityClasses(ownerState);
+const FormLabel = (props: FormLabelOwnProps) => {
+  const { children, disabled, error, focused, required, ...other } = props;
 
   return (
-    <FormLabelRoot
-      as={component}
-      ownerState={ownerState}
-      className={clsx(classes.root, className)}
-      ref={ref}
-      {...other}
-    >
+    <FormLabelRoot as='label' {...other}>
       {children}
-      {fcs.required && (
-        <AsteriskComponent ownerState={ownerState} aria-hidden className={classes.asterisk}>
-          &thinsp;{'*'}
-        </AsteriskComponent>
-      )}
+      {required && <AsteriskComponent>&thinsp;{"*"}</AsteriskComponent>}
     </FormLabelRoot>
   );
-});
+};
 
 export default FormLabel;
 
@@ -143,7 +38,7 @@ export interface FormLabelOwnProps {
   /**
    * The content of the component.
    */
-  children?: React.LabelHTMLAttributes<HTMLLabelElement>['children'];
+  children?: React.LabelHTMLAttributes<HTMLLabelElement>["children"];
   /**
    * If `true`, the label should be displayed in a disabled state.
    */
