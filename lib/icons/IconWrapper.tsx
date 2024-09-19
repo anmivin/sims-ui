@@ -48,7 +48,8 @@ const StyledSvg = styled('svg')<IconProps>`
   stroke-linejoin: round;
         `
       : `
-          fill: ${cssColor};
+    /*       fill: ${cssColor}; */
+
           max-height: ${responsive ? '100%' : ''};
         `;
   }}

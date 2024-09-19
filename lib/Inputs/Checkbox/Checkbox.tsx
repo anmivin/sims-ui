@@ -32,17 +32,7 @@ export interface CheckboxProps
    * You can pull out the new checked state by accessing `event.target.checked` (boolean).
    */
   onChange?: SwitchBaseProps["onChange"];
-  /**
-   * If `true`, the `input` element is required.
-   * @default false
-   */
-  required?: SwitchBaseProps["required"];
 
-  /**
-   * The value of the component. The DOM API casts this to a string.
-   * The browser uses "on" as the default value.
-   */
-  value?: SwitchBaseProps["value"];
 }
 
 

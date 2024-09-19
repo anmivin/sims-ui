@@ -1,10 +1,11 @@
-import { ModernButton, OldButton, OldCheckbox, ModernCheckbox } from "sims-ui";
+import { ModernButton, OldButton, OldCheckbox, ModernCheckbox, OldRadio } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 
 import "./App.css";
 function App() {
   return (
     <>
+    <OldRadio/>
       <OldCheckbox label='sda' />
       <OldButton>кнопа кнопа</OldButton>
       <ModernCheckbox label='asdasd' />

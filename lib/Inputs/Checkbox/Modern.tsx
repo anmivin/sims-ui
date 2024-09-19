@@ -2,8 +2,10 @@ import styled from "@emotion/styled";
 import * as React from "react";
 
 
+import CheckBoxUnchecked from '../../icons/Modern/CheckBox'
 import CheckIcon from '../../icons/CheckIcon'
 import Checkbox from './Checkbox'
+import CheckBoxChecked from '../../icons/Modern/CheckBoxChecked'
 interface CheckboxProps {
   label: string;
 }
@@ -46,7 +48,7 @@ const StyledLabel = styled('span')({
 export const ModernCheckbox = ({ label }: CheckboxProps) => {
    
   return (
-    <div><Checkbox checkedIcon={<CheckedIcon><CheckIcon color='white'/></CheckedIcon>} icon={<UncheckedIcon/>}/> {label && (<StyledLabel>{label}</StyledLabel>)}</div>
+    <div><Checkbox checkedIcon={<CheckBoxChecked/>} icon={<CheckBoxUnchecked/>}/> {label && (<StyledLabel>{label}</StyledLabel>)}</div>
    
   );
 };

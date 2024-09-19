@@ -9,3 +9,4 @@ export { Modal } from "./Surfaces/Modal/Modern";
 export { IconButton } from "./Inputs/IconButton/Modern";
 export { MenuButton } from "./Navigation/MenuButton/Modern";
 export {default as Che} from './Inputs/Checkbox/Checkbox'
+export {default as OldRadio} from './Inputs/Radio/Old'

@@ -1,10 +1,6 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import { useDefaultProps } from "../DefaultPropsProvider";
-import { isFilled, isAdornedStart } from "../InputBase/utils";
-import capitalize from "../utils/capitalize";
+
 import isMuiElement from "../utils/isMuiElement";
-import FormControlContext from "./FormControlContext";
 import styled from "@emotion/styled";
 
 const FormControlRoot = styled("div")({
@@ -65,38 +61,19 @@ const FormControlRoot = styled("div")({
  * ⚠️ Only one `InputBase` can be used within a FormControl because it creates visual inconsistencies.
  * For instance, only one input can be focused at the same time, the state shouldn't be shared.
  */
-const FormControl = React.forwardRef(function FormControl(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: "MuiFormControl" });
+const FormControl = (props) => {
   const {
     children,
-    className,
-    color = "primary",
-    component = "div",
     disabled = false,
     error = false,
-    focused: visuallyFocused,
     fullWidth = false,
     hiddenLabel = false,
     margin = "none",
     required = false,
-    size = "medium",
-    variant = "outlined",
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-    color,
-    component,
-    disabled,
-    error,
-    fullWidth,
-    hiddenLabel,
-    margin,
-    required,
-    size,
-    variant,
-  };
+
 
   const [adornedStart, setAdornedStart] = React.useState(() => {
     // We need to iterate through the children and find the Input in order
@@ -111,7 +88,7 @@ const FormControl = React.forwardRef(function FormControl(inProps, ref) {
 
         const input = isMuiElement(child, ["Select"]) ? child.props.input : child;
 
-        if (input && isAdornedStart(input.props)) {
+        if (input) {
           initialAdornedStart = true;
         }
       });
@@ -147,24 +124,7 @@ const FormControl = React.forwardRef(function FormControl(inProps, ref) {
   const focused = visuallyFocused !== undefined && !disabled ? visuallyFocused : focusedState;
 
   let registerEffect;
-  const registeredInput = React.useRef(false);
-  if (process.env.NODE_ENV !== "production") {
-    registerEffect = () => {
-      if (registeredInput.current) {
-        console.error(
-          [
-            "MUI: There are multiple `InputBase` components inside a FormControl.",
-            "This creates visual inconsistencies, only use one `InputBase`.",
-          ].join("\n")
-        );
-      }
 
-      registeredInput.current = true;
-      return () => {
-        registeredInput.current = false;
-      };
-    };
-  }
 
   const childContext = React.useMemo(() => {
     return {
@@ -214,7 +174,6 @@ const FormControl = React.forwardRef(function FormControl(inProps, ref) {
       <FormControlRoot
         as={component}
         ownerState={ownerState}
-        className={clsx(classes.root, className)}
         ref={ref}
         {...other}
       >
@@ -222,16 +181,11 @@ const FormControl = React.forwardRef(function FormControl(inProps, ref) {
       </FormControlRoot>
     </FormControlContext.Provider>
   );
-});
+};
 
 export default FormControl;
 
-import { OverridableStringUnion } from "@mui/types";
-import { OverridableComponent, OverrideProps } from "../OverridableComponent";
-import { Theme } from "../mui/mui-material/src/styles";
-import { FormControlClasses } from "./formControlClasses";
-
-export interface FormControlOwnProps {
+export interface FormControlProps {
   /**
    * The content of the component.
    */
@@ -252,24 +206,10 @@ export interface FormControlOwnProps {
    */
   fullWidth?: boolean;
   /**
-   * If `true`, the component is displayed in focused state.
-   */
-  focused?: boolean;
-  /**
    * If `true`, the label will indicate that the `input` is required.
    * @default false
    */
   required?: boolean;
-  /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size?: OverridableStringUnion<"small" | "medium", FormControlPropsSizeOverrides>;
-  /**
-   * The variant to use.
-   * @default 'outlined'
-   */
-  variant?: "standard" | "outlined" | "filled";
 }
 
 type ContextFromPropsKey =
