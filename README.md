@@ -3,14 +3,15 @@
 ## Inputs
 
 - [ ] Autocomplete
-- [ ] Button
-- [ ] Checkbox
-- [ ] Radio
+- [x] Button
+- [x] Checkbox
+- [ ] Coloricker
+- [x] Radio
 - [ ] Rating
 - [ ] Select
 - [ ] Slider
 - [ ] Switch
-- [ ] Text Field
+- [x] Text Field
 - [ ] Transfer List
 
 ## Data display
@@ -19,11 +20,10 @@
 - [ ] Badge
 - [ ] Chip
 - [ ] Divider
-- [ ] Drawer
 - [ ] Icon
 - [ ] Icon set
 - [ ] Image component
-- [ ] Loader
+- [x] Loader
 - [ ] Progress
 - [ ] Stepper
 - [ ] Tooltip
@@ -32,9 +32,11 @@
 ## Surfaces
 
 - [ ] Accordion
-- [ ] Modal
-- [ ] Popover
-- [ ] Portal
+- [x] Dialog
+- [ ] Drawer
+- [x] Popover
+- [x] Scrollable
+
 
 ## Navigation
 

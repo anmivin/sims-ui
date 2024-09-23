@@ -34,6 +34,6 @@ const StyledButton = styled.button<Bur>`
   }
 `;
 
-export const MenuButton = ({ children, selected = false }: ButtonProps): ReactNode => {
+export const MenuButtonModern = ({ children, selected = false }: ButtonProps): ReactNode => {
   return <StyledButton selected={selected}>{children}</StyledButton>;
 };

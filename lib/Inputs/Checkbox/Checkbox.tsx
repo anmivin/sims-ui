@@ -1,57 +1,77 @@
 import * as React from "react";
 
-import SwitchBase, { SwitchBaseProps } from "../../Internal/SwitchBase";
-
+import styled from "@emotion/styled";
 
 export interface CheckboxProps
-  extends Omit<SwitchBaseProps, "checkedIcon" | "color" | "icon" | "type"> {
-  /**
-   * If `true`, the component is checked.
-   */
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "type"> {
+  defaultChecked?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  required?: boolean;
   checked?: boolean;
-  /**
-   * The icon to display when the component is checked.
-   */
   checkedIcon?: React.ReactNode;
-
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled?: boolean;
-
-  /**
-   * The icon to display when the component is unchecked.
-   */
   icon?: React.ReactNode;
-
-  /**
-   * Callback fired when the state is changed.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} event The event source of the callback.
-   * You can pull out the new checked state by accessing `event.target.checked` (boolean).
-   */
-  onChange?: SwitchBaseProps["onChange"];
-
+  disabled?: boolean;
 }
 
+const SwitchBaseRoot = styled("button")({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  boxSizing: "border-box",
+  backgroundColor: "transparent",
+  outline: 0,
+  border: 0,
+  margin: 0,
+  borderRadius: 0,
+  padding: 0,
+  cursor: "pointer",
+  textDecoration: "none",
+  color: "inherit",
+  "-disabled": {
+    pointerEvents: "none",
+    cursor: "default",
+  },
+});
+
+const SwitchBaseInput = styled("input")({
+  cursor: "inherit",
+  position: "absolute",
+  opacity: 0,
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+  margin: 0,
+  padding: 0,
+  zIndex: 1,
+});
 
 const Checkbox = (props: CheckboxProps) => {
-  const { checkedIcon, icon, inputProps, ...other } = props;
+  const { checkedIcon, icon, onChange, disabled, defaultChecked, required, ...other } = props;
+  const [checked, setCheckedState] = React.useState(defaultChecked);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newChecked = event.target.checked;
+    setCheckedState(newChecked);
+    if (onChange) {
+      onChange(event, newChecked);
+    }
+  };
 
   return (
-    <SwitchBase
-      type='checkbox'
-      inputProps={{
-        ...inputProps,
-      }}
-      icon={icon}
-      checkedIcon={checkedIcon}
-
-      {...other}
-    />
+    <SwitchBaseRoot disabled={disabled} {...other}>
+      <SwitchBaseInput
+        checked={checked}
+        defaultChecked={defaultChecked}
+        disabled={disabled}
+        onChange={handleInputChange}
+        required={required}
+        type='checkbox'
+      />
+      {checked ? checkedIcon : icon}
+    </SwitchBaseRoot>
   );
 };
 
 export default Checkbox;
-

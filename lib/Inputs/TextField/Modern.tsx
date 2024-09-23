@@ -1,25 +1,46 @@
 import styled from "@emotion/styled";
 import React from 'react';
-const StyledTextfield = styled.input`
-  outline: none;
-  width: 200px;
-  height: 25px;
-  border-radius: 20px;
-  padding: 5px 10px;
-  background-color: #f7f7f7;
-  border: 1px solid #cccccc;
-  color: #333333;
+import TextField from './TextField'
 
-  :focus {
-    border-color: #aaaaaa;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-`;
+const StyledTextfield = styled(TextField)({
+
+ '.input-outlined': { 
+    borderRadius: '20px',
+    padding: '5px 10px',
+    backgroundColor: '#f8fbfe',
+    border:'1px solid #b5c6d5',
+    color: '#333333',
+    boxShadow: 'inset 0px 0px 4px #8593a1'
+ }, 
+
+ '.input-filled': { 
+  borderRadius: '6px',
+  padding: '5px 10px',
+  background: 'linear-gradient(180deg, #fbfbfb 20%, #d9d9d9)',
+
+  color: '#0949ab',
+  boxShadow: '0 2px 6px 0 #606164',
+}, 
+
+'.multiline': {
+
+},
+
+'.input': {
+
+},
+
+
+'.root-standard': {
+  color: 'red'
+},
+
+});
 
 interface TextfieldProps {
   placeholder: string;
 }
 
-export const TextField = ({ placeholder }: TextfieldProps) => {
-  return <StyledTextfield type='text' placeholder={placeholder} />;
+export const TextFieldModern = ({ placeholder }: TextfieldProps) => {
+  return <StyledTextfield label='sad' placeholder={placeholder}  variant='filled' />;
 };

@@ -7,8 +7,23 @@ import Grow from "./Grow";
 import Popper from "./Popper";
 import useEventCallback from "../utils/useEventCallback";
 import useForkRef from "../utils/useForkRef";
-import useId from "../utils/useId";
-import useControlled from "../utils/useControlled";
+export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+  children: React.ReactElement<unknown, any>;
+  placement?:
+    | "bottom-end"
+    | "bottom-start"
+    | "bottom"
+    | "left-end"
+    | "left-start"
+    | "left"
+    | "right-end"
+    | "right-start"
+    | "right"
+    | "top-end"
+    | "top-start"
+    | "top";
+  title: React.ReactNode;
+}
 
 
 const TooltipPopper = styled(Popper)({
@@ -116,15 +131,7 @@ function composeEventHandler(handler, eventHandler) {
 
 const Tooltip = (props: TooltipProps) => {
   const {
-    arrow = false,
     children: childrenProp,
-    disableInteractive: disableInteractiveProp = false,
-    enterDelay = 100,
-    id: idProp,
-    leaveDelay = 0,
-    onClose,
-    onOpen,
-    open: openProp,
     placement = "bottom",
     title,
     ...other
@@ -133,10 +140,7 @@ const Tooltip = (props: TooltipProps) => {
   const children = React.isValidElement(childrenProp) ? childrenProp : <span>{childrenProp}</span>;
 
   const [childNode, setChildNode] = React.useState();
-  const [arrowRef, setArrowRef] = React.useState(null);
   const ignoreNonTouchEvents = React.useRef(false);
-
-  const disableInteractive = disableInteractiveProp;
 
   const closeTimer = useTimeout();
   const enterTimer = useTimeout();
@@ -147,45 +151,22 @@ const Tooltip = (props: TooltipProps) => {
 
   let open = openState;
 
-  const id = useId(idProp);
-
   const prevUserSelect = React.useRef();
-  const stopTouchInteraction = useEventCallback(() => {
-    if (prevUserSelect.current !== undefined) {
-      document.body.style.WebkitUserSelect = prevUserSelect.current;
-      prevUserSelect.current = undefined;
-    }
-    touchTimer.clear();
-  });
 
-  React.useEffect(() => stopTouchInteraction, [stopTouchInteraction]);
-
-  const handleOpen = (event) => {
+  const handleOpen = () => {
     hystersisTimer.clear();
     hystersisOpen = true;
-
     setOpenState(true);
-
-    if (onOpen && !open) {
-      onOpen(event);
-    }
   };
 
-  const handleClose = useEventCallback(
-    /**
-     * @param {React.SyntheticEvent | Event} event
-     */
-    (event) => {
-      hystersisTimer.start(800 + leaveDelay, () => {
+  const handleClose = useEventCallback(() => {
+      hystersisTimer.start(800, () => {
         hystersisOpen = false;
       });
       setOpenState(false);
 
-      if (onClose && open) {
-        onClose(event);
-      }
 
-      closeTimer.start(theme.transitions.duration.shortest, () => {
+      closeTimer.start(800, () => {
         ignoreNonTouchEvents.current = false;
       });
     }
@@ -194,10 +175,6 @@ const Tooltip = (props: TooltipProps) => {
   const handleMouseOver = (event) => {
     if (ignoreNonTouchEvents.current && event.type !== "touchstart") {
       return;
-    }
-
-    if (childNode) {
-      childNode.removeAttribute("title");
     }
 
     enterTimer.clear();
@@ -296,44 +273,24 @@ const Tooltip = (props: TooltipProps) => {
 
   const handleRef = useForkRef(getReactNodeRef(children), setChildNode, ref);
 
-  // There is no point in displaying an empty tooltip.
-  // So we exclude all falsy values, except 0, which is valid.
   if (!title && title !== 0) {
     open = false;
   }
 
   const popperRef = React.useRef();
 
-  const handleMouseMove = (event) => {
-    const childrenProps = children.props;
-    if (childrenProps.onMouseMove) {
-      childrenProps.onMouseMove(event);
-    }
-
-    cursorPosition = { x: event.clientX, y: event.clientY };
-
-    if (popperRef.current) {
-      popperRef.current.update();
-    }
-  };
-
   const nameOrDescProps = {};
   const titleIsString = typeof title === "string";
-  if (describeChild) {
-    nameOrDescProps.title = !open && titleIsString && !disableHoverListener ? title : null;
-    nameOrDescProps["aria-describedby"] = open ? id : null;
-  } else {
+
     nameOrDescProps["aria-label"] = titleIsString ? title : null;
     nameOrDescProps["aria-labelledby"] = open && !titleIsString ? id : null;
-  }
-
+  
   const childrenProps = {
     ...nameOrDescProps,
     ...other,
     ...children.props,
     onTouchStart: detectTouchStart,
     ref: handleRef,
-    ...(followCursor ? { onMouseMove: handleMouseMove } : {}),
   };
 
   const interactiveWrapperListeners = {};
@@ -347,23 +304,8 @@ const Tooltip = (props: TooltipProps) => {
     childrenProps.onMouseOver = composeEventHandler(handleMouseOver, childrenProps.onMouseOver);
     childrenProps.onMouseLeave = composeEventHandler(handleMouseLeave, childrenProps.onMouseLeave);
 
-    if (!disableInteractive) {
-      interactiveWrapperListeners.onMouseOver = handleMouseOver;
-      interactiveWrapperListeners.onMouseLeave = handleMouseLeave;
-    }
-
-
-
     childrenProps.onFocus = composeEventHandler(handleFocus, childrenProps.onFocus);
     childrenProps.onBlur = composeEventHandler(handleBlur, childrenProps.onBlur);
-
-    if (!disableInteractive) {
-      interactiveWrapperListeners.onFocus = handleFocus;
-      interactiveWrapperListeners.onBlur = handleBlur;
-    }
-  
-
-  const TransitionComponent = Grow;
 
   return (
     <React.Fragment>
@@ -374,21 +316,14 @@ const Tooltip = (props: TooltipProps) => {
         anchorEl={childNode}
         popperRef={popperRef}
         open={childNode ? open : false}
-        id={id}
         transition
         {...interactiveWrapperListeners}
-      >
-        {({ TransitionProps: TransitionPropsInner }) => (
-          <TransitionComponent
-            timeout={theme.transitions.duration.shorter}
-            {...TransitionPropsInner}
-          >
+      >        
             <TooltipTooltip>
               {title}
-              {arrow ? <TooltipArrow /> : null}
+              <TooltipArrow />
             </TooltipTooltip>
-          </TransitionComponent>
-        )}
+
       </TooltipPopper>
     </React.Fragment>
   );
@@ -396,76 +331,3 @@ const Tooltip = (props: TooltipProps) => {
 
 export default Tooltip;
 
-export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  /**
-   * If `true`, adds an arrow to the tooltip.
-   * @default false
-   */
-  arrow?: boolean;
-  /**
-   * Tooltip reference element.
-   */
-  children: React.ReactElement<unknown, any>;
-
-
-  /**
-   * Makes a tooltip not interactive, i.e. it will close when the user
-   * hovers over the tooltip before the `leaveDelay` is expired.
-   * @default false
-   */
-  disableInteractive?: boolean;
-
-  /**
-   * The number of milliseconds to wait before showing the tooltip.
-   * This prop won't impact the enter touch delay (`enterTouchDelay`).
-   * @default 100
-   */
-  enterDelay?: number;
-
-
-  /**
-   * The number of milliseconds to wait before hiding the tooltip.
-   * This prop won't impact the leave touch delay (`leaveTouchDelay`).
-   * @default 0
-   */
-  leaveDelay?: number;
-
-  /**
-   * Callback fired when the component requests to be closed.
-   *
-   * @param {React.SyntheticEvent} event The event source of the callback.
-   */
-  onClose?: (event: React.SyntheticEvent | Event) => void;
-  /**
-   * Callback fired when the component requests to be open.
-   *
-   * @param {React.SyntheticEvent} event The event source of the callback.
-   */
-  onOpen?: (event: React.SyntheticEvent) => void;
-  /**
-   * If `true`, the component is shown.
-   */
-  open?: boolean;
-  /**
-   * Tooltip placement.
-   * @default 'bottom'
-   */
-  placement?:
-    | "bottom-end"
-    | "bottom-start"
-    | "bottom"
-    | "left-end"
-    | "left-start"
-    | "left"
-    | "right-end"
-    | "right-start"
-    | "right"
-    | "top-end"
-    | "top-start"
-    | "top";
-
-  /**
-   * Tooltip title. Zero-length titles string, undefined, null and false are never displayed.
-   */
-  title: React.ReactNode;
-}

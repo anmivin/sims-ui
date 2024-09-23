@@ -1,136 +1,184 @@
 import * as React from "react";
-
+import clsx from "clsx";
 import styled from "@emotion/styled";
 
-import InputLabel from "../../Providers/InputLabel";
-import FormControl from "../../Providers/FormControl";
-import FormHelperText from "../../Providers/FormHelperText";
-import InputBase from "../../Providers/InputBase";
+export type TextFieldVariants = "outlined" | "standard" | 'filled' ;
 
-const TextFieldRoot = styled(FormControl)({});
+export interface InputBaseProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "defaultValue" | "onChange" > {
+  defaultValue?: string | number | readonly string[] | undefined;
+  disabled?: boolean;
+  endAdornment?: React.ReactNode;
+  error?: boolean;
+  fullWidth?: boolean;
+  multiline?: boolean;
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  placeholder?: string;
+  required?: boolean;
+  rows?: number;
+  startAdornment?: React.ReactNode;
+  value?: string | number | readonly string[] | undefined;
+  helperText?: React.ReactNode;
+  label?: React.ReactNode;
+  variant?: TextFieldVariants;
+  className?: string
+}
 
-const TextField = (props: BaseTextFieldProps) => {
+const FormControlRoot = styled("div")({
+  display: "inline-flex",
+  flexDirection: "column",
+  position: "relative",
+  // Reset fieldset default style.
+  minWidth: 0,
+  padding: 0,
+  margin: 0,
+  border: 0,
+
+  
+
+});
+
+export const InputBaseRoot = styled("div")({
+  lineHeight: "1.4375em", // 23px
+  boxSizing: "border-box", // Prevent padding issue with fullWidth.
+  position: "relative",
+  cursor: "text",
+  display: "inline-flex",
+  alignItems: "center",
+
+  
+  "-disabled": {
+    color: "gray",
+    cursor: "default",
+  },
+});
+
+export const InputArea = styled("textarea")({});
+
+export const InputBaseInput = styled("input")({
+  font: "inherit",
+  letterSpacing: "inherit",
+  color: "currentColor",
+  padding: "4px 0 5px",
+  border: 0,
+  boxSizing: "content-box",
+  background: "none",
+  height: "1.4375em", // Reset 23pxthe native input line-height
+  WebkitTapHighlightColor: "transparent",
+  display: "block",
+  width: "100%",
+  "-multiline": {
+    height: "auto",
+    resize: "none",
+    padding: 0,
+    paddingTop: 0,
+  },
+  "&:focus": {
+    outline: 0,
+  },
+});
+
+const InputLabelRoot = styled("label")({
+  lineHeight: "1.5em",
+  padding: 0,
+  position: "relative",
+
+  "-disabled": {
+    color: "gray",
+    "-error": {
+      color: "red",
+    },
+  },
+  display: "block",
+  transformOrigin: "top left",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  maxWidth: "100%",
+  "-shrink": {
+    transform: "translate(0, -1.5px) scale(0.75)",
+    transformOrigin: "top left",
+    maxWidth: "133%",
+  },
+});
+
+const FormHelperTextRoot = styled("p")({
+  color: "",
+  textAlign: "left",
+  marginTop: 3,
+  marginRight: 0,
+  marginBottom: 0,
+  marginLeft: 0,
+  "-disabled": {
+    color: "",
+  },
+  "-error": {
+    color: "",
+  },
+});
+
+const TextField = (props: InputBaseProps) => {
   const {
-    children,
     defaultValue,
     disabled = false,
+    endAdornment,
     error = false,
     fullWidth = false,
-    helperText,
-    label,
-    maxRows,
-    minRows,
     multiline = false,
+    label,
+    helperText,
+    onChange,
     placeholder,
-    required = false,
     rows,
-    value,
-    variant = "outlined",
+    startAdornment,
+    value: valueProp,
+    required,
+    variant = 'standard',
     ...other
   } = props;
 
-  const InputComponent = InputBase;
+  const value = valueProp;
 
-  const InputElement = (
-    <InputComponent
-      defaultValue={defaultValue}
-      fullWidth={fullWidth}
-      multiline={multiline}
-      rows={rows}
-      value={value}
-      placeholder={placeholder}
-    />
-  );
+  const handleChange = (event, ...args) => {
+    if (onChange) {
+      onChange(event);
+    }
+  };
 
   return (
-    <TextFieldRoot
-      disabled={disabled}
-      error={error}
-      fullWidth={fullWidth}
-      required={required}
-      variant={variant}
-      {...other}
+    <FormControlRoot
+      className={clsx(variant, disabled && '-disabled', error && '-error', fullWidth && '-fullWidth', required && '-required')
+      }
+     {...other} 
     >
-      {label != null && label !== "" && <InputLabel>{label}</InputLabel>}
+      {label != null && label !== "" && <InputLabelRoot>{label}</InputLabelRoot>}
 
-      {InputElement}
+      {
+        <>
+          {multiline ? (
+            <InputArea rows={rows} className={clsx('multiline')}/>
+          ) : (
+            <InputBaseRoot {...other} className={clsx('inputBase', `input-${variant}`)}>
+              {startAdornment}
+              <InputBaseInput
+              className={clsx('input')}
+                type='text'
+                defaultValue={defaultValue}
+                disabled={disabled}
+                placeholder={placeholder}
+                required={required}
+                value={value}
+                onChange={handleChange}
+              />
+              {endAdornment}
+            </InputBaseRoot>
+          )}
+        </>
+      }
 
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
-    </TextFieldRoot>
+      {helperText && <FormHelperTextRoot>{helperText}</FormHelperTextRoot>}
+    </FormControlRoot>
   );
 };
 
 export default TextField;
-
-import { FormControlProps } from "../../Providers/FormControl";
-
-export interface BaseTextFieldProps
-  extends Omit<
-    FormControlProps,
-    // event handlers are declared on derived interfaces
-    "onChange" | "onBlur" | "onFocus" | "defaultValue"
-  > {
-  /**
-   * The default value. Use when the component is not controlled.
-   */
-  defaultValue?: string | number | readonly string[];
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled?: boolean;
-  /**
-   * If `true`, the label is displayed in an error state.
-   * @default false
-   */
-  error?: boolean;
-
-  /**
-   * If `true`, the input will take up the full width of its container.
-   * @default false
-   */
-  fullWidth?: boolean;
-  /**
-   * The helper text content.
-   */
-  helperText?: React.ReactNode;
-
-  /**
-   * The label content.
-   */
-  label?: React.ReactNode;
-  /**
-   * If `true`, a `textarea` element is rendered instead of an input.
-   * @default false
-   */
-  multiline?: boolean;
-  /**
-   * The short hint displayed in the `input` before the user enters a value.
-   */
-  placeholder?: string;
-  /**
-   * If `true`, the label is displayed as required and the `input` element is required.
-   * @default false
-   */
-  required?: boolean;
-  /**
-   * Number of rows to display when multiline option is set to true.
-   */
-  rows?: string | number;
-  /**
-   * Maximum number of rows to display when multiline option is set to true.
-   */
-  maxRows?: string | number;
-  /**
-   * Minimum number of rows to display when multiline option is set to true.
-   */
-  minRows?: string | number;
-
-  /**
-   * The value of the `input` element, required for a controlled component.
-   */
-  value?: string | number | readonly string[];
-  variant?: TextFieldVariants;
-}
-
-export type TextFieldVariants = "outlined" | "standard" | "filled";
