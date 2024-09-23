@@ -1,4 +1,4 @@
-import styled from "@emotion/styled/macro";
+import styled from "@emotion/styled";
 
 export const StyledModernSpinner = styled("svg")({
   ".path_01": {
@@ -316,112 +316,103 @@ export const StyledModernSpinner = styled("svg")({
 });
 
 export const StyledOldSpinner = styled("svg")({
+  filter:
+    "drop-shadow(1px 0 0 #13192e) drop-shadow(-1px 0 0 #13192e) drop-shadow(0 1px 0 #13192e) drop-shadow(0 -1px 0 #13192e)",
   ".contour": {
-    fill: "",
-    stroke: "",
-    animation: "change-contour 1.5s linear infinite",
+    transformOrigin: "50% 50%",
+    animation: "change-contour 3s linear infinite",
   },
+
   ".hourglass_1": {
-    fill: "",
-    stroke: "",
-    animation: "change-hourglass_1 1.5s linear infinite",
+    animation: "change-hourglass_1 3s linear infinite",
   },
   ".hourglass_2": {
-    fill: "",
-    stroke: "",
-    animation: "change-hourglass_2 1.5s linear infinite",
+    animation: "change-hourglass_2 3s linear infinite",
   },
+
   ".hourglass_3": {
-    fill: "",
-    stroke: "",
-    animation: "change-hourglass_3 1.5s linear infinite",
-  },
-  ".hourglass_4": {
-    fill: "",
-    stroke: "",
-    animation: "change-hourglass_4 1.5s linear infinite",
+    transformOrigin: "50% 50%",
+    animation: "change-hourglass_3 3s linear infinite",
   },
 
   "@keyframes change-contour": {
     "0%": {
-      fill: "#46ddf0",
+      transform: "rotate(0deg)",
     },
-
+    "60%": {
+      transform: "rotate(0deg)",
+    },
     "100%": {
-      fill: "#46ddf0",
+      transform: "rotate(180deg)",
     },
   },
+
   "@keyframes change-hourglass_1": {
     "0%": {
-      fill: "#70e7fb",
+      opacity: 0,
     },
-    "10%": {},
-    "20%": {},
-    "30%": {},
-    "40%": {},
-    "50%": {},
-    "60%": {},
-    "70%": {},
-    "80%:": {},
-    "90%": {},
+    "10%": {
+      opacity: 1,
+    },
+    "20%": {
+      opacity: 1,
+    },
+    "30%": {
+      opacity: 0,
+    },
 
     "100%": {
-      fill: "#70e7fb",
+      opacity: 0,
     },
   },
   "@keyframes change-hourglass_2": {
     "0%": {
-      fill: "#b2f4f3",
       opacity: 0,
     },
-    "10%": {},
-    "20%": {},
-    "30%": {},
-    "40%": {},
-    "50%": {},
-    "60%": {},
-    "70%": {},
-    "80%:": {},
-    "90%": {},
-
+    "20%": {
+      opacity: 0,
+    },
+    "30%": {
+      opacity: 1,
+    },
+    "40%": {
+      opacity: 1,
+    },
+    "50%": {
+      opacity: 0,
+    },
     "100%": {
-      fill: "#b2f4f3",
+      opacity: 0,
     },
   },
   "@keyframes change-hourglass_3": {
     "0%": {
-      fill: "#c2fde9",
+      opacity: 1,
+      transform: "rotate(180deg)",
+    },
+    "10%": {
       opacity: 0,
+      transform: "rotate(180deg)",
     },
-    "10%": {},
-    "20%": {},
-    "30%": {},
-    "40%": {},
-    "50%": {},
-    "60%": {},
-    "70%": {},
-    "80%:": {},
-    "90%": {},
-    "100%": {
-      fill: "#c2fde9",
-    },
-  },
-  "@keyframes change-hourglass_4": {
-    "0%": {
-      fill: " #93e8a7",
+    "20%": {
       opacity: 0,
+      transform: "rotate(0deg)",
     },
-    "10%": {},
-    "20%": {},
-    "30%": {},
-    "40%": {},
-    "50%": {},
-    "60%": {},
-    "70%": {},
-    "80%:": {},
-    "90%": {},
+    "40%": {
+      opacity: 0,
+      transform: "rotate(0deg)",
+    },
+    "50%": {
+      opacity: 1,
+      transform: "rotate(0deg)",
+    },
+    "60%": {
+      opacity: 1,
+      transform: "rotate(0deg)",
+    },
     "100%": {
-      fill: " #93e8a7",
+      opacity: 1,
+      transform: "rotate(180deg)",
     },
   },
 });

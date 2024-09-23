@@ -3,38 +3,18 @@ import * as React from "react";
 
 
 import CheckBoxUnchecked from '../../icons/Modern/CheckBox'
-import CheckIcon from '../../icons/CheckIcon'
 import Checkbox from './Checkbox'
 import CheckBoxChecked from '../../icons/Modern/CheckBoxChecked'
 interface CheckboxProps {
   label: string;
 }
 
-const CheckedIcon = styled('div')({
-  background: 'linear-gradient(180deg, #5db823 40%, #269331)',
-   transition: 'background 1s ease-in-out',
-   position: 'relative',
-   border: 'none',
- width: '24px',
- height: '24px',
- borderRadius: '25%',
- outline: 'none',
- cursor: 'pointer',
- boxShadow: '0 4px 6px 0 #848484'
-
+const CheckedIcon = styled(CheckBoxChecked)({
+  filter: 'drop-shadow(0 2px 3px #848484)',
 })
 
-const UncheckedIcon = styled('div')({
- transition: 'background 1s ease-in-out',
- '-webkit-appearance': 'none',
- appearance: 'none',
- width: '24px',
- height: '24px',
- borderRadius: '25%',
- outline: 'none',
- cursor: 'pointer',
- background: 'linear-gradient(180deg, #f9f9f9 40%, #dddddd)',
- boxShadow: '0 4px 6px 0 #848484'
+const UncheckedIcon = styled(CheckBoxUnchecked)({
+  filter: 'drop-shadow(0 2px 3px #848484)',
 })
 
 const StyledLabel = styled('span')({
@@ -48,7 +28,7 @@ const StyledLabel = styled('span')({
 export const ModernCheckbox = ({ label }: CheckboxProps) => {
    
   return (
-    <div><Checkbox checkedIcon={<CheckBoxChecked/>} icon={<CheckBoxUnchecked/>}/> {label && (<StyledLabel>{label}</StyledLabel>)}</div>
+    <div><Checkbox checkedIcon={<CheckedIcon/>} icon={<UncheckedIcon/>}/> {label && (<StyledLabel>{label}</StyledLabel>)}</div>
    
   );
 };

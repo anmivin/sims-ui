@@ -1,81 +1,35 @@
 import * as React from "react";
 
 import styled from "@emotion/styled";
-import ButtonBase from "../../Internal/ButtonBase";
 
-export interface ButtonOwnProps {
-  /**
-   * The content of the component.
-   */
+export interface ButtonProps {
   children?: React.ReactNode;
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
   disabled?: boolean;
-
-  /**
-   * Element placed after the children.
-   */
   endIcon?: React.ReactNode;
-  /**
-   * If `true`, the button will take up the full width of its container.
-   * @default false
-   */
   fullWidth?: boolean;
-  /**
-   * The URL to link to when the button is clicked.
-   * If defined, an `a` element will be used as the root node.
-   */
   href?: string;
-  /**
-   * The size of the component.
-   * `small` is equivalent to the dense button styling.
-   * @default 'medium'
-   */
-  size?: "small" | "medium" | "large";
-  /**
-   * Element placed before the children.
-   */
   startIcon?: React.ReactNode;
-
-  /**
-   * The variant to use.
-   * @default 'text'
-   */
-  variant?: "text" | "outlined" | "contained";
 }
 
-const commonIconStyles = [
-  {
-    props: { size: "small" },
-    style: {
-      "& > *:nth-of-type(1)": {
-        fontSize: 18,
-      },
-    },
-  },
-  {
-    props: { size: "medium" },
-    style: {
-      "& > *:nth-of-type(1)": {
-        fontSize: 20,
-      },
-    },
-  },
-  {
-    props: { size: "large" },
-    style: {
-      "& > *:nth-of-type(1)": {
-        fontSize: 22,
-      },
-    },
-  },
-];
-
-const ButtonRoot = styled(ButtonBase)({
- 
+const ButtonRoot = styled("button")({
+  isplay: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  boxSizing: "border-box",
+  backgroundColor: "transparent",
+  outline: 0,
   border: 0,
+  margin: 0,
+  borderRadius: 0,
+  padding: 0,
+  cursor: "pointer",
+  textDecoration: "none",
+  color: "inherit",
+  "-disabled": {
+    pointerEvents: "none",
+    cursor: "default",
+  },
   "&:hover": {
     textDecoration: "none",
   },
@@ -85,34 +39,15 @@ const ButtonStartIcon = styled("span")({
   display: "inherit",
   marginRight: 8,
   marginLeft: -4,
-  variants: [
-    {
-      props: { size: "small" },
-      style: {
-        marginLeft: -2,
-      },
-    },
-    ...commonIconStyles,
-  ],
 });
 
 const ButtonEndIcon = styled("span")({
   display: "inherit",
   marginRight: -4,
   marginLeft: 8,
-  variants: [
-    {
-      props: { size: "small" },
-      style: {
-        marginRight: -2,
-      },
-    },
-    ...commonIconStyles,
-  ],
 });
 
-const Button = (props: ButtonOwnProps) => {
-
+const Button = (props: ButtonProps) => {
   const {
     children,
     disabled = false,

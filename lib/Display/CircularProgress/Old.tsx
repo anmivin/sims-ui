@@ -1,25 +1,43 @@
-import { StyledModernSpinner } from "./CircularProgress.styled";
+import { StyledOldSpinner } from "./CircularProgress.styled";
 import React from "react";
-const CircularProgressModern = ({ width = 100 }: { width?: number }) => {
+const CircularProgressOld = ({ width = 120 }: { width?: number }) => {
   return (
-    <StyledModernSpinner width={width} height={width * 2} viewBox='0 0 24 24'>
-      <path className='contour' d='M 0 0 L 30 0 L 17 21 L 30 42 L 0 42 L 13 21 L 0 0' />
-
-      <path className='hourglass_1' d='M 14 21 L 2 1 L 28 1 L 16 21 L 14 21' />
+    <StyledOldSpinner width={width} height={width} viewBox='0 0 52 52'>
+      <radialGradient id='background' x1='0%' x2='0%' y1='0%' y2='100%'>
+        <stop offset='0%' stopColor='#5166a9' />
+        <stop offset='100%' stopColor='#222943' />
+      </radialGradient>
+      <radialGradient id='fill' x1='0%' x2='0%' y1='0%' y2='100%'>
+        <stop offset='0%' stopColor='#6c9add' />
+        <stop offset='100%' stopColor='#365fa0' />
+      </radialGradient>
+      <path
+        strokeLinejoin='round'
+        className='contour'
+        stroke='#cad4db'
+        fill='url(#background)'
+        d='M 11 8 L 41 8 L 28 26 L 41 44 L 11 44 L 24 26 L 11 8 Z'
+      />
 
       <path
+        fill='url(#fill)'
+        className='hourglass_1'
+        d='M 15 12 L 37 12 L 27 26 L 27 37 L 35 37 L 39 43 L 13 43 L 17 37 L 25 37 L 25 26 L 15 12 Z'
+      />
+
+      <path
+        fill='url(#fill)'
         className='hourglass_2'
-        d='M 4 4 L 26 4 L 16 21 L 16 36 L 25 36 L 28 41 L 2 41 L 5 36 L 14 36 L 14 21 L 4 4 '
+        d='M 20 19 L 32 19 L 27 26 L 27 33 L 32 33 L 39 43 L 13 43 L 20 33 L 25 33 L 25 26 L 20 19 Z'
       />
 
       <path
+        fill='url(#fill)'
         className='hourglass_3'
-        d='M 8 11 L 22 11 L 16 21 L 16 28 L 20 28 L 28 41 L 2 41 L 10 28 L 14 28 L 14 21 L 8 11'
+        d='M 25 26 L 27 26 L 39 43 L 13 43 L 25 26 Z'
       />
-
-      <path className='hourglass_4' d='M 16 21 L 28 41 L 2 41 L 14 21 L 16 21' />
-    </StyledModernSpinner>
+    </StyledOldSpinner>
   );
 };
 
-export default CircularProgressModern;
+export default CircularProgressOld;

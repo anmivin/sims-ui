@@ -1,92 +1,63 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import deepmerge from "@mui/utils/deepmerge";
-import getReactNodeRef from "@mui/utils/getReactNodeRef";
-import SelectInput from "./SelectInput";
-import formControlState from "../mui/mui-material/src/FormControl/formControlState";
-import useFormControl from "../mui/mui-material/src/FormControl/useFormControl";
-import ArrowDropDownIcon from "../internal/svg-icons/ArrowDropDown";
-import Input from "../mui/mui-material/src/Input";
-import NativeSelectInput from "../NativeSelect/NativeSelectInput";
-import FilledInput from "../mui/mui-material/src/FilledInput";
-import OutlinedInput from "../OutlinedInput";
-import useThemeProps from "../mui/mui-material/src/styles/useThemeProps";
-import useForkRef from "../utils/useForkRef";
+
+import TextField from "../Inputs/TextField/TextField";
 import styled from "@emotion/styled";
-import rootShouldForwardProp from "../mui/mui-material/src/styles/rootShouldForwardProp";
+import { InputBaseProps } from "../Inputs/TextField/TextField";
 
-const styledRootConfig = {
-  name: "MuiSelect",
-  overridesResolver: (props, styles) => styles.root,
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) && prop !== "variant",
-  slot: "Root",
-};
+import { MenuProps } from "./Menu";
 
-const StyledInput = styled(Input, styledRootConfig)("");
+export interface SelectInputProps<Value = unknown> {
+  autoWidth: boolean;
+  defaultOpen?: boolean;
+  disabled?: boolean;
+  error?: boolean;
+  inputRef?: (
+    ref: HTMLSelectElement | { node: HTMLInputElement; value: SelectInputProps<Value>["value"] }
+  ) => void;
+  MenuProps?: Partial<MenuProps>;
+  multiple: boolean;
+  onChange?: (event: SelectChangeEvent<Value>, child: React.ReactNode) => void;
+  open?: boolean;
+  value?: Value;
+}
 
-const StyledOutlinedInput = styled(OutlinedInput, styledRootConfig)("");
+export interface BaseSelectProps extends InputBaseProps {
+  /**
+   * If `true`, the width of the popover will automatically be set according to the items inside the
+   * menu, otherwise it will be at least the width of the select input.
+   * @default false
+   */
+  autoWidth?: boolean;
 
-const StyledFilledInput = styled(FilledInput, styledRootConfig)("");
+  /**
+   * If `true`, `value` must be an array and the menu will support multiple selections.
+   * @default false
+   */
+  multiple?: boolean;
+}
 
-const Select = React.forwardRef(function Select(inProps, ref) {
-  const props = useThemeProps({ name: "MuiSelect", props: inProps });
+const Select = (props: BaseSelectProps) => {
   const {
     autoWidth = false,
-    children,
-    classes: classesProp = {},
-    className,
-    defaultOpen = false,
-    displayEmpty = false,
-    IconComponent = ArrowDropDownIcon,
-    id,
-    input,
-    inputProps,
     label,
-    labelId,
-    MenuProps,
     multiple = false,
-    native = false,
-    onClose,
-    onOpen,
-    open,
-    renderValue,
-    SelectDisplayProps,
     variant: variantProp = "outlined",
     ...other
   } = props;
 
-  const inputComponent = native ? NativeSelectInput : SelectInput;
-
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ["variant", "error"],
-  });
-
-  const variant = fcs.variant || variantProp;
-
-  const ownerState = { ...props, variant, classes: classesProp };
-  const classes = useUtilityClasses(ownerState);
-  const { root, ...restOfClasses } = classes;
+  const variant = variantProp;
 
   const InputComponent =
-    input ||
+    SelectInput ||
     {
-      standard: <StyledInput ownerState={ownerState} />,
-      outlined: <StyledOutlinedInput label={label} ownerState={ownerState} />,
-      filled: <StyledFilledInput ownerState={ownerState} />,
+      standard: <StyledInput />,
+      outlined: <StyledOutlinedInput label={label} />,
+      filled: <StyledFilledInput />,
     }[variant];
-
-  const inputComponentRef = useForkRef(ref, getReactNodeRef(InputComponent));
 
   return (
     <React.Fragment>
       {React.cloneElement(InputComponent, {
-        // Most of the logic is implemented in `SelectInput`.
-        // The `Select` component is a simple API wrapper to expose something better to play with.
-        inputComponent,
         inputProps: {
           children,
           error: fcs.error,
@@ -94,23 +65,10 @@ const Select = React.forwardRef(function Select(inProps, ref) {
           variant,
           type: undefined, // We render a select. We can ignore the type provided by the `Input`.
           multiple,
-          ...(native
-            ? { id }
-            : {
-                autoWidth,
-                defaultOpen,
-                displayEmpty,
-                labelId,
-                MenuProps,
-                onClose,
-                onOpen,
-                open,
-                renderValue,
-                SelectDisplayProps: { id, ...SelectDisplayProps },
-              }),
-          ...inputProps,
-          classes: inputProps ? deepmerge(restOfClasses, inputProps.classes) : restOfClasses,
-          ...(input ? input.props.inputProps : {}),
+          ...{
+            autoWidth,
+            open,
+          },
         },
         ...(((multiple && native) || displayEmpty) && variant === "outlined"
           ? { notched: true }
@@ -123,198 +81,15 @@ const Select = React.forwardRef(function Select(inProps, ref) {
       })}
     </React.Fragment>
   );
-});
-
-Select.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * If `true`, the width of the popover will automatically be set according to the items inside the
-   * menu, otherwise it will be at least the width of the select input.
-   * @default false
-   */
-  autoWidth: PropTypes.bool,
-  /**
-   * The option elements to populate the select with.
-   * Can be some `MenuItem` when `native` is false and `option` when `native` is true.
-   *
-   * ⚠️The `MenuItem` elements **must** be direct descendants when `native` is false.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   * @default {}
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * If `true`, the component is initially open. Use when the component open state is not controlled (i.e. the `open` prop is not defined).
-   * You can only use it when the `native` prop is `false` (default).
-   * @default false
-   */
-  defaultOpen: PropTypes.bool,
-  /**
-   * The default value. Use when the component is not controlled.
-   */
-  defaultValue: PropTypes.any,
-  /**
-   * If `true`, a value is displayed even if no items are selected.
-   *
-   * In order to display a meaningful value, a function can be passed to the `renderValue` prop which
-   * returns the value to be displayed when no items are selected.
-   *
-   * ⚠️ When using this prop, make sure the label doesn't overlap with the empty displayed value.
-   * The label should either be hidden or forced to a shrunk state.
-   * @default false
-   */
-  displayEmpty: PropTypes.bool,
-  /**
-   * The icon that displays the arrow.
-   * @default ArrowDropDownIcon
-   */
-  IconComponent: PropTypes.elementType,
-  /**
-   * The `id` of the wrapper element or the `select` element when `native`.
-   */
-  id: PropTypes.string,
-  /**
-   * An `Input` element; does not have to be a material-ui specific `Input`.
-   */
-  input: PropTypes.element,
-  /**
-   * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes) applied to the `input` element.
-   * When `native` is `true`, the attributes are applied on the `select` element.
-   */
-  inputProps: PropTypes.object,
-  /**
-   * See [OutlinedInput#label](https://mui.com/material-ui/api/outlined-input/#props)
-   */
-  label: PropTypes.node,
-  /**
-   * The ID of an element that acts as an additional label. The Select will
-   * be labelled by the additional label and the selected value.
-   */
-  labelId: PropTypes.string,
-  /**
-   * Props applied to the [`Menu`](https://mui.com/material-ui/api/menu/) element.
-   */
-  MenuProps: PropTypes.object,
-  /**
-   * If `true`, `value` must be an array and the menu will support multiple selections.
-   * @default false
-   */
-  multiple: PropTypes.bool,
-  /**
-   * If `true`, the component uses a native `select` element.
-   * @default false
-   */
-  native: PropTypes.bool,
-  /**
-   * Callback fired when a menu item is selected.
-   *
-   * @param {SelectChangeEvent<Value>} event The event source of the callback.
-   * You can pull out the new value by accessing `event.target.value` (any).
-   * **Warning**: This is a generic event, not a change event, unless the change event is caused by browser autofill.
-   * @param {object} [child] The react element that was selected when `native` is `false` (default).
-   */
-  onChange: PropTypes.func,
-  /**
-   * Callback fired when the component requests to be closed.
-   * Use it in either controlled (see the `open` prop), or uncontrolled mode (to detect when the Select collapses).
-   *
-   * @param {object} event The event source of the callback.
-   */
-  onClose: PropTypes.func,
-  /**
-   * Callback fired when the component requests to be opened.
-   * Use it in either controlled (see the `open` prop), or uncontrolled mode (to detect when the Select expands).
-   *
-   * @param {object} event The event source of the callback.
-   */
-  onOpen: PropTypes.func,
-  /**
-   * If `true`, the component is shown.
-   * You can only use it when the `native` prop is `false` (default).
-   */
-  open: PropTypes.bool,
-  /**
-   * Render the selected value.
-   * You can only use it when the `native` prop is `false` (default).
-   *
-   * @param {any} value The `value` provided to the component.
-   * @returns {ReactNode}
-   */
-  renderValue: PropTypes.func,
-  /**
-   * Props applied to the clickable div element.
-   */
-  SelectDisplayProps: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The `input` value. Providing an empty string will select no options.
-   * Set to an empty string `''` if you don't want any of the available options to be selected.
-   *
-   * If the value is an object it must have reference equality with the option in order to be selected.
-   * If the value is not an object, the string representation must match with the string representation of the option in order to be selected.
-   */
-  value: PropTypes.oneOfType([PropTypes.oneOf([""]), PropTypes.any]),
-  /**
-   * The variant to use.
-   * @default 'outlined'
-   */
-  variant: PropTypes.oneOf(["filled", "outlined", "standard"]),
 };
-
-Select.muiName = "Select";
 
 export default Select;
 
-("use client");
-import * as React from "react";
-import { isFragment } from "react-is";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import MuiError from "@mui/internal-babel-macros/MuiError.macro";
-import composeClasses from "@mui/utils/composeClasses";
-import useId from "@mui/utils/useId";
-import refType from "@mui/utils/refType";
 import ownerDocument from "../utils/ownerDocument";
-import capitalize from "../utils/capitalize";
 import Menu from "../Menu/Menu";
 import { StyledSelectSelect, StyledSelectIcon } from "../NativeSelect/NativeSelectInput";
-import { isFilled } from "../InputBase/utils";
-import { styled } from "../zero-styled";
-import slotShouldForwardProp from "../mui/mui-material/src/styles/slotShouldForwardProp";
-import useForkRef from "../utils/useForkRef";
-import useControlled from "../utils/useControlled";
-import selectClasses, { getSelectUtilityClasses } from "./selectClasses";
 
-const SelectSelect = styled(StyledSelectSelect, {
-  name: "MuiSelect",
-  slot: "Select",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [
-      // Win specificity over the input base
-      { [`&.${selectClasses.select}`]: styles.select },
-      { [`&.${selectClasses.select}`]: styles[ownerState.variant] },
-      { [`&.${selectClasses.error}`]: styles.error },
-      { [`&.${selectClasses.multiple}`]: styles.multiple },
-    ];
-  },
-})({
+const SelectSelect = styled(StyledSelectSelect)({
   // Win specificity over the input base
   [`&.${selectClasses.select}`]: {
     height: "auto", // Resets for multiple select with chips
@@ -325,25 +100,9 @@ const SelectSelect = styled(StyledSelectSelect, {
   },
 });
 
-const SelectIcon = styled(StyledSelectIcon, {
-  name: "MuiSelect",
-  slot: "Icon",
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [
-      styles.icon,
-      ownerState.variant && styles[`icon${capitalize(ownerState.variant)}`],
-      ownerState.open && styles.iconOpen,
-    ];
-  },
-})({});
+const SelectIcon = styled(StyledSelectIcon)({});
 
-const SelectNativeInput = styled("input", {
-  shouldForwardProp: (prop) => slotShouldForwardProp(prop) && prop !== "classes",
-  name: "MuiSelect",
-  slot: "NativeInput",
-  overridesResolver: (props, styles) => styles.nativeInput,
-})({
+const SelectNativeInput = styled("input")({
   bottom: 0,
   left: 0,
   position: "absolute",
@@ -366,66 +125,28 @@ function isEmpty(display) {
   return display == null || (typeof display === "string" && !display.trim());
 }
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, variant, disabled, multiple, open, error } = ownerState;
-
-  const slots = {
-    select: ["select", variant, disabled && "disabled", multiple && "multiple", error && "error"],
-    icon: ["icon", `icon${capitalize(variant)}`, open && "iconOpen", disabled && "disabled"],
-    nativeInput: ["nativeInput"],
-  };
-
-  return composeClasses(slots, getSelectUtilityClasses, classes);
-};
-
-/**
- * @ignore - internal component.
- */
-const SelectInput = (props: Se) => {
+const SelectInput = (props: BaseSelectProps) => {
   const {
-    "aria-describedby": ariaDescribedby,
-    "aria-label": ariaLabel,
-    autoFocus,
     autoWidth,
     children,
-    className,
-    defaultOpen,
     defaultValue,
     disabled,
-    displayEmpty,
     error = false,
-    IconComponent,
-    inputRef: inputRefProp,
-    labelId,
-    MenuProps = {},
     multiple,
-    name,
-    onBlur,
     onChange,
-    onClose,
-    onFocus,
-    onOpen,
-    open: openProp,
-    readOnly,
-    renderValue,
-    SelectDisplayProps = {},
-    tabIndex: tabIndexProp,
-    // catching `type` from Input which makes no sense for SelectInput
-    type,
     value: valueProp,
     variant = "standard",
     ...other
   } = props;
 
   const [value, setValueState] = React.useState(defaultValue);
-  const [openState, setOpenState] = React.useState(defaultOpen);
+  const [openState, setOpenState] = React.useState(false);
 
   const inputRef = React.useRef(null);
   const displayRef = React.useRef(null);
   const [displayNode, setDisplayNode] = React.useState(null);
   const { current: isOpenControlled } = React.useRef(openProp != null);
   const [menuMinWidthState, setMenuMinWidthState] = React.useState();
-  const handleRef = useForkRef(ref, inputRefProp);
 
   const handleDisplayRef = React.useCallback((node) => {
     displayRef.current = node;
@@ -581,7 +302,6 @@ const SelectInput = (props: Se) => {
     }
   };
 
-
   const open = displayNode !== null && openState;
 
   let display;
@@ -604,12 +324,9 @@ const SelectInput = (props: Se) => {
       return null;
     }
 
-   
     let selected;
 
     if (multiple) {
-      
-
       selected = value.some((v) => areEqualValues(v, child.props.value));
       if (selected && computeDisplay) {
         displayMultiple.push(child.props.children);
@@ -646,7 +363,6 @@ const SelectInput = (props: Se) => {
     });
   });
 
-
   if (computeDisplay) {
     if (multiple) {
       if (displayMultiple.length === 0) {
@@ -680,7 +396,6 @@ const SelectInput = (props: Se) => {
   }
 
   const buttonId = SelectDisplayProps.id || (name ? `mui-component-select-${name}` : undefined);
-
 
   return (
     <React.Fragment>
@@ -719,7 +434,6 @@ const SelectInput = (props: Se) => {
       />
       <SelectIcon as={IconComponent} />
       <Menu
-        id={`menu-${name || ""}`}
         anchorEl={anchorElement}
         open={open}
         onClose={handleClose}
@@ -736,80 +450,6 @@ const SelectInput = (props: Se) => {
       </Menu>
     </React.Fragment>
   );
-});
+};
 
 export default SelectInput;
-
-import { MenuProps } from "./Menu";
-
-export interface SelectInputProps<Value = unknown> {
-  autoWidth: boolean;
-  defaultOpen?: boolean;
-  disabled?: boolean;
-  error?: boolean;
-  inputRef?: (
-    ref: HTMLSelectElement | { node: HTMLInputElement; value: SelectInputProps<Value>["value"] }
-  ) => void;
-  MenuProps?: Partial<MenuProps>;
-  multiple: boolean;
-  onChange?: (event: SelectChangeEvent<Value>, child: React.ReactNode) => void;
-  open?: boolean;
-  value?: Value;
-}
-
-
-import { InputProps } from "./Input";
-
-
-export interface BaseSelectProps<Value = unknown>
-  extends Omit<InputProps, "value" | "onChange"> {
-  /**
-   * If `true`, the width of the popover will automatically be set according to the items inside the
-   * menu, otherwise it will be at least the width of the select input.
-   * @default false
-   */
-  autoWidth?: boolean;
-  /**
-   * The option elements to populate the select with.
-   * Can be some `MenuItem` when `native` is false and `option` when `native` is true.
-   *
-   * ⚠️The `MenuItem` elements **must** be direct descendants when `native` is false.
-   */
-  children?: React.ReactNode;
-
-  /**
-   * The default value. Use when the component is not controlled.
-   */
-  defaultValue?: Value;
-
-  /**
-   * See [OutlinedInput#label](https://mui.com/material-ui/api/outlined-input/#props)
-   */
-  label?: React.ReactNode;
-
-  /**
-   * If `true`, `value` must be an array and the menu will support multiple selections.
-   * @default false
-   */
-  multiple?: boolean;
-
-  /**
-   * Callback fired when a menu item is selected.
-   *
-   * @param {SelectChangeEvent<Value>} event The event source of the callback.
-   * You can pull out the new value by accessing `event.target.value` (any).
-   * **Warning**: This is a generic event, not a change event, unless the change event is caused by browser autofill.
-   * @param {object} [child] The react element that was selected when `native` is `false` (default).
-   */
-  onChange?: SelectInputProps<Value>["onChange"];
-
-  /**
-   * The `input` value. Providing an empty string will select no options.
-   * Set to an empty string `''` if you don't want any of the available options to be selected.
-   *
-   * If the value is an object it must have reference equality with the option in order to be selected.
-   * If the value is not an object, the string representation must match with the string representation of the option in order to be selected.
-   */
-  value?: Value | "";
-
-}

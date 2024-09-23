@@ -4,6 +4,13 @@ import MenuList from "./MenuList";
 import Popover, { PopoverPaper } from "./Popover";
 import styled from "@emotion/styled";
 
+import { PopoverProps } from "./Popover";
+
+export interface MenuProps extends PopoverProps {
+  children?: React.ReactNode;
+  open: boolean;
+}
+
 const LTR_ORIGIN = {
   vertical: "top",
   horizontal: "left",
@@ -20,30 +27,11 @@ const MenuMenuList = styled(MenuList)({
 });
 
 const Menu = (props: MenuProps, ref) => {
-  const {
-    children,
-    onClose,
-    open,
-    transitionDuration = "auto",
-    variant = "selectedMenu",
-    slots = {},
-    slotProps = {},
-    ...other
-  } = props;
+  const { children, onClose, open, ...other } = props;
 
-  const menuListActionsRef = React.useRef(null);
-  let activeItemIndex = -1;
   React.Children.map(children, (child, index) => {
     if (!React.isValidElement(child)) {
       return;
-    }
-
-    if (!child.props.disabled) {
-      if (variant === "selectedMenu" && child.props.selected) {
-        activeItemIndex = index;
-      } else if (activeItemIndex === -1) {
-        activeItemIndex = index;
-      }
     }
   });
 
@@ -57,37 +45,11 @@ const Menu = (props: MenuProps, ref) => {
       transformOrigin={LTR_ORIGIN}
       open={open}
       ref={ref}
-      transitionDuration={transitionDuration}
       {...other}
     >
-      <MenuMenuList actions={menuListActionsRef} variant={variant}>
-        {children}
-      </MenuMenuList>
+      <MenuMenuList>{children}</MenuMenuList>
     </MenuRoot>
   );
 };
 
 export default Menu;
-
-import { PopoverProps } from "./Popover";
-
-export interface MenuProps extends Omit<PopoverProps, "anchorEl"> {
-  /**
-   * An HTML element, or a function that returns one.
-   * It's used to set the position of the menu.
-   */
-  anchorEl?: PopoverProps["anchorEl"];
-  /**
-   * Menu contents, normally `MenuItem`s.
-   */
-  children?: React.ReactNode;
-  /**
-   * If `true`, the component is shown.
-   */
-  open: boolean;
-  /**
-   * The variant to use. Use `menu` to prevent selected items from impacting the initial focus.
-   * @default 'selectedMenu'
-   */
-  variant?: "menu" | "selectedMenu";
-}

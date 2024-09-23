@@ -2,29 +2,50 @@ import * as React from "react";
 
 import styled from "@emotion/styled";
 
-import SwitchBase, { SwitchBaseProps } from "../../Providers/SwitchBase";
-
 export interface SwitchProps
-  extends Omit<SwitchBaseProps, "checkedIcon" | "color" | "icon"> {
-  /**
-   * The icon to display when the component is checked.
-   */
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "type"> {
+  defaultChecked?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  required?: boolean;
+  checked?: boolean;
   checkedIcon?: React.ReactNode;
-  /**
-   * If `true`, the component is disabled.
-   */
-  disabled?: boolean;
-  /**
-   * The icon to display when the component is unchecked.
-   */
   icon?: React.ReactNode;
-  /**
-   * The value of the component. The DOM API casts this to a string.
-   * The browser uses "on" as the default value.
-   */
-  value?: string | number | readonly string[] | undefined;
+  disabled?: boolean;
 }
 
+const SwitchBaseRoot = styled("button")({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  boxSizing: "border-box",
+  backgroundColor: "transparent",
+  outline: 0,
+  border: 0,
+  margin: 0,
+  borderRadius: 0,
+  padding: 0,
+  cursor: "pointer",
+  textDecoration: "none",
+  color: "inherit",
+  "-disabled": {
+    pointerEvents: "none",
+    cursor: "default",
+  },
+});
+
+const SwitchBaseInput = styled("input")({
+  cursor: "inherit",
+  position: "absolute",
+  opacity: 0,
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+  margin: 0,
+  padding: 0,
+  zIndex: 1,
+});
 
 const SwitchRoot = styled("span")({
   display: "inline-flex",
@@ -37,84 +58,67 @@ const SwitchRoot = styled("span")({
   flexShrink: 0,
   zIndex: 0, // Reset the stacking context.
   verticalAlign: "middle", // For correct alignment with the text.
-'-start': {
-marginLeft: -8
-},
-'-end': {
-marginRight: -8
-}
-
-
-   
+  "-start": {
+    marginLeft: -8,
+  },
+  "-end": {
+    marginRight: -8,
+  },
 });
 
 const SwitchSwitchBase = styled(SwitchBase)({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    zIndex: 1, // Render above the focus ripple.
-    '-disabled': {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  zIndex: 1, // Render above the focus ripple.
+  "-disabled": {},
+  "-checked": {
+    transform: "translateX(20px)",
+  },
+  "-checked + .track": {
+    opacity: 0.5,
+  },
+  "-disabled + .track": {
+    opacity: 0.2,
+  },
+  "-input": {
+    left: "-100%",
+    width: "300%",
+  },
 
-    },
-    '-checked': {
-      transform: "translateX(20px)",
-    },
-'-checked + .track': {
-  opacity: 0.5,
-},
-'-disabled + .track': {
-  opacity: 0.2,
-},
-'-input': {
-        left: "-100%",
-      width: "300%",
-},
+  "&:hover": {
+    backgroundColor: "",
+  },
+});
 
-        "&:hover": {
-      backgroundColor: '',
-
-    },
-   
-  });
-
-const SwitchTrack = styled("span")(
-{
-    height: "100%",
-    width: "100%",
-    borderRadius: 14 / 2,
-    zIndex: -1,
-    backgroundColor: '',
-    opacity: 0.3,
-  });
+const SwitchTrack = styled("span")({
+  height: "100%",
+  width: "100%",
+  borderRadius: 14 / 2,
+  zIndex: -1,
+  backgroundColor: "",
+  opacity: 0.3,
+});
 
 const SwitchThumb = styled("span")({
-    boxShadow: '',
-    backgroundColor: "currentColor",
-    width: 20,
-    height: 20,
-    borderRadius: "50%",
-  });
+  boxShadow: "",
+  backgroundColor: "currentColor",
+  width: 20,
+  height: 20,
+  borderRadius: "50%",
+});
 
 const Switch = (props: SwitchProps) => {
   const { edge = false, ...other } = props;
 
-  const icon = <SwitchThumb className={'-thumb'} />;
+  const icon = <SwitchThumb className={"-thumb"} />;
 
   return (
-    <SwitchRoot className={edge === 'start' ? '-start': '-end'} >
-      <SwitchSwitchBase
-        type='checkbox'
-        icon={icon}
-        checkedIcon={icon}
-
-        {...other}
-
-      />
-      <SwitchTrack className={'-track'} />
+    <SwitchRoot className={edge === "start" ? "-start" : "-end"}>
+      <SwitchSwitchBase type='checkbox' icon={icon} checkedIcon={icon} {...other} />
+      <SwitchTrack className={"-track"} />
     </SwitchRoot>
   );
 };
 
 export default Switch;
-
-

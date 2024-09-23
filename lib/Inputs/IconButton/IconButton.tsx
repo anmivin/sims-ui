@@ -1,37 +1,42 @@
 import * as React from "react";
 
 import styled from "@emotion/styled";
-import ButtonBase from "../../Internal/ButtonBase";
+export interface IconButtonProps {
+  children?: React.ReactNode;
+  disabled?: boolean;
+}
 
-const IconButtonRoot = styled(ButtonBase)({
+const IconButtonRoot = styled("button")({
+  isplay: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  boxSizing: "border-box",
+  backgroundColor: "transparent",
+  outline: 0,
+  border: 0,
+  margin: 0,
+  padding: 8,
+  cursor: "pointer",
+  textDecoration: "none",
+  color: "inherit",
   textAlign: "center",
   flex: "0 0 auto",
-  padding: 8,
   borderRadius: "50%",
   transition: "",
 
   "-disabled": {
     backgroundColor: "transparent",
     color: "gray",
+    pointerEvents: "none",
+    cursor: "default",
   },
 });
 
-const IconButton = (props: IconButtonOwnProps) => {
+const IconButton = (props: IconButtonProps) => {
   const { children, disabled = false } = props;
 
   return <IconButtonRoot disabled={disabled}>{children}</IconButtonRoot>;
 };
 
 export default IconButton;
-
-export interface IconButtonOwnProps {
-  /**
-   * The icon to display.
-   */
-  children?: React.ReactNode;
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled?: boolean;
-}

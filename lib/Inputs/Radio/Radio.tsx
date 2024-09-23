@@ -1,95 +1,82 @@
-import * as React from 'react';
-import SwitchBase, { SwitchBaseProps } from "../../Internal/SwitchBase";
-
-import {useRadioGroup} from './RadioGroup';
-
-import styled from '@emotion/styled';
-
+import * as React from "react";
+import styled from "@emotion/styled";
 
 export interface RadioProps
-  extends Omit<SwitchBaseProps, 'checkedIcon' | 'color' | 'icon' | 'type'> {
-  /**
-   * The icon to display when the component is checked.
-   */
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "type"> {
+  defaultChecked?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  checked?: boolean;
   checkedIcon?: React.ReactNode;
-  /**
-   * If `true`, the component is disabled.
-   */
-  disabled?: boolean;
-  /**
-   * The icon to display when the component is unchecked.
-   */
   icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
+const SwitchBaseRoot = styled("button")({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  boxSizing: "border-box",
+  backgroundColor: "transparent",
+  outline: 0,
+  border: 0,
+  margin: 0,
+  borderRadius: 0,
+  padding: 0,
+  cursor: "pointer",
+  textDecoration: "none",
+  color: "inherit",
+  "-disabled": {
+    pointerEvents: "none",
+    cursor: "default",
+  },
+});
 
-const RadioRoot = styled(SwitchBase)({
-    color: '',
-    '-disabled': {
-      color: '',
-    },
-  });
-
-
-function areEqualValues(a, b) {
-  if (typeof b === 'object' && b !== null) {
-    return a === b;
-  }
-
-  // The value could be a number, the DOM will stringify it anyway.
-  return String(a) === String(b);
-}
+const SwitchBaseInput = styled("input")({
+  cursor: "inherit",
+  position: "absolute",
+  opacity: 0,
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+  margin: 0,
+  padding: 0,
+  zIndex: 1,
+});
 
 const defaultCheckedIcon = <></>;
 const defaultIcon = <></>;
 
-const Radio = (props: RadioProps) =>  {
+const Radio = (props: RadioProps) => {
   const {
-    checked: checkedProp,
+    checked,
     checkedIcon = defaultCheckedIcon,
     icon = defaultIcon,
-    onChange: onChangeProp,
-    disabled: disabledProp,
+    onChange,
+    disabled,
+    defaultChecked,
     ...other
   } = props;
 
-
-  let disabled = disabledProp;
-
-
-
-  disabled ??= false;
-
-  const radioGroup = useRadioGroup();
-
-  React.useEffect(() => {
-    console.log(radioGroup)
-  },[radioGroup])
-
-  let checked = checkedProp;
-  const onChange = (e, val) => {
-    onChangeProp?.(e, val);
-    radioGroup?.onChange?.(e, val);
-  }
-
-
-  if (radioGroup) {
-    if (typeof checked === 'undefined') {
-      checked = areEqualValues(radioGroup.value, props.value);
+  const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const newChecked = event.target.checked;
+    if (onChange) {
+      onChange(event, newChecked);
     }
-  }
+  }, []);
 
   return (
-    <RadioRoot
-      type="radio"
-      icon={icon}
-      checkedIcon={checkedIcon}
-      disabled={disabled}
- checked={checked}
-      onChange={onChange}
-
-      {...other}
-    />
+    <SwitchBaseRoot disabled={disabled} {...other}>
+      <SwitchBaseInput
+        checked={checked}
+        defaultChecked={defaultChecked}
+        disabled={disabled}
+        onChange={handleInputChange}
+        type='radio'
+      />
+      {checked ? checkedIcon : icon}
+    </SwitchBaseRoot>
   );
 };
 

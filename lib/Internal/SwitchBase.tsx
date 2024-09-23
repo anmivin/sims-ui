@@ -5,14 +5,6 @@ import ButtonBase from "./ButtonBase";
 import styled from "@emotion/styled";
 
 import { ButtonBaseProps } from "./ButtonBase";
-export interface SwitchBaseClasses {
-  root: string;
-  checked: string;
-  disabled: string;
-  input: string;
-  edgeStart: string;
-  edgeEnd: string;
-}
 
 export interface SwitchBaseProps
   extends Omit<ButtonBaseProps, "children" | "onChange" | "type" | "value"> {
@@ -90,7 +82,6 @@ const SwitchBaseInput = styled("input")({
 });
 
 const SwitchBase = (props: SwitchBaseProps) => {
-
   const {
     checked: checkedProp,
     checkedIcon,
@@ -108,7 +99,7 @@ const SwitchBase = (props: SwitchBaseProps) => {
     ...other
   } = props;
 
-  const [checked, setCheckedState] = React.useState(defaultChecked)
+  const [checked, setCheckedState] = React.useState(defaultChecked);
 
   const handleFocus = (event) => {
     if (onFocus) {
@@ -136,14 +127,13 @@ const SwitchBase = (props: SwitchBaseProps) => {
     }
   };
 
-
   return (
     <SwitchBaseRoot
-/*       component='span' */
+      /*       component='span' */
       disabled={disabled}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      className={edge === 'start' ? "-start" : undefined}
+      className={edge === "start" ? "-start" : undefined}
       {...other}
     >
       <SwitchBaseInput
