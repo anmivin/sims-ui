@@ -1,6 +1,6 @@
 import { StyledModernSpinner } from "./CircularProgress.styled";
 import React from "react";
-const CircularProgressModern = ({ width = 100 }: { width?: number }) => {
+export const CircularProgressModern = ({ width = 100 }: { width?: number }) => {
   return (
     <StyledModernSpinner width={width} height={width * 2} viewBox='0 0 24 24'>
       <path className='path_01' d='M 12 16 L 14 20 L 12 24 L 10 20 Z' />
@@ -26,5 +26,3 @@ const CircularProgressModern = ({ width = 100 }: { width?: number }) => {
     </StyledModernSpinner>
   );
 };
-
-export default CircularProgressModern;

@@ -38,7 +38,6 @@ const RadioGroup = (props: RadioGroupProps) => {
           key={index}
           checked={value === option.value}
           onChange={(e, checked) => {
-            console.log(e, checked);
             if (checked) setValueState(option.value);
           }}
         />

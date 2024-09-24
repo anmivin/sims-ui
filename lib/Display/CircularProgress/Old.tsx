@@ -1,6 +1,6 @@
 import { StyledOldSpinner } from "./CircularProgress.styled";
 import React from "react";
-const CircularProgressOld = ({ width = 120 }: { width?: number }) => {
+export const CircularProgressOld = ({ width = 120 }: { width?: number }) => {
   return (
     <StyledOldSpinner width={width} height={width} viewBox='0 0 52 52'>
       <radialGradient id='background' x1='0%' x2='0%' y1='0%' y2='100%'>
@@ -40,4 +40,3 @@ const CircularProgressOld = ({ width = 120 }: { width?: number }) => {
   );
 };
 
-export default CircularProgressOld;

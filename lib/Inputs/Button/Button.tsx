@@ -2,7 +2,7 @@ import * as React from "react";
 
 import styled from "@emotion/styled";
 
-export interface ButtonProps {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   disabled?: boolean;
   endIcon?: React.ReactNode;

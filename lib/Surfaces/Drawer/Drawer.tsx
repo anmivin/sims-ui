@@ -16,6 +16,8 @@ const DrawerRoot = styled(Modal)({
 });
 
 const DrawerPaper = styled("div")({
+  width: '200px',
+  backgroundColor: 'blue',
   overflowY: "auto",
   display: "flex",
   flexDirection: "column",
@@ -25,20 +27,21 @@ const DrawerPaper = styled("div")({
   position: "fixed",
   top: 0,
   outline: 0,
-  "-left": {
+  right: 0,
+  ".-left": {
     left: 0,
   },
-  "-top": {
+  ".-top": {
     top: 0,
     left: 0,
     right: 0,
     height: "auto",
     maxHeight: "100%",
   },
-  "-right": {
+  ".-right": {
     right: 0,
   },
-  "-bottom": {
+  ".-bottom": {
     top: "auto",
     left: 0,
     bottom: 0,
@@ -50,7 +53,7 @@ const DrawerPaper = styled("div")({
 
 const Drawer = (props: DrawerProps) => {
   const {
-    anchor: anchorProp = "left",
+    anchor: anchorProp = "right",
     children,
     hideBackdrop = false,
     onClose,
@@ -58,10 +61,10 @@ const Drawer = (props: DrawerProps) => {
     ...other
   } = props;
 
-  const drawer = <DrawerPaper>{children}</DrawerPaper>;
+  const drawer = <DrawerPaper className={'-bottom'}>{children}</DrawerPaper>;
 
   return (
-    <DrawerRoot open={open} onClose={onClose} hideBackdrop={hideBackdrop} {...other}>
+    <DrawerRoot open={open} onClose={onClose} onBackdropClick={onClose} hideBackdrop={hideBackdrop} {...other}>
       {drawer}
     </DrawerRoot>
   );

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Portal from "./Portal";
-import styled from "@emotion/styled/";
+import styled from "@emotion/styled";
 import { useModal } from "./useModal";
 export interface ModalOwnProps {
   children: React.ReactElement<unknown>;

@@ -2,10 +2,10 @@ import * as React from "react";
 
 import styled from "@emotion/styled";
 
-import debounce from "../utils/debounce";
-import ownerDocument from "../utils/ownerDocument";
-import ownerWindow from "../utils/ownerWindow";
-import Modal, { ModalOwnProps } from "../Internal/MuiModal";
+import debounce from "../../utils/debounce";
+import ownerDocument from "../../utils/ownerDocument";
+import ownerWindow from "../../utils/ownerWindow";
+import Modal, { ModalOwnProps } from "../../Internal/MuiModal";
 
 export interface PopoverProps extends Omit<ModalOwnProps, "children"> {
   anchorEl?: Node;
@@ -84,6 +84,7 @@ export const PopoverPaper = styled("div")({
   maxWidth: "calc(100% - 32px)",
   maxHeight: "calc(100% - 32px)",
   outline: 0,
+  backgroundColor: 'red'
 });
 
 const Popover = (props: PopoverProps) => {
@@ -145,8 +146,8 @@ const Popover = (props: PopoverProps) => {
       const anchorOffset = getAnchorOffset();
 
       // Calculate element positioning
-      let top = anchorOffset.top - elemTransformOrigin.vertical;
-      let left = anchorOffset.left - elemTransformOrigin.horizontal;
+      const top = anchorOffset.top - elemTransformOrigin.vertical;
+      const left = anchorOffset.left - elemTransformOrigin.horizontal;
 
       return {
         top: `${Math.round(top)}px`,
@@ -218,8 +219,3 @@ export interface PopoverPosition {
 }
 
 export type PopoverReference = "anchorEl" | "anchorPosition" | "none";
-
-interface PopoverVirtualElement {
-  getBoundingClientRect: () => DOMRect;
-  nodeType: Node["ELEMENT_NODE"];
-}

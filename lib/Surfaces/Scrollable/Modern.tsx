@@ -1,5 +1,6 @@
 import Scrollable, { ScrollableProps } from "./Scrollable";
 import styled from "@emotion/styled";
+import React from "react";
 
 const StyledScrollable = styled(Scrollable)({
   "::-webkit-scrollbar": {
@@ -21,6 +22,7 @@ const StyledScrollable = styled(Scrollable)({
     cursor: "pointer",
     boxShadow: "0px 1px 2px #838487",
   },
+  
   "::-webkit-scrollbar-thumb:hover": {
     background: "linear-gradient(180deg, #c7ee7d 20%, #a8e15f)",
   },

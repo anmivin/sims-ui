@@ -1,5 +1,6 @@
 import Scrollable, { ScrollableProps } from "./Scrollable";
 import styled from "@emotion/styled";
+import React from "react";
 
 const StyledScrollable = styled(Scrollable)({
   "::-webkit-scrollbar": {
@@ -28,7 +29,7 @@ const StyledScrollable = styled(Scrollable)({
     backgroundColor: "#CDD6FF",
   },
 });
-const OldScrollable = (props: ScrollableProps) => {
+export const OldScrollable = (props: ScrollableProps) => {
   const { children, width, height } = props;
   return (
     <StyledScrollable width={width} height={height}>

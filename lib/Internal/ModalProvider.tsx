@@ -1,13 +1,9 @@
-import React, { ReactNode, createContext, useCallback, useContext, useState } from "react";
+import React, { ReactNode, createContext, useCallback, useState } from "react";
 import Modal from "./Modal";
 
 interface Modal {
   mount: Element;
   modalRef: Element;
-}
-
-interface Container {
-  modals: Modal[];
 }
 
 interface ModalContextProps {
@@ -16,20 +12,6 @@ interface ModalContextProps {
 }
 
 export const ModalContext = createContext({} as ModalContextProps);
-
-export const useModal = () => useContext(ModalContext);
-
-const findIndexOf = <T,>(items: readonly T[], callback: (item: T) => boolean): number => {
-  let idx = -1;
-  items.some((item, index) => {
-    if (callback(item)) {
-      idx = index;
-      return true;
-    }
-    return false;
-  });
-  return idx;
-};
 
 const ModalProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [modals, setModals] = useState<Modal[]>([]);

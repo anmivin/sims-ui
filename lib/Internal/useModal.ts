@@ -55,7 +55,7 @@ export const useModal = (props: UseModalProps) => {
   const handleClose = React.useCallback(() => {
     onClose?.();
     context.remove(getModal());
-  }, [context]);
+  }, []);
 
   React.useEffect(() => {
     return () => {
@@ -69,7 +69,7 @@ export const useModal = (props: UseModalProps) => {
     } else {
       handleClose();
     }
-  }, [open, handleClose, handleOpen]);
+  }, [open]);
 
   return {
     handleClose,

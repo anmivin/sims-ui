@@ -1,10 +1,6 @@
 import type { ReactNode } from "react";
 import styled from "@emotion/styled";
-import { ButtonProps } from "./ButtonProps";
-import Button from './Button'
-interface Bur {
-  fullWidth: boolean;
-}
+import Button, {ButtonProps} from './Button'
 
 const StyledButton = styled(Button)({
    fontFamily: 'The Sims Sans',
@@ -34,6 +30,11 @@ const StyledButton = styled(Button)({
 
 ;
 
-export const ModernButton = ({ children, fullWidth = false }: ButtonProps): ReactNode => {
-  return <StyledButton fullWidth={fullWidth}>{children}</StyledButton>;
+export const ModernButton = ({   children,
+  disabled,
+  endIcon,
+  fullWidth,
+  href,
+  startIcon, onClick }: ButtonProps): ReactNode => {
+  return <StyledButton onClick={onClick}fullWidth={fullWidth}>{children}</StyledButton>;
 };

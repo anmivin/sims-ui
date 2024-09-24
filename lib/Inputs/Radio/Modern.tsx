@@ -1,7 +1,7 @@
 import RadioCheckIcon from "../../icons/Modern/RadioCheck";
 import RadioUncheckedIcon from "../../icons/Modern/RadioUnchecked";
 import RadioGroup from "./RadioGroup";
-const ModernRadio = () => {
+export const ModernRadio = () => {
   return (
     <RadioGroup
       icon={<RadioUncheckedIcon />}
@@ -14,4 +14,3 @@ const ModernRadio = () => {
   );
 };
 
-export default ModernRadio;
