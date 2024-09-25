@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import debounce from "../../utils/debounce";
 import ownerDocument from "../../utils/ownerDocument";
 import ownerWindow from "../../utils/ownerWindow";
-import Modal, { ModalOwnProps } from "../../Internal/MuiModal";
+import Modal, { ModalOwnProps } from "../../Internal/Modal";
 
 export interface PopoverProps extends Omit<ModalOwnProps, "children"> {
   anchorEl?: Node;
@@ -84,7 +84,7 @@ export const PopoverPaper = styled("div")({
   maxWidth: "calc(100% - 32px)",
   maxHeight: "calc(100% - 32px)",
   outline: 0,
-  backgroundColor: 'red'
+  backgroundColor: "red",
 });
 
 const Popover = (props: PopoverProps) => {

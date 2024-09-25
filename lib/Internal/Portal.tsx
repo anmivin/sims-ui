@@ -2,9 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 export interface PortalProps {
-  /**
-   * The children to render into the `container`.
-   */
   children?: React.ReactNode;
 }
 

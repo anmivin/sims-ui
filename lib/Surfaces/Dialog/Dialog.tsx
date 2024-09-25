@@ -1,5 +1,5 @@
 import * as React from "react";
-import Modal, { ModalOwnProps } from "../../Internal/MuiModal";
+import Modal, { ModalOwnProps } from "../../Internal/Modal";
 
 import styled from "@emotion/styled";
 

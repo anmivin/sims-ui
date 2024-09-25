@@ -39,4 +39,3 @@ export const CircularProgressOld = ({ width = 120 }: { width?: number }) => {
     </StyledOldSpinner>
   );
 };
-
