@@ -7,7 +7,7 @@ export interface IconButtonProps {
 }
 
 const IconButtonRoot = styled("button")({
-  isplay: "inline-flex",
+  display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   position: "relative",

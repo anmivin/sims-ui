@@ -1,10 +1,8 @@
 import * as React from "react";
 
 import MenuList from "./MenuList";
-import Popover, { PopoverPaper } from "./Popover";
+import Popover, { PopoverPaper, PopoverProps } from "../Surfaces/Popover/Popover";
 import styled from "@emotion/styled";
-
-import { PopoverProps } from "./Popover";
 
 export interface MenuProps extends PopoverProps {
   children?: React.ReactNode;

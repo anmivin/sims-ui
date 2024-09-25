@@ -1,20 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
 
-import styled from '@emotion/styled';
-import clsx from 'clsx';
+import styled from "@emotion/styled";
+import clsx from "clsx";
 
 export interface TabOwnProps {
   disabled?: boolean;
   icon?: string | React.ReactElement<unknown>;
-  iconPosition?: 'top' | 'bottom' | 'start' | 'end';
+  iconPosition?: "top" | "bottom" | "start" | "end";
   label?: React.ReactNode;
   value?: any;
-  onClick?: (val: any) => void
-  selected?: boolean
-  onChange?: () => void 
+  onClick?: (val: any) => void;
+  selected?: boolean;
+  onChange?: () => void;
 }
 
-const TabRoot = styled('button')({
+const TabRoot = styled("button")({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
@@ -32,23 +32,23 @@ const TabRoot = styled('button')({
     pointerEvents: "none",
     cursor: "default",
   },
-    maxWidth: 360,
-    minWidth: 90,
+  maxWidth: 360,
+  minWidth: 90,
 
-    minHeight: 48,
-    flexShrink: 0,
-    padding: '12px 16px',
-    overflow: 'hidden',
-    whiteSpace: 'normal',
-    textAlign: 'center',
-    lineHeight: 1.25,
-  });
+  minHeight: 48,
+  flexShrink: 0,
+  padding: "12px 16px",
+  overflow: "hidden",
+  whiteSpace: "normal",
+  textAlign: "center",
+  lineHeight: 1.25,
+});
 
 const Tab = (props: TabOwnProps) => {
   const {
     disabled = false,
     icon: iconProp,
-    iconPosition = 'top',
+    iconPosition = "top",
     label,
     onClick,
     value,
@@ -68,10 +68,10 @@ const Tab = (props: TabOwnProps) => {
     <TabRoot
       disabled={disabled}
       onClick={handleClick}
-      className={clsx('tab', selected && 'selected')}
+      className={clsx("tab", selected && "selected")}
       {...other}
     >
-      {iconPosition === 'top' || iconPosition === 'start' ? (
+      {iconPosition === "top" || iconPosition === "start" ? (
         <React.Fragment>
           {icon}
           {label}

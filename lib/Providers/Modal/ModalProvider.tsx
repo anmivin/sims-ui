@@ -1,5 +1,4 @@
 import React, { ReactNode, createContext, useCallback, useState } from "react";
-import Modal from "./Modal";
 
 interface Modal {
   mount: Element;

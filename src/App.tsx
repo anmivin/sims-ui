@@ -17,18 +17,23 @@ import {
   MenuButtonModern,
   MenuButtonOld,
   OldTabs,
+  Tooltip,
 } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 
 import "./App.css";
 import { useState } from "react";
 function App() {
-
-  const [selected, setSelected] = useState(false)
+  const [selected, setSelected] = useState(false);
   return (
     <ModalProvider>
-      <OldTabs/>
-{/* <MenuButtonOld selected>asdasd</MenuButtonOld> */}
+      <OldTabs />
+      <Tooltip title='ad'>
+        <div>
+          <OldCheckbox label='as' />
+        </div>
+      </Tooltip>
+      {/* <MenuButtonOld selected>asdasd</MenuButtonOld> */}
     </ModalProvider>
   );
 }
