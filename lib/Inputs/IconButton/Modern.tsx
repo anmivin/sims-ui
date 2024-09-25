@@ -26,6 +26,6 @@ const StyledButton = styled.button`
   }
 `;
 
-export const IconButton = ({ children}: ButtonProps): ReactNode => {
+export const IconButton = ({ children }: ButtonProps): ReactNode => {
   return <StyledButton>{children}</StyledButton>;
 };

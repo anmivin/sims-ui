@@ -5,14 +5,14 @@ export { OldCheckbox } from "./Inputs/Checkbox/Old";
 export { IconButton } from "./Inputs/IconButton/Modern";
 export { MenuButtonModern } from "./Navigation/MenuButton/Modern";
 export { MenuButtonOld } from "./Navigation/MenuButton/Old";
-export {OldRadio} from './Inputs/Radio/Old'
-export { CircularProgressModern} from './Display/CircularProgress/Modern'
-export {CircularProgressOld} from './Display/CircularProgress/Old'
-export { ModernRadio} from './Inputs/Radio/Modern'
-export {DialogModern} from './Surfaces/Dialog/Modern'
-export {DialogOld} from './Surfaces/Dialog/Old'
-export {default as ModalProvider} from './Internal/ModalProvider'
-export {TextFieldModern} from './Inputs/TextField/Modern'
-export {TextFieldOld} from './Inputs/TextField/Old'
-export {ModernTabs} from './Navigation/Tabs/Modern'
-export {OldTabs} from './Navigation/Tabs/Old'
+export { OldRadio } from "./Inputs/Radio/Old";
+export { CircularProgressModern } from "./Display/CircularProgress/Modern";
+export { CircularProgressOld } from "./Display/CircularProgress/Old";
+export { ModernRadio } from "./Inputs/Radio/Modern";
+export { DialogModern } from "./Surfaces/Dialog/Modern";
+export { DialogOld } from "./Surfaces/Dialog/Old";
+export { default as ModalProvider } from "./Providers/Modal/ModalProvider";
+export { TextFieldModern } from "./Inputs/TextField/Modern";
+export { TextFieldOld } from "./Inputs/TextField/Old";
+export { ModernTabs } from "./Navigation/Tabs/Modern";
+export { OldTabs } from "./Navigation/Tabs/Old";

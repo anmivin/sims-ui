@@ -10,24 +10,6 @@ export interface UseModalBackdropSlotOwnProps {
   open?: boolean;
 }
 
-export interface UseModalReturnValue {
-  getRootProps: () => UseModalRootSlotOwnProps;
-  /**
-   * Resolver for the backdrop slot's props.
-   * @param externalProps props for the backdrop slot
-   * @returns props that should be spread on the backdrop slot
-   */
-  getBackdropProps: () => UseModalBackdropSlotOwnProps;
-  /**
-   * A ref to the component's root DOM element.
-   */
-  rootRef: React.RefCallback<Element> | null;
-  /**
-   * A ref to the component's portal DOM element.
-   */
-  handleClose;
-  handleOpen;
-}
 export interface UseModalProps {
   open: boolean;
   onClose?: () => void;
@@ -70,9 +52,4 @@ export const useModal = (props: UseModalProps) => {
       handleClose();
     }
   }, [open]);
-
-  return {
-    handleClose,
-    handleOpen,
-  };
 };

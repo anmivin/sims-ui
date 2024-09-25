@@ -18,13 +18,13 @@
 
 - [ ] Alert
 - [ ] Badge
+- [x] Circular Progress
 - [ ] Chip
 - [ ] Divider
 - [ ] Icon
 - [ ] Icon set
 - [ ] Image component
-- [x] Loader
-- [ ] Progress
+- [ ] Linear Progress
 - [ ] Stepper
 - [ ] Tooltip
 - [ ] Typography
@@ -36,7 +36,6 @@
 - [ ] Drawer
 - [x] Popover
 - [x] Scrollable
-
 
 ## Navigation
 
@@ -50,3 +49,8 @@
 - [ ] DatePicker
 - [ ] DateTimePicker
 - [ ] TimePicker
+
+## Providers
+
+- [x] ModalProvider
+- [x] ThemeProvider

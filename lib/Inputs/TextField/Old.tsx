@@ -1,35 +1,31 @@
 import styled from "@emotion/styled";
 
-
-import React from 'react';
-import TextField from './TextField'
-
+import React from "react";
+import TextField from "./TextField";
 
 interface TextfieldProps {
   placeholder: string;
 }
 
 export const TextFieldModern = ({ placeholder }: TextfieldProps) => {
-  return <StyledTextfield label='sad' placeholder={placeholder}  variant='filled' />;
+  return <StyledTextfield label='sad' placeholder={placeholder} variant='filled' />;
 };
 
-
 const StyledTextfield = styled(TextField)({
-
-  width: '200px',
-  height: '60px',
-  padding: '0 10px',
-  backgroundColor: '#CDD6FF',
-  border: '1px solid #00115A !important',
-  color: '#000d60',
-  fontSize: '30px', 
-  forntWeight: '500',
-  borderRadius: '15px',
-  '::placeholder':  {
-    color: '#98A2D3'
+  width: "200px",
+  height: "60px",
+  padding: "0 10px",
+  backgroundColor: "#CDD6FF",
+  border: "1px solid #00115A !important",
+  color: "#000d60",
+  fontSize: "30px",
+  forntWeight: "500",
+  borderRadius: "15px",
+  "::placeholder": {
+    color: "#98A2D3",
   },
 
-/*   '.input-outlined': { 
+  /*   '.input-outlined': { 
     borderRadius: '20px',
     padding: '5px 10px',
     backgroundColor: '#f8fbfe',
@@ -47,26 +43,19 @@ const StyledTextfield = styled(TextField)({
   boxShadow: '0 2px 6px 0 #606164',
 },  */
 
-'.multiline': {
+  ".multiline": {},
 
-},
+  ".input": {},
 
-'.input': {
-
-},
-
-
-'.root-standard': {
-  color: 'red'
-},
-})
-
-
+  ".root-standard": {
+    color: "red",
+  },
+});
 
 interface TextfieldProps {
   placeholder: string;
 }
 
 export const TextFieldOld = ({ placeholder }: TextfieldProps) => {
-  return <StyledTextfield  placeholder={placeholder} />;
+  return <StyledTextfield placeholder={placeholder} />;
 };
