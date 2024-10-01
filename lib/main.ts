@@ -16,3 +16,4 @@ export { TextFieldModern } from "./Inputs/TextField/Modern";
 export { TextFieldOld } from "./Inputs/TextField/Old";
 export { ModernTabs } from "./Navigation/Tabs/Modern";
 export { OldTabs } from "./Navigation/Tabs/Old";
+export { default as Tooltip } from "./Display/Tooltip/Tooltip";

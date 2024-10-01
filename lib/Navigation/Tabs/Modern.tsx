@@ -43,7 +43,6 @@ export const ModernTabs = () => {
   return (
     <StyledTabs
       onChange={(val: number) => {
-        console.log(val);
         setSelected(val);
       }}
       options={options}

@@ -1,9 +1,7 @@
 import * as React from "react";
-
 import useTimeout from "../../utils/useTimeout";
 import styled from "@emotion/styled";
 
-import Popper from "../../Providers/Popper";
 import Popover from "../../Surfaces/Popover/Popover";
 
 export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
@@ -12,12 +10,10 @@ export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
   title: React.ReactNode;
 }
 
-const TooltipPopper = styled(Popover)({
+const TooltipPopover = styled(Popover)({
+  backgroundColor: "blue",
   zIndex: 10,
   pointerEvents: "none",
-  "-disableInteractive": {
-    pointerEvents: "auto",
-  },
   "-closed": {
     pointerEvents: "none",
   },
@@ -54,7 +50,7 @@ const TooltipPopper = styled(Popover)({
 });
 
 const TooltipTooltip = styled("div")({
-  backgroundColor: "rgba(0,0,0,0.5)",
+  backgroundColor: "red",
   borderRadius: "8px",
   color: "white",
   padding: "4px 8px",
@@ -103,31 +99,28 @@ const TooltipArrow = styled("span")({
 const Tooltip = (props: TooltipProps) => {
   const { children: childrenProp, placement = "bottom", title } = props;
 
-  const children = React.isValidElement(childrenProp) ? childrenProp : <span>{childrenProp}</span>;
-
   const enterTimer = useTimeout();
   const leaveTimer = useTimeout();
+  const children = React.isValidElement(childrenProp) ? childrenProp : <span>{childrenProp}</span>;
   const [openState, setOpenState] = React.useState(false);
-
-  let open = openState;
 
   const handleMouseOver = () => {
     enterTimer.clear();
     leaveTimer.clear();
-    enterTimer.start(800, () => {
+    enterTimer.start(500, () => {
       setOpenState(true);
     });
   };
 
   const handleMouseLeave = () => {
     enterTimer.clear();
-    leaveTimer.start(800, () => {
+    leaveTimer.start(500, () => {
       setOpenState(false);
     });
   };
 
   if (!title && title !== 0) {
-    open = false;
+    setOpenState(false);
   }
 
   const popperRef = React.useRef();
@@ -138,19 +131,18 @@ const Tooltip = (props: TooltipProps) => {
         onMouseOver: handleMouseOver,
         onMouseLeave: handleMouseLeave,
       })}
-      <TooltipPopper
-        as={Popper}
+      <TooltipPopover
         placement={placement}
         anchorEl={children}
         popperRef={popperRef}
-        open={children ? open : false}
+        open={children ? openState : false}
         transition
       >
         <TooltipTooltip>
           {title}
           <TooltipArrow />
         </TooltipTooltip>
-      </TooltipPopper>
+      </TooltipPopover>
     </React.Fragment>
   );
 };

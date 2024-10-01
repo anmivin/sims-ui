@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 export interface RadioGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   row?: boolean;
   defaultValue?: any;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
+  onChange?: (value: string) => void;
   options: {
     label: string;
     value: any;
@@ -24,6 +24,11 @@ const RadioGroupRoot = styled("div")({
   },
 });
 
+const RadioGroupItem = styled("div")({
+  display: "flex",
+  gap: "10px",
+});
+
 const RadioGroup = (props: RadioGroupProps) => {
   const { children, defaultValue, checkedIcon, icon, onChange, options, ...other } = props;
 
@@ -32,15 +37,17 @@ const RadioGroup = (props: RadioGroupProps) => {
   return (
     <RadioGroupRoot role='radiogroup' {...other}>
       {options.map((option, index) => (
-        <Radio
-          icon={icon}
-          checkedIcon={checkedIcon}
-          key={index}
-          checked={value === option.value}
-          onChange={(e, checked) => {
-            if (checked) setValueState(option.value);
-          }}
-        />
+        <RadioGroupItem key={index}>
+          <Radio
+            icon={icon}
+            checkedIcon={checkedIcon}
+            checked={value === option.value}
+            onChange={(e, checked) => {
+              if (checked) setValueState(option.value);
+            }}
+          />
+          <p>{option.label}</p>
+        </RadioGroupItem>
       ))}
     </RadioGroupRoot>
   );

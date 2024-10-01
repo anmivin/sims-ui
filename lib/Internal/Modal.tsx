@@ -1,7 +1,10 @@
 import * as React from "react";
-import Portal from "./Portal";
+/* import Portal from "./Portal"; */
+import * as ReactDOM from "react-dom";
+
 import styled from "@emotion/styled";
 import { useModal } from "../Providers/Modal/useModal";
+
 export interface ModalOwnProps {
   children: React.ReactElement<unknown>;
   hideBackdrop?: boolean;
@@ -38,6 +41,12 @@ const Modal = (props: ModalOwnProps) => {
   const { children, hideBackdrop = false, onBackdropClick, onClose, open } = props;
   const ref = React.useRef<HTMLDivElement | null>(null);
 
+  const [mountNode, setMountNode] = React.useState<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    setMountNode(document.body);
+  }, []);
+
   useModal({
     onClose,
     open,
@@ -49,13 +58,18 @@ const Modal = (props: ModalOwnProps) => {
   }
 
   return (
-    <Portal>
-      <ModalRoot ref={ref}>
-        {!hideBackdrop ? <ModalBackdrop onClick={() => onBackdropClick?.()} /> : null}
+    <React.Fragment>
+      {mountNode
+        ? ReactDOM.createPortal(
+            <ModalRoot ref={ref}>
+              {!hideBackdrop ? <ModalBackdrop onClick={() => onBackdropClick?.()} /> : null}
 
-        {children}
-      </ModalRoot>
-    </Portal>
+              {children}
+            </ModalRoot>,
+            mountNode
+          )
+        : mountNode}
+    </React.Fragment>
   );
 };
 
