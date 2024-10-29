@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import React, { ReactNode } from "react";
-import Dialog from "./Dialog";
+import React  from "react";
+import Dialog, {DialogProps} from "./Dialog";
 
 import IconButton from "../../Inputs/IconButton/IconButton";
 import CloseIcon from "../../icons/Modern/CloseIcon";
@@ -13,6 +13,7 @@ const StyledWrapper = styled.div`
   background-color: rgba(81, 115, 189, 0.9);
   border-radius: 40px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
@@ -33,7 +34,7 @@ const Content = styled.div`
 const Footer = styled.div`
   border-radius: 3% 3% 0px 0px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
@@ -50,23 +51,22 @@ const Header = styled.div`
   gap: 20px;
 `;
 
-interface DialogProps {
+interface OldDialogProps extends DialogProps {
   title: string;
-  children: ReactNode;
-  open: boolean;
-  onClose: () => void;
+
 }
 
-export const DialogOld = ({ title, children, open, onClose }: DialogProps) => {
+export const DialogOld = ({ title, children, open, onClose }: OldDialogProps) => {
   return (
     <Dialog open={open}>
       <StyledWrapper>
         <Content>
           <Header>
             <h1 style={{ color: "#0949ab" }}>{title}</h1>
-            <IconButton>
+            {onClose &&             <IconButton>
               <CloseIcon onClick={() => onClose()} />
-            </IconButton>
+            </IconButton>}
+
           </Header>
           {children}
         </Content>

@@ -1,11 +1,11 @@
 import * as React from "react";
-
-import Modal, { ModalOwnProps } from "../../Internal/MuiModal";
+import clsx from "clsx";
+import Modal, { ModalProps } from "../../Internal/Modal";
 
 import styled from "@emotion/styled";
 
-export interface DrawerProps extends Omit<ModalOwnProps, "open" | "children"> {
-  anchor?: "left" | "top" | "right" | "bottom";
+export interface DrawerProps extends Omit<ModalProps, "open" | "children"> {
+  anchor?: "left" | "right" 
   children?: React.ReactNode;
   onClose?: () => void;
   open?: boolean;
@@ -16,8 +16,7 @@ const DrawerRoot = styled(Modal)({
 });
 
 const DrawerPaper = styled("div")({
-  width: "200px",
-  backgroundColor: "blue",
+  width: "600px",
   overflowY: "auto",
   display: "flex",
   flexDirection: "column",
@@ -28,40 +27,23 @@ const DrawerPaper = styled("div")({
   top: 0,
   outline: 0,
   right: 0,
-  ".-left": {
+  ".left": {
     left: 0,
   },
-  ".-top": {
-    top: 0,
-    left: 0,
+  ".right": {
     right: 0,
-    height: "auto",
-    maxHeight: "100%",
-  },
-  ".-right": {
-    right: 0,
-  },
-  ".-bottom": {
-    top: "auto",
-    left: 0,
-    bottom: 0,
-    right: 0,
-    height: "auto",
-    maxHeight: "100%",
   },
 });
 
 const Drawer = (props: DrawerProps) => {
   const {
-    anchor: anchorProp = "right",
+    anchor = "right",
     children,
     hideBackdrop = false,
     onClose,
     open = false,
     ...other
   } = props;
-
-  const drawer = <DrawerPaper className={"-bottom"}>{children}</DrawerPaper>;
 
   return (
     <DrawerRoot
@@ -71,7 +53,7 @@ const Drawer = (props: DrawerProps) => {
       hideBackdrop={hideBackdrop}
       {...other}
     >
-      {drawer}
+      <DrawerPaper className={clsx("paper", anchor)}>{children}</DrawerPaper>
     </DrawerRoot>
   );
 };

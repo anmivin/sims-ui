@@ -1,11 +1,10 @@
 import * as React from "react";
-/* import Portal from "./Portal"; */
 import * as ReactDOM from "react-dom";
 
 import styled from "@emotion/styled";
 import { useModal } from "../Providers/Modal/useModal";
 
-export interface ModalOwnProps {
+export interface ModalProps {
   children: React.ReactElement<unknown>;
   hideBackdrop?: boolean;
   onBackdropClick?: () => void;
@@ -37,7 +36,7 @@ const ModalBackdrop = styled("div")({
   height: "100%",
 });
 
-const Modal = (props: ModalOwnProps) => {
+const Modal = (props: ModalProps) => {
   const { children, hideBackdrop = false, onBackdropClick, onClose, open } = props;
   const ref = React.useRef<HTMLDivElement | null>(null);
 
@@ -50,7 +49,6 @@ const Modal = (props: ModalOwnProps) => {
   useModal({
     onClose,
     open,
-    rootRef: ref,
   });
 
   if (!open) {

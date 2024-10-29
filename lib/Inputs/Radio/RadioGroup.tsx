@@ -30,12 +30,12 @@ const RadioGroupItem = styled("div")({
 });
 
 const RadioGroup = (props: RadioGroupProps) => {
-  const { children, defaultValue, checkedIcon, icon, onChange, options, ...other } = props;
+  const { defaultValue, checkedIcon, icon, options, ...other } = props;
 
   const [value, setValueState] = React.useState(defaultValue);
 
   return (
-    <RadioGroupRoot role='radiogroup' {...other}>
+    <RadioGroupRoot {...other}>
       {options.map((option, index) => (
         <RadioGroupItem key={index}>
           <Radio

@@ -12,25 +12,21 @@ export const colors = {
     checkboxChecked: " linear-gradient(180deg, #5db823 40%, #269331);",
     checkboxUnchecked: "linear-gradient(180deg, #f9f9f9 40%, #dddddd)",
     selectedButton: "linear-gradient(180deg, #92ce31 20%, #3bb435)",
-    scrollBarTrack: '#e4e4e4',
+    scrollBarTrack: "#e4e4e4",
     scrollBarThumb: "linear-gradient(180deg, #fafbfc 20%, #e8eff2)",
     scrollBarThumbHover: "linear-gradient(180deg, #c7ee7d 20%, #a8e15f)",
-    scrollBarBorder: '#b6b7b8',
-
-    tooltipBlue: '#2885ca',
-    tooltipBlueDark: '#3259a6',
-
-    tooltipGreen: '#64b52c',
-    tooltipGreenDark: '#0d983f',
-
-    tooltipOrange: '#f67c0f',
-    tooltipOrangeDark: '#ee5d1a',
+    scrollBarBorder: "#b6b7b8",
+    tooltipBlue: "#2885ca",
+    tooltipBlueDark: "#3259a6",
+    tooltipGreen: "#64b52c",
+    tooltipGreenDark: "#0d983f",
+    tooltipOrange: "#f67c0f",
+    tooltipOrangeDark: "#ee5d1a",
   },
   sims2: {
     dark: "#121B61",
     medium: "#95A6DE",
     light: "#CDD6FF",
-
     blueMenu: "#7997d4",
     greenIcon: "#bfff8e",
     buttonMenu: "#aebdff",
@@ -40,10 +36,8 @@ export const colors = {
     textMenu: "#050671",
     turquois: "#04fefe",
     greenBase: "#00ff00",
-
     blueSurface: "#95a7da",
     lightSurface: "#b6c0f1",
-
     alertBrown: "#C9B57F",
   },
 };

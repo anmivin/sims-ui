@@ -1,19 +1,9 @@
 import React, { useContext } from "react";
 import { ModalContext } from "./ModalProvider";
 
-export interface UseModalRootSlotOwnProps {
-  ref: React.RefCallback<Element> | null;
-}
-
-export interface UseModalBackdropSlotOwnProps {
-  onClick: React.MouseEventHandler;
-  open?: boolean;
-}
-
 export interface UseModalProps {
   open: boolean;
   onClose?: () => void;
-  rootRef: React.Ref<Element>;
 }
 
 export const useModal = (props: UseModalProps) => {

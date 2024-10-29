@@ -1,10 +1,6 @@
 import type { ReactNode } from "react";
 import styled from "@emotion/styled";
-import IconButton from "./IconButton";
-interface ButtonProps {
-  children: ReactNode;
-
-}
+import IconButton, {IconButtonProps} from "./IconButton";
 
 const StyledButton = styled(IconButton)({
   color: "#124fae",
@@ -23,6 +19,6 @@ const StyledButton = styled(IconButton)({
 
 });
 
-export const IconButtonModern = ({ children }: ButtonProps): ReactNode => {
+export const IconButtonModern = ({ children }: IconButtonProps): ReactNode => {
   return <StyledButton >{children}</StyledButton>;
 };

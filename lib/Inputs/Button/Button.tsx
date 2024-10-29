@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import styled from "@emotion/styled";
+import clsx from "clsx";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
@@ -15,8 +16,6 @@ const ButtonRoot = styled("button")({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  position: "relative",
-  boxSizing: "border-box",
  backgroundColor: "transparent",
   outline: 0,
   border: 0,
@@ -26,7 +25,10 @@ const ButtonRoot = styled("button")({
   cursor: "pointer",
   textDecoration: "none",
   color: "inherit",
-  "-disabled": {
+  '.fullwidth': {
+width: '100%'
+  },
+  ".disabled": {
     pointerEvents: "none",
     cursor: "default",
   },
@@ -62,7 +64,7 @@ const Button = (props: ButtonProps) => {
   const endIcon = endIconProp && <ButtonEndIcon>{endIconProp}</ButtonEndIcon>;
 
   return (
-    <ButtonRoot disabled={disabled} {...other}>
+    <ButtonRoot disabled={disabled} className={clsx(fullWidth && 'fullwidth')}{...other}>
       {startIcon}
       {children}
       {endIcon}

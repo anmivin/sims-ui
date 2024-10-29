@@ -6,7 +6,7 @@ import clsx from "clsx";
 export interface IconButtonProps {
   children?: React.ReactNode;
   disabled?: boolean;
-  error?: boolean
+  error?: boolean;
 }
 
 const IconButtonRoot = styled("button")({
@@ -31,13 +31,20 @@ const IconButtonRoot = styled("button")({
     pointerEvents: "none",
     cursor: "default",
   },
-
 });
 
 const IconButton = (props: IconButtonProps) => {
-  const { children, disabled = false,  error,    ...other} = props;
+  const { children, disabled = false, error, ...other } = props;
 
-  return <IconButtonRoot disabled={disabled} className={clsx(disabled && 'disabled', error && 'error')} {...other}>{children}</IconButtonRoot>;
+  return (
+    <IconButtonRoot
+      disabled={disabled}
+      className={clsx(disabled && "disabled", error && "error")}
+      {...other}
+    >
+      {children}
+    </IconButtonRoot>
+  );
 };
 
 export default IconButton;

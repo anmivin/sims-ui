@@ -6,7 +6,7 @@ import clsx from "clsx";
 export interface TabOwnProps {
   disabled?: boolean;
   icon?: string | React.ReactElement<unknown>;
-  iconPosition?: "top" | "bottom" | "start" | "end";
+  iconPosition?: "start" | "end";
   label?: React.ReactNode;
   value?: any;
   onClick?: (val: any) => void;
@@ -71,7 +71,7 @@ const Tab = (props: TabOwnProps) => {
       className={clsx("tab", selected && "selected")}
       {...other}
     >
-      {iconPosition === "top" || iconPosition === "start" ? (
+      {iconPosition === "start" ? (
         <React.Fragment>
           {icon}
           {label}

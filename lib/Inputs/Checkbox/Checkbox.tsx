@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import styled from "@emotion/styled";
+import clsx from "clsx";
 
 export interface CheckboxProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "type"> {
@@ -13,7 +14,7 @@ export interface CheckboxProps
   disabled?: boolean;
 }
 
-const SwitchBaseRoot = styled("button")({
+const CheckboxRoot = styled("button")({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
@@ -28,13 +29,13 @@ const SwitchBaseRoot = styled("button")({
   cursor: "pointer",
   textDecoration: "none",
   color: "inherit",
-  "-disabled": {
+  ".disabled": {
     pointerEvents: "none",
     cursor: "default",
   },
 });
 
-const SwitchBaseInput = styled("input")({
+const CheckboxInput = styled("input")({
   cursor: "inherit",
   position: "absolute",
   opacity: 0,
@@ -60,8 +61,8 @@ const Checkbox = (props: CheckboxProps) => {
   };
 
   return (
-    <SwitchBaseRoot disabled={disabled} {...other}>
-      <SwitchBaseInput
+    <CheckboxRoot disabled={disabled} className={clsx(disabled && 'disabled')}{...other}>
+      <CheckboxInput
         checked={checked}
         defaultChecked={defaultChecked}
         disabled={disabled}
@@ -70,7 +71,7 @@ const Checkbox = (props: CheckboxProps) => {
         type='checkbox'
       />
       {checked ? checkedIcon : icon}
-    </SwitchBaseRoot>
+    </CheckboxRoot>
   );
 };
 
