@@ -1,9 +1,12 @@
 import * as React from "react";
 
 import styled from "@emotion/styled";
+import clsx from "clsx";
+
 export interface IconButtonProps {
   children?: React.ReactNode;
   disabled?: boolean;
+  error?: boolean
 }
 
 const IconButtonRoot = styled("button")({
@@ -16,27 +19,25 @@ const IconButtonRoot = styled("button")({
   outline: 0,
   border: 0,
   margin: 0,
-  padding: 8,
+  padding: 0,
   cursor: "pointer",
   textDecoration: "none",
   color: "inherit",
   textAlign: "center",
   flex: "0 0 auto",
   borderRadius: "50%",
-  transition: "",
 
   "-disabled": {
-    backgroundColor: "transparent",
-    color: "gray",
     pointerEvents: "none",
     cursor: "default",
   },
+
 });
 
 const IconButton = (props: IconButtonProps) => {
-  const { children, disabled = false } = props;
+  const { children, disabled = false,  error,    ...other} = props;
 
-  return <IconButtonRoot disabled={disabled}>{children}</IconButtonRoot>;
+  return <IconButtonRoot disabled={disabled} className={clsx(disabled && 'disabled', error && 'error')} {...other}>{children}</IconButtonRoot>;
 };
 
 export default IconButton;

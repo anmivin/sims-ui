@@ -12,12 +12,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const ButtonRoot = styled("button")({
-  isplay: "inline-flex",
+  display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   position: "relative",
   boxSizing: "border-box",
-  backgroundColor: "transparent",
+ backgroundColor: "transparent",
   outline: 0,
   border: 0,
   margin: 0,

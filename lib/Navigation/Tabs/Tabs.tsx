@@ -37,6 +37,7 @@ const Tabs = (props: TabsOwnProps) => {
       <FlexContainer className={clsx("tabs-container", orientation === "vertical" && "vertical")}>
         {options.map((option) => (
           <Tab
+          key={option.value}
             label={option.label}
             value={option.value}
             selected={value === option.value}

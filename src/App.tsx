@@ -18,16 +18,18 @@ import {
   MenuButtonOld,
   OldTabs,
   Tooltip,
+  AlertModern,
+  AlertOld
 } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 
-import "./App.css";
 import { useState } from "react";
 function App() {
   const [selected, setSelected] = useState(false);
   return (
     <ModalProvider>
-      <OldTabs />
+      <AlertOld action={() => {}}>dasdasdlasdl</AlertOld>
+{/*       <OldTabs /> */}
       <Tooltip title='ad'>
         <div>
           <OldCheckbox label='as' />
