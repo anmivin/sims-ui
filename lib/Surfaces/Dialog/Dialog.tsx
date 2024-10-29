@@ -58,7 +58,6 @@ const Dialog = (props: DialogProps) => {
   const backdropClick = React.useRef();
 
   const handleBackdropClick = () => {
-    // Ignore the events not coming from the "backdrop".
     if (!backdropClick.current) {
       return;
     }

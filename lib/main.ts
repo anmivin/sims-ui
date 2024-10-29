@@ -3,8 +3,6 @@ export { ModernCheckbox } from "./Inputs/Checkbox/Modern";
 export { OldButton } from "./Inputs/Button/Old";
 export { OldCheckbox } from "./Inputs/Checkbox/Old";
 export { IconButtonModern } from "./Inputs/IconButton/Modern";
-export { MenuButtonModern } from "./Navigation/MenuButton/Modern";
-export { MenuButtonOld } from "./Navigation/MenuButton/Old";
 export { OldRadio } from "./Inputs/Radio/Old";
 export { CircularProgressModern } from "./Display/CircularProgress/Modern";
 export { CircularProgressOld } from "./Display/CircularProgress/Old";
@@ -16,6 +14,5 @@ export { TextFieldModern } from "./Inputs/TextField/Modern";
 export { TextFieldOld } from "./Inputs/TextField/Old";
 export { ModernTabs } from "./Navigation/Tabs/Modern";
 export { OldTabs } from "./Navigation/Tabs/Old";
-export { default as Tooltip } from "./Display/Tooltip/Tooltip";
-export {AlertModern} from './Display/Alert/Modern'
-export {AlertOld} from './Display/Alert/Old'
+export { AlertModern } from "./Display/Alert/Modern";
+export { AlertOld } from "./Display/Alert/Old";

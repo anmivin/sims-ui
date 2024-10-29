@@ -14,7 +14,7 @@ export const OldCheckbox = ({ label }: CheckboxProps) => {
         checkedIcon={<CheckBoxCross color='#121B61' />}
         icon={<CheckBox color='#121B61' />}
       />
-      {/* {label && (<StyledLabel>{label}</StyledLabel>)} */}
+      {label && <span>{label}</span>}
     </div>
   );
 };

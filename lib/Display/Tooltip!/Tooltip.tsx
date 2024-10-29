@@ -82,7 +82,7 @@ const TooltipArrow = styled("span")({
   overflow: "hidden",
   position: "absolute",
   width: "1em",
-  height: "0.71em" /* = width / sqrt(2) = (length of the hypotenuse) */,
+  height: "0.71em",
   boxSizing: "border-box",
   color: "rgba(0,0,0,0.5)",
   "&::before": {

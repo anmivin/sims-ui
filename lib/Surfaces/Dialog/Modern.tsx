@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import IconButton from "../../Inputs/IconButton/IconButton";
 import CloseIcon from "../../icons/Modern/CloseIcon";
 import { ModernButton } from "../../Inputs/Button/Modern";
 import Dialog from "./Dialog";
-import Popover from "../Popover/Popover";
+
 const StyledWrapper = styled("div")({
   fontFamily: "The Sims Sans",
   width: "600px",
@@ -56,7 +56,6 @@ interface DialogProps {
   onClose: () => void;
 }
 export const DialogModern = ({ title, children, open, onClose }: DialogProps) => {
-  const [anchorEl, setAnchorEl] = useState(null);
   return (
     <Dialog open={open} onBackdropClick={onClose}>
       <StyledWrapper>
@@ -70,16 +69,10 @@ export const DialogModern = ({ title, children, open, onClose }: DialogProps) =>
           {children}
         </Content>
         <Footer>
-          <ModernButton fullWidth onClick={(e) => setAnchorEl(e.currentTarget)}>
-            sdfsdfsfd
-          </ModernButton>
+          <ModernButton fullWidth>sdfsdfsfd</ModernButton>
           <ModernButton fullWidth>sdfsdfsfd</ModernButton>
         </Footer>
       </StyledWrapper>
-
-      <Popover open={!!anchorEl} anchorEl={anchorEl} onBackdropClick={() => setAnchorEl(null)}>
-        sadsadsadawe
-      </Popover>
     </Dialog>
   );
 };

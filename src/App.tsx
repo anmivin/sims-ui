@@ -9,17 +9,12 @@ import {
   CircularProgressModern,
   DialogModern,
   DialogOld,
-  Drawer,
   ModalProvider,
-  TextField,
   TextFieldModern,
   TextFieldOld,
-  MenuButtonModern,
-  MenuButtonOld,
   OldTabs,
-  Tooltip,
   AlertModern,
-  AlertOld
+  AlertOld,
 } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 
@@ -29,12 +24,10 @@ function App() {
   return (
     <ModalProvider>
       <AlertOld action={() => {}}>dasdasdlasdl</AlertOld>
-{/*       <OldTabs /> */}
-      <Tooltip title='ad'>
-        <div>
-          <OldCheckbox label='as' />
-        </div>
-      </Tooltip>
+      {/*       <OldTabs /> */}
+
+      <OldCheckbox label='as' />
+
       {/* <MenuButtonOld selected>asdasd</MenuButtonOld> */}
     </ModalProvider>
   );

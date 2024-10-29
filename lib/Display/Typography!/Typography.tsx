@@ -2,6 +2,15 @@ import * as React from "react";
 
 import styled from "@emotion/styled";
 
+import { Variant } from "../../mui/mui-material/src/styles/createTypography";
+
+export interface TypographyOwnProps {
+  align?: "inherit" | "left" | "center" | "right" | "justify";
+  children?: React.ReactNode;
+  noWrap?: boolean;
+  variant?: Variant;
+}
+
 const stylesMap = {
   "1": {
     fontSize: "",
@@ -47,32 +56,3 @@ const Typography = (props: TypographyOwnProps) => {
 };
 
 export default Typography;
-
-import { Variant } from "../../mui/mui-material/src/styles/createTypography";
-
-export interface TypographyOwnProps {
-  /**
-   * Set the text-align on the component.
-   * @default 'inherit'
-   */
-  align?: "inherit" | "left" | "center" | "right" | "justify";
-  /**
-   * The content of the component.
-   */
-  children?: React.ReactNode;
-
-  /**
-   * If `true`, the text will not wrap, but instead will truncate with a text overflow ellipsis.
-   *
-   * Note that text overflow can only happen with block or inline-block level elements
-   * (the element needs to have a width in order to overflow).
-   * @default false
-   */
-  noWrap?: boolean;
-
-  /**
-   * Applies the theme typography styles.
-   * @default 'body1'
-   */
-  variant?: Variant;
-}

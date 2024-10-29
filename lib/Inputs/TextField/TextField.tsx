@@ -2,10 +2,10 @@ import * as React from "react";
 import clsx from "clsx";
 import styled from "@emotion/styled";
 
-export type TextFieldVariants = "outlined" | "standard" | 'filled' ;
+export type TextFieldVariants = "outlined" | "standard" | "filled";
 
 export interface InputBaseProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "defaultValue" | "onChange" > {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "defaultValue" | "onChange"> {
   defaultValue?: string | number | readonly string[] | undefined;
   disabled?: boolean;
   endAdornment?: React.ReactNode;
@@ -21,7 +21,7 @@ export interface InputBaseProps
   helperText?: React.ReactNode;
   label?: React.ReactNode;
   variant?: TextFieldVariants;
-  className?: string
+  className?: string;
 }
 
 const FormControlRoot = styled("div")({
@@ -33,9 +33,6 @@ const FormControlRoot = styled("div")({
   padding: 0,
   margin: 0,
   border: 0,
-
-  
-
 });
 
 export const InputBaseRoot = styled("div")({
@@ -46,7 +43,6 @@ export const InputBaseRoot = styled("div")({
   display: "inline-flex",
   alignItems: "center",
 
-  
   "-disabled": {
     color: "gray",
     cursor: "default",
@@ -133,13 +129,13 @@ const TextField = (props: InputBaseProps) => {
     startAdornment,
     value: valueProp,
     required,
-    variant = 'standard',
+    variant = "standard",
     ...other
   } = props;
 
   const value = valueProp;
 
-  const handleChange = (event, ...args) => {
+  const handleChange = (event) => {
     if (onChange) {
       onChange(event);
     }
@@ -147,21 +143,26 @@ const TextField = (props: InputBaseProps) => {
 
   return (
     <FormControlRoot
-      className={clsx(variant, disabled && '-disabled', error && '-error', fullWidth && '-fullWidth', required && '-required')
-      }
-     {...other} 
+      className={clsx(
+        variant,
+        disabled && "-disabled",
+        error && "-error",
+        fullWidth && "-fullWidth",
+        required && "-required"
+      )}
+      {...other}
     >
       {label != null && label !== "" && <InputLabelRoot>{label}</InputLabelRoot>}
 
       {
         <>
           {multiline ? (
-            <InputArea rows={rows} className={clsx('multiline')}/>
+            <InputArea rows={rows} className={clsx("multiline")} />
           ) : (
-            <InputBaseRoot {...other} className={clsx('inputBase', `input-${variant}`)}>
+            <InputBaseRoot {...other} className={clsx("inputBase", `input-${variant}`)}>
               {startAdornment}
               <InputBaseInput
-              className={clsx('input')}
+                className={clsx("input")}
                 type='text'
                 defaultValue={defaultValue}
                 disabled={disabled}
