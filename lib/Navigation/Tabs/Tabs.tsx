@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 import Tab from "./Tab";
 
-export interface TabsOwnProps {
+export interface TabsProps {
   onChange?: (value: any) => void;
   orientation?: "horizontal" | "vertical";
   value?: any;
@@ -29,7 +29,7 @@ const FlexContainer = styled("div")({
   },
 });
 
-const Tabs = (props: TabsOwnProps) => {
+const Tabs = (props: TabsProps) => {
   const { onChange, orientation = "horizontal", value, options, ...other } = props;
 
   return (

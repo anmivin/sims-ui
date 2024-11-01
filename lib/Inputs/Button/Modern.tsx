@@ -13,9 +13,6 @@ const StyledButton = styled(Button)({
   height: "60px",
   gap: "10px",
   transition: "transform 0.1s ease-in-out",
-  "-fullWidth": {
-    width: "100%",
-  },
 
   "&:hover": {
     color: "#199c2c",

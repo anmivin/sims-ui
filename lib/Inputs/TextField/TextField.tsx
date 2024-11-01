@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 
 export type TextFieldVariants = "outlined" | "standard" | "filled";
 
-export interface InputBaseProps
+export interface TextfieldProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "defaultValue" | "onChange"> {
   defaultValue?: string | number | readonly string[] | undefined;
   disabled?: boolean;
@@ -24,34 +24,32 @@ export interface InputBaseProps
   className?: string;
 }
 
-const FormControlRoot = styled("div")({
+const TextfieldRoot = styled("div")({
   display: "inline-flex",
   flexDirection: "column",
   position: "relative",
-  // Reset fieldset default style.
   minWidth: 0,
   padding: 0,
   margin: 0,
   border: 0,
 });
 
-export const InputBaseRoot = styled("div")({
-  lineHeight: "1.4375em", // 23px
-  boxSizing: "border-box", // Prevent padding issue with fullWidth.
+export const TextfieldInput = styled("div")({
+  boxSizing: "border-box",
   position: "relative",
   cursor: "text",
   display: "inline-flex",
   alignItems: "center",
 
-  "-disabled": {
+  ".disabled": {
     color: "gray",
     cursor: "default",
   },
 });
 
-export const InputArea = styled("textarea")({});
+export const TextfieldArea = styled("textarea")({});
 
-export const InputBaseInput = styled("input")({
+export const Input = styled("input")({
   font: "inherit",
   letterSpacing: "inherit",
   color: "currentColor",
@@ -59,7 +57,6 @@ export const InputBaseInput = styled("input")({
   border: 0,
   boxSizing: "content-box",
   background: "none",
-  height: "1.4375em", // Reset 23pxthe native input line-height
   WebkitTapHighlightColor: "transparent",
   display: "block",
   width: "100%",
@@ -74,14 +71,14 @@ export const InputBaseInput = styled("input")({
   },
 });
 
-const InputLabelRoot = styled("label")({
+const TextfieldLabelRoot = styled("label")({
   lineHeight: "1.5em",
   padding: 0,
   position: "relative",
 
-  "-disabled": {
+  ".disabled": {
     color: "gray",
-    "-error": {
+    ".error": {
       color: "red",
     },
   },
@@ -91,29 +88,24 @@ const InputLabelRoot = styled("label")({
   overflow: "hidden",
   textOverflow: "ellipsis",
   maxWidth: "100%",
-  "-shrink": {
-    transform: "translate(0, -1.5px) scale(0.75)",
-    transformOrigin: "top left",
-    maxWidth: "133%",
-  },
 });
 
-const FormHelperTextRoot = styled("p")({
+const HelperText = styled("p")({
   color: "",
   textAlign: "left",
   marginTop: 3,
   marginRight: 0,
   marginBottom: 0,
   marginLeft: 0,
-  "-disabled": {
+  ".disabled": {
     color: "",
   },
-  "-error": {
+  ".error": {
     color: "",
   },
 });
 
-const TextField = (props: InputBaseProps) => {
+const TextField = (props: TextfieldProps) => {
   const {
     defaultValue,
     disabled = false,
@@ -142,7 +134,7 @@ const TextField = (props: InputBaseProps) => {
   };
 
   return (
-    <FormControlRoot
+    <TextfieldRoot
       className={clsx(
         variant,
         disabled && "-disabled",
@@ -152,16 +144,16 @@ const TextField = (props: InputBaseProps) => {
       )}
       {...other}
     >
-      {label != null && label !== "" && <InputLabelRoot>{label}</InputLabelRoot>}
+      {label && <TextfieldLabelRoot>{label}</TextfieldLabelRoot>}
 
       {
         <>
           {multiline ? (
-            <InputArea rows={rows} className={clsx("multiline")} />
+            <TextfieldArea rows={rows} className={clsx("multiline")} />
           ) : (
-            <InputBaseRoot {...other} className={clsx("inputBase", `input-${variant}`)}>
+            <TextfieldInput {...other} className={clsx("inputBase", `input-${variant}`)}>
               {startAdornment}
-              <InputBaseInput
+              <Input
                 className={clsx("input")}
                 type='text'
                 defaultValue={defaultValue}
@@ -172,13 +164,13 @@ const TextField = (props: InputBaseProps) => {
                 onChange={handleChange}
               />
               {endAdornment}
-            </InputBaseRoot>
+            </TextfieldInput>
           )}
         </>
       }
 
-      {helperText && <FormHelperTextRoot>{helperText}</FormHelperTextRoot>}
-    </FormControlRoot>
+      {helperText && <HelperText>{helperText}</HelperText>}
+    </TextfieldRoot>
   );
 };
 

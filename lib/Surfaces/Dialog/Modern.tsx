@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import React, { ReactNode } from "react";
+import React from "react";
 import IconButton from "../../Inputs/IconButton/IconButton";
 import CloseIcon from "../../icons/Modern/CloseIcon";
 import { ModernButton } from "../../Inputs/Button/Modern";
-import Dialog from "./Dialog";
+import Dialog, {DialogProps} from "./Dialog";
 
 const StyledWrapper = styled("div")({
   fontFamily: "The Sims Sans",
@@ -16,7 +16,6 @@ const StyledWrapper = styled("div")({
 });
 
 const Content = styled("div")({
-  width: "100%",
   height: "400px",
   borderRadius: "10px 10px 0px 0px",
   backgroundColor: "#fff",
@@ -49,22 +48,21 @@ const Header = styled.div`
   gap: 20px;
 `;
 
-interface DialogProps {
+interface ModernDialogProps extends DialogProps{
   title: string;
-  children: ReactNode;
-  open: boolean;
-  onClose: () => void;
+
 }
-export const DialogModern = ({ title, children, open, onClose }: DialogProps) => {
+export const DialogModern = ({ title, children, open, onClose }: ModernDialogProps) => {
   return (
     <Dialog open={open} onBackdropClick={onClose}>
       <StyledWrapper>
         <Content>
           <Header>
             <h1 style={{ color: "#0949ab" }}>{title}</h1>
-            <IconButton>
-              <CloseIcon onClick={() => onClose()} />
-            </IconButton>
+            {onClose &&             <IconButton>
+              <CloseIcon onClick={() => onClose?.()} />
+            </IconButton>}
+
           </Header>
           {children}
         </Content>

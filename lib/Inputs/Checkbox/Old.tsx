@@ -2,12 +2,13 @@ import * as React from "react";
 
 import CheckBox from "../../icons/Old/CheckBoxUnchecked";
 import CheckBoxCross from "../../icons/Old/CheckBoxCross";
-import Checkbox from "./Checkbox";
-interface CheckboxProps {
-  label: string;
+import Checkbox, {CheckboxProps} from "./Checkbox";
+
+interface OldCheckboxProps extends CheckboxProps {
+  label?: string
 }
 
-export const OldCheckbox = ({ label }: CheckboxProps) => {
+export const OldCheckbox = ({ label }: OldCheckboxProps) => {
   return (
     <div>
       <Checkbox

@@ -1,32 +1,27 @@
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+
+
+const createStyles = () => {
+  let styles = '';
+
+  for (let i = 1; i < 9; i += 1) {
+    styles += `
+       .path_0${i} {
+         animation: change-path_0${i} 1.5s linear infinite;
+         fill: white;
+       }
+     `;
+  }
+
+  return css`
+    ${styles}
+  `;
+};
 
 export const StyledModernSpinner = styled("svg")({
-  ".path_01": {
-    animation: "change-path_01 1.5s linear infinite",
-  },
-  ".path_02": {
-    animation: "change-path_02 1.5s linear infinite",
-  },
-  ".path_03": {
-    animation: "change-path_03 1.5s linear infinite",
-  },
-  ".path_04": {
-    animation: "change-path_04 1.5s linear infinite",
-  },
-  ".path_05": {
-    animation: "change-path_05 1.5s linear infinite",
-  },
-  ".path_06": {
-    animation: "change-path_06 1.5s linear infinite",
-  },
-  ".path_07": {
-    animation: "change-path_07 1.5s linear infinite",
-  },
-  ".path_08": {
-    animation: "change-path_08 1.5s linear infinite",
-  },
-
-  "@keyframes change-path_01": {
+  ...createStyles(),
+   "@keyframes change-path_01": {
     "100%": {
       fill: "#46ddf0",
     },

@@ -1,9 +1,9 @@
 import * as React from "react";
-import Modal, { ModalOwnProps } from "../../Internal/Modal";
-
+import Modal, { ModalProps } from "../../Internal/Modal";
+import { clsx } from "clsx";
 import styled from "@emotion/styled";
 
-export interface DialogProps extends Omit<ModalOwnProps, "children"> {
+export interface DialogProps extends Omit<ModalProps, "children"> {
   children?: React.ReactNode;
   fullScreen?: boolean;
   fullWidth?: boolean;
@@ -26,15 +26,11 @@ const DialogPaper = styled("div")({
   margin: 32,
   position: "relative",
   overflowY: "auto",
-  "@media print": {
-    overflowY: "visible",
-    boxShadow: "none",
-  },
 
-  "-fullwidth": {
+  ".fullwidth": {
     width: "calc(100% - 64px)",
   },
-  "-fullscreen": {
+  ".fullscreen": {
     margin: 0,
     width: "100%",
     maxWidth: "100%",
@@ -76,7 +72,7 @@ const Dialog = (props: DialogProps) => {
   return (
     <DialogRoot onClose={onClose} open={open} onBackdropClick={handleBackdropClick} {...other}>
       <DialogContainer>
-        <DialogPaper>{children}</DialogPaper>
+        <DialogPaper className={clsx(fullScreen && 'fullScreen', fullWidth && 'fullWidth')}>{children}</DialogPaper>
       </DialogContainer>
     </DialogRoot>
   );

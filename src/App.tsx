@@ -1,32 +1,33 @@
 import {
-  ModernButton,
-  OldButton,
+ ModernButton,
+   ModernCheckbox,
+   OldButton,
   OldCheckbox,
-  ModernRadio,
-  ModernCheckbox,
-  OldRadio,
-  CircularProgressOld,
-  CircularProgressModern,
-  DialogModern,
-  DialogOld,
-  ModalProvider,
-  TextFieldModern,
-  TextFieldOld,
-  OldTabs,
-  AlertModern,
-  AlertOld,
+ IconButtonModern,
+ OldRadio,
+ CircularProgressModern,
+ CircularProgressOld,
+ ModernRadio ,
+ DialogModern ,
+ DialogOld ,
+ModalProvider,
+ TextFieldModern ,
+TextFieldOld,
+ModernTabs ,
+OldTabs 
 } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 
 import { useState } from "react";
 function App() {
-  const [selected, setSelected] = useState(false);
+const [open, setOpen] = useState(false)
   return (
     <ModalProvider>
-      <AlertOld action={() => {}}>dasdasdlasdl</AlertOld>
-      {/*       <OldTabs /> */}
+     <CircularProgressModern/>
+      <ModernButton onClick={() => setOpen(true)}>asdsad</ModernButton>
+<DialogOld title='sdadas' open={open} onClose={() => setOpen(false)}> sdf</DialogOld>
 
-      <OldCheckbox label='as' />
+
 
       {/* <MenuButtonOld selected>asdasd</MenuButtonOld> */}
     </ModalProvider>

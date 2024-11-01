@@ -53,4 +53,4 @@
 ## Providers
 
 - [x] ModalProvider
-- [x] ThemeProvider
+- [ ] ThemeProvider

@@ -14,5 +14,4 @@ export { TextFieldModern } from "./Inputs/TextField/Modern";
 export { TextFieldOld } from "./Inputs/TextField/Old";
 export { ModernTabs } from "./Navigation/Tabs/Modern";
 export { OldTabs } from "./Navigation/Tabs/Old";
-export { AlertModern } from "./Display/Alert/Modern";
-export { AlertOld } from "./Display/Alert/Old";
+
