@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import styled from "@emotion/styled";
-import IconButton, {IconButtonProps} from "./IconButton";
+import IconButton, { IconButtonProps } from "./IconButton";
 
 const StyledButton = styled(IconButton)({
   color: "#124fae",
-  backgrounColor: 'red',
+  backgrounColor: "red",
   background: "linear-gradient(180deg, #fbfbfb 20%, #d9d9d9)",
   boxShadow: "0 4px 6px 0 #606164",
   width: "36px",
@@ -15,10 +15,8 @@ const StyledButton = styled(IconButton)({
     color: "#199c2c",
     transform: "scale(1.02)",
   },
-
-
 });
 
 export const IconButtonModern = ({ children }: IconButtonProps): ReactNode => {
-  return <StyledButton >{children}</StyledButton>;
+  return <StyledButton>{children}</StyledButton>;
 };

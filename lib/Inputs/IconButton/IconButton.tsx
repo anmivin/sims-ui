@@ -27,7 +27,7 @@ const IconButtonRoot = styled("button")({
   flex: "0 0 auto",
   borderRadius: "50%",
 
-  "-disabled": {
+  ".disabled": {
     pointerEvents: "none",
     cursor: "default",
   },

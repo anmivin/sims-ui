@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
-import TextField, {TextfieldProps} from "./TextField";
+import TextField, { TextfieldProps } from "./TextField";
 
 const StyledTextfield = styled(TextField)({
   ".input-outlined": {
@@ -31,5 +31,5 @@ const StyledTextfield = styled(TextField)({
 });
 
 export const TextFieldModern = ({ placeholder }: TextfieldProps) => {
-  return <StyledTextfield  placeholder={placeholder} variant='outlined' />;
+  return <StyledTextfield placeholder={placeholder} variant='outlined' />;
 };

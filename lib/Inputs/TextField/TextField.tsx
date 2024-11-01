@@ -137,10 +137,10 @@ const TextField = (props: TextfieldProps) => {
     <TextfieldRoot
       className={clsx(
         variant,
-        disabled && "-disabled",
-        error && "-error",
-        fullWidth && "-fullWidth",
-        required && "-required"
+        disabled && ".disabled",
+        error && ".error",
+        fullWidth && ".fullWidth",
+        required && ".required"
       )}
       {...other}
     >

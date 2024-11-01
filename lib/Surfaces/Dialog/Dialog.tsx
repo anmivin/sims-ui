@@ -72,7 +72,9 @@ const Dialog = (props: DialogProps) => {
   return (
     <DialogRoot onClose={onClose} open={open} onBackdropClick={handleBackdropClick} {...other}>
       <DialogContainer>
-        <DialogPaper className={clsx(fullScreen && 'fullScreen', fullWidth && 'fullWidth')}>{children}</DialogPaper>
+        <DialogPaper className={clsx(fullScreen && "fullScreen", fullWidth && "fullWidth")}>
+          {children}
+        </DialogPaper>
       </DialogContainer>
     </DialogRoot>
   );

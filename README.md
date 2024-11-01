@@ -34,7 +34,7 @@
 - [ ] Accordion
 - [x] Dialog
 - [ ] Drawer
-- [x] Popover
+- [ ] Popover
 - [x] Scrollable
 
 ## Navigation

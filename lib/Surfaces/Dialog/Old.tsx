@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import React  from "react";
-import Dialog, {DialogProps} from "./Dialog";
+import React from "react";
+import Dialog, { DialogProps } from "./Dialog";
 
 import IconButton from "../../Inputs/IconButton/IconButton";
 import CloseIcon from "../../icons/Modern/CloseIcon";
@@ -53,7 +53,6 @@ const Header = styled.div`
 
 interface OldDialogProps extends DialogProps {
   title: string;
-
 }
 
 export const DialogOld = ({ title, children, open, onClose }: OldDialogProps) => {
@@ -63,10 +62,11 @@ export const DialogOld = ({ title, children, open, onClose }: OldDialogProps) =>
         <Content>
           <Header>
             <h1 style={{ color: "#0949ab" }}>{title}</h1>
-            {onClose &&             <IconButton>
-              <CloseIcon onClick={() => onClose()} />
-            </IconButton>}
-
+            {onClose && (
+              <IconButton>
+                <CloseIcon onClick={() => onClose()} />
+              </IconButton>
+            )}
           </Header>
           {children}
         </Content>

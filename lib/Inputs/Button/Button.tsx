@@ -16,7 +16,7 @@ const ButtonRoot = styled("button")({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
- backgroundColor: "transparent",
+  backgroundColor: "transparent",
   outline: 0,
   border: 0,
   margin: 0,
@@ -25,8 +25,8 @@ const ButtonRoot = styled("button")({
   cursor: "pointer",
   textDecoration: "none",
   color: "inherit",
-  '.fullwidth': {
-width: '100%'
+  ".fullwidth": {
+    width: "100%",
   },
   ".disabled": {
     pointerEvents: "none",
@@ -64,7 +64,7 @@ const Button = (props: ButtonProps) => {
   const endIcon = endIconProp && <ButtonEndIcon>{endIconProp}</ButtonEndIcon>;
 
   return (
-    <ButtonRoot disabled={disabled} className={clsx(fullWidth && 'fullwidth')}{...other}>
+    <ButtonRoot disabled={disabled} className={clsx(fullWidth && "fullwidth")} {...other}>
       {startIcon}
       {children}
       {endIcon}

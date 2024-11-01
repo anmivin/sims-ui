@@ -3,7 +3,7 @@ import React from "react";
 import IconButton from "../../Inputs/IconButton/IconButton";
 import CloseIcon from "../../icons/Modern/CloseIcon";
 import { ModernButton } from "../../Inputs/Button/Modern";
-import Dialog, {DialogProps} from "./Dialog";
+import Dialog, { DialogProps } from "./Dialog";
 
 const StyledWrapper = styled("div")({
   fontFamily: "The Sims Sans",
@@ -48,9 +48,8 @@ const Header = styled.div`
   gap: 20px;
 `;
 
-interface ModernDialogProps extends DialogProps{
+interface ModernDialogProps extends DialogProps {
   title: string;
-
 }
 export const DialogModern = ({ title, children, open, onClose }: ModernDialogProps) => {
   return (
@@ -59,10 +58,11 @@ export const DialogModern = ({ title, children, open, onClose }: ModernDialogPro
         <Content>
           <Header>
             <h1 style={{ color: "#0949ab" }}>{title}</h1>
-            {onClose &&             <IconButton>
-              <CloseIcon onClick={() => onClose?.()} />
-            </IconButton>}
-
+            {onClose && (
+              <IconButton>
+                <CloseIcon onClick={() => onClose?.()} />
+              </IconButton>
+            )}
           </Header>
           {children}
         </Content>
