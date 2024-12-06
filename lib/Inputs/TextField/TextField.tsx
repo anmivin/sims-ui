@@ -40,7 +40,10 @@ export const TextfieldInput = styled("div")({
   cursor: "text",
   display: "inline-flex",
   alignItems: "center",
-
+  backgroundColor: "#f8fbfe",
+  border: "1px solid #b5c6d5",
+  color: "#333333",
+  boxShadow: "inset 0px 0px 4px #8593a1",
   ".disabled": {
     color: "gray",
     cursor: "default",
@@ -105,7 +108,7 @@ const HelperText = styled("p")({
   },
 });
 
-const TextField = (props: TextfieldProps) => {
+const TextField = React.forwardRef<HTMLDivElement, TextfieldProps>((props, ref) => {
   const {
     defaultValue,
     disabled = false,
@@ -135,6 +138,7 @@ const TextField = (props: TextfieldProps) => {
 
   return (
     <TextfieldRoot
+    ref={ref}
       className={clsx(
         variant,
         disabled && "-disabled",
@@ -172,6 +176,6 @@ const TextField = (props: TextfieldProps) => {
       {helperText && <HelperText>{helperText}</HelperText>}
     </TextfieldRoot>
   );
-};
+});
 
 export default TextField;

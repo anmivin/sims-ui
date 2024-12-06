@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import Button, { ButtonProps } from "./Button";
 
@@ -25,7 +25,7 @@ const StyledButton = styled(Button)({
   },
 });
 
-export const ModernButton = ({
+export const ModernButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   children,
   disabled,
   endIcon,
@@ -33,9 +33,10 @@ export const ModernButton = ({
   href,
   startIcon,
   onClick,
-}: ButtonProps): ReactNode => {
+}, ref) => {
   return (
     <StyledButton
+    ref={ref}
       onClick={onClick}
       fullWidth={fullWidth}
       disabled={disabled}
@@ -46,4 +47,4 @@ export const ModernButton = ({
       {children}
     </StyledButton>
   );
-};
+});

@@ -3,10 +3,11 @@ import * as React from "react";
 import styled from "@emotion/styled";
 import clsx from "clsx";
 
-export interface IconButtonProps {
+export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   disabled?: boolean;
   error?: boolean;
+  id?: string
 }
 
 const IconButtonRoot = styled("button")({

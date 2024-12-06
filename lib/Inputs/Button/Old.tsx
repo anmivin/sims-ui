@@ -13,8 +13,9 @@ const StyledButton = styled(Button)({
   backgroundColor: "#95a6de",
   cursor: "pointer",
   height: "60px",
+  padding: '10px',
 
-  ":before": {
+/*   ":before": {
     content: '""',
     position: "absolute",
     top: "-3px",
@@ -23,7 +24,7 @@ const StyledButton = styled(Button)({
     bottom: "-3px",
     border: "2px solid #000d60",
     borderRadius: "14px",
-  },
+  }, */
   "&:hover:before": {
     border: "2px solid white",
   },

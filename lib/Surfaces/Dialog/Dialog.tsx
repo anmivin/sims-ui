@@ -23,14 +23,15 @@ const DialogContainer = styled("div")({
 });
 
 const DialogPaper = styled("div")({
-  margin: 32,
+  justifyContent: 'center',
+  margin: 'auto',
   position: "relative",
-  overflowY: "auto",
 
-  ".fullwidth": {
+
+  ".fullWidth": {
     width: "calc(100% - 64px)",
   },
-  ".fullscreen": {
+  ".fullScreen": {
     margin: 0,
     width: "100%",
     maxWidth: "100%",
@@ -45,34 +46,16 @@ const Dialog = (props: DialogProps) => {
     children,
     fullScreen = false,
     fullWidth = false,
-    onBackdropClick,
-    onClose,
     open,
     ...other
   } = props;
 
-  const backdropClick = React.useRef();
 
-  const handleBackdropClick = () => {
-    if (!backdropClick.current) {
-      return;
-    }
-
-    backdropClick.current = null;
-
-    if (onBackdropClick) {
-      onBackdropClick();
-    }
-
-    if (onClose) {
-      onClose();
-    }
-  };
 
   return (
-    <DialogRoot onClose={onClose} open={open} onBackdropClick={handleBackdropClick} {...other}>
+    <DialogRoot  open={open}  {...other}>
       <DialogContainer>
-        <DialogPaper className={clsx(fullScreen && 'fullScreen', fullWidth && 'fullWidth')}>{children}</DialogPaper>
+        <DialogPaper className={clsx('dialogPaper', fullScreen && 'fullScreen', fullWidth && 'fullWidth')}>{children}</DialogPaper>
       </DialogContainer>
     </DialogRoot>
   );

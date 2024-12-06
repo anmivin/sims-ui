@@ -49,7 +49,7 @@ const ButtonEndIcon = styled("span")({
   marginLeft: 8,
 });
 
-const Button = (props: ButtonProps) => {
+const Button = React.forwardRef<HTMLButtonElement , ButtonProps>((props, ref) => {
   const {
     children,
     disabled = false,
@@ -64,12 +64,12 @@ const Button = (props: ButtonProps) => {
   const endIcon = endIconProp && <ButtonEndIcon>{endIconProp}</ButtonEndIcon>;
 
   return (
-    <ButtonRoot disabled={disabled} className={clsx(fullWidth && 'fullwidth')}{...other}>
+    <ButtonRoot ref={ref} disabled={disabled} className={clsx(fullWidth && 'fullwidth')}{...other}>
       {startIcon}
       {children}
       {endIcon}
     </ButtonRoot>
   );
-};
+});
 
 export default Button;

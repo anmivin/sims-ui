@@ -19,6 +19,6 @@ const StyledButton = styled(IconButton)({
 
 });
 
-export const IconButtonModern = ({ children }: IconButtonProps): ReactNode => {
-  return <StyledButton >{children}</StyledButton>;
+export const IconButtonModern = ({ children, id }: IconButtonProps): ReactNode => {
+  return <StyledButton id={id}>{children}</StyledButton>;
 };

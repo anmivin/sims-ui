@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 
 import styled from "@emotion/styled";
 import { useModal } from "../Providers/Modal/useModal";
+import clsx from "clsx";
 
 export interface ModalProps {
   children: React.ReactElement<unknown>;
@@ -10,6 +11,7 @@ export interface ModalProps {
   onBackdropClick?: () => void;
   onClose?: () => void;
   open: boolean;
+  invisibleBackdrop?: boolean
 }
 
 const ModalRoot = styled("div")({
@@ -34,12 +36,14 @@ const ModalBackdrop = styled("div")({
   backgroundColor: "rgba(0, 0, 0, 0.5)",
   width: "100%",
   height: "100%",
+  '&.invisibleBackdrop': {
+    backgroundColor: "transparent",
+  }
 });
 
-const Modal = (props: ModalProps) => {
-  const { children, hideBackdrop = false, onBackdropClick, onClose, open } = props;
-  const ref = React.useRef<HTMLDivElement | null>(null);
-
+const Modal= React.forwardRef<HTMLDivElement | null, ModalProps>((props, ref) => {
+  const { children, invisibleBackdrop, hideBackdrop = false, onBackdropClick, onClose, open } = props;
+ 
   const [mountNode, setMountNode] = React.useState<HTMLElement | null>(null);
 
   React.useEffect(() => {
@@ -60,7 +64,7 @@ const Modal = (props: ModalProps) => {
       {mountNode
         ? ReactDOM.createPortal(
             <ModalRoot ref={ref}>
-              {!hideBackdrop ? <ModalBackdrop onClick={() => onBackdropClick?.()} /> : null}
+              {!hideBackdrop ? <ModalBackdrop className={clsx(invisibleBackdrop && 'invisibleBackdrop')}onClick={() => onBackdropClick?.()} /> : null}
 
               {children}
             </ModalRoot>,
@@ -69,6 +73,7 @@ const Modal = (props: ModalProps) => {
         : mountNode}
     </React.Fragment>
   );
-};
+});
 
 export default Modal;
+
