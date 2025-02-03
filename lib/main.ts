@@ -15,7 +15,12 @@ export { TextFieldOld } from "./Inputs/TextField/Old";
 export { ModernTabs } from "./Navigation/Tabs/Modern";
 export { OldTabs } from "./Navigation/Tabs/Old";
 
-export {ContextMenuModern} from './Inputs/ContextMenu/Modern'
-export {ContextMenuOld} from './Inputs/ContextMenu/Old'
-export {default as Popover} from './Surfaces/Popover!/Popover'
-export {default as Autocomplete} from './Inputs/Autocomplete!/Autocomplete'
+export { ContextMenuModern } from "./Inputs/ContextMenu/Modern";
+export { ContextMenuOld } from "./Inputs/ContextMenu/Old";
+export { default as Popover } from "./Surfaces/Popover/Popover";
+export { default as Autocomplete } from "./Inputs/Autocomplete/Autocomplete";
+export { default as NewAutocomplete } from "./w/NewAuto";
+export { default as Tooltip } from "./Display/Tooltip/Tooltip";
+export { AlertOld } from "./Surfaces/Alert/Old";
+export { AlertModern } from "./Surfaces/Alert/Modern";
+export { default as SimsThemeProvider } from "./Providers/Theme/ThemeContext";

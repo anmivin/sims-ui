@@ -1,5 +1,6 @@
+import * as React from "react";
 import { StyledOldSpinner } from "./CircularProgress.styled";
-import React from "react";
+
 export const CircularProgressOld = ({ width = 120 }: { width?: number }) => {
   return (
     <StyledOldSpinner width={width} height={width} viewBox='0 0 52 52'>
@@ -11,6 +12,7 @@ export const CircularProgressOld = ({ width = 120 }: { width?: number }) => {
         <stop offset='0%' stopColor='#6c9add' />
         <stop offset='100%' stopColor='#365fa0' />
       </radialGradient>
+
       <path
         strokeLinejoin='round'
         className='contour'

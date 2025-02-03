@@ -1,5 +1,6 @@
+import * as React from "react";
 import { StyledModernSpinner } from "./CircularProgress.styled";
-import React from "react";
+
 export const CircularProgressModern = ({ width = 100 }: { width?: number }) => {
   return (
     <StyledModernSpinner width={width} height={width * 2} viewBox='0 0 24 24'>

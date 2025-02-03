@@ -1,112 +1,15 @@
 import * as React from "react";
 import clsx from "clsx";
-import styled from "@emotion/styled";
-
-export type TextFieldVariants = "outlined" | "standard" | "filled";
-
-export interface TextfieldProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "defaultValue" | "onChange"> {
-  defaultValue?: string | number | readonly string[] | undefined;
-  disabled?: boolean;
-  endAdornment?: React.ReactNode;
-  error?: boolean;
-  fullWidth?: boolean;
-  multiline?: boolean;
-  onChange?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  placeholder?: string;
-  required?: boolean;
-  rows?: number;
-  startAdornment?: React.ReactNode;
-  value?: string | number | readonly string[] | undefined;
-  helperText?: React.ReactNode;
-  label?: React.ReactNode;
-  variant?: TextFieldVariants;
-  className?: string;
-}
-
-const TextfieldRoot = styled("div")({
-  display: "inline-flex",
-  flexDirection: "column",
-  position: "relative",
-  minWidth: 0,
-  padding: 0,
-  margin: 0,
-  border: 0,
-});
-
-export const TextfieldInput = styled("div")({
-  boxSizing: "border-box",
-  position: "relative",
-  cursor: "text",
-  display: "inline-flex",
-  alignItems: "center",
-  backgroundColor: "#f8fbfe",
-  border: "1px solid #b5c6d5",
-  color: "#333333",
-  boxShadow: "inset 0px 0px 4px #8593a1",
-  ".disabled": {
-    color: "gray",
-    cursor: "default",
-  },
-});
-
-export const TextfieldArea = styled("textarea")({});
-
-export const Input = styled("input")({
-  font: "inherit",
-  letterSpacing: "inherit",
-  color: "currentColor",
-  padding: "4px 0 5px",
-  border: 0,
-  boxSizing: "content-box",
-  background: "none",
-  WebkitTapHighlightColor: "transparent",
-  display: "block",
-  width: "100%",
-  "-multiline": {
-    height: "auto",
-    resize: "none",
-    padding: 0,
-    paddingTop: 0,
-  },
-  "&:focus": {
-    outline: 0,
-  },
-});
-
-const TextfieldLabelRoot = styled("label")({
-  lineHeight: "1.5em",
-  padding: 0,
-  position: "relative",
-
-  ".disabled": {
-    color: "gray",
-    ".error": {
-      color: "red",
-    },
-  },
-  display: "block",
-  transformOrigin: "top left",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  maxWidth: "100%",
-});
-
-const HelperText = styled("p")({
-  color: "",
-  textAlign: "left",
-  marginTop: 3,
-  marginRight: 0,
-  marginBottom: 0,
-  marginLeft: 0,
-  ".disabled": {
-    color: "",
-  },
-  ".error": {
-    color: "",
-  },
-});
+import { getClassNames } from "../../utils/getClassNames";
+import {
+  HelperText,
+  TextfieldArea,
+  TextfieldInput,
+  TextfieldLabelRoot,
+  TextfieldRoot,
+  Input,
+} from "./TextField.styled";
+import { TextfieldProps } from "./TextField.types";
 
 const TextField = React.forwardRef<HTMLDivElement, TextfieldProps>((props, ref) => {
   const {
@@ -122,13 +25,11 @@ const TextField = React.forwardRef<HTMLDivElement, TextfieldProps>((props, ref) 
     placeholder,
     rows,
     startAdornment,
-    value: valueProp,
+    value,
     required,
     variant = "standard",
     ...other
   } = props;
-
-  const value = valueProp;
 
   const handleChange = (event) => {
     if (onChange) {
@@ -138,13 +39,13 @@ const TextField = React.forwardRef<HTMLDivElement, TextfieldProps>((props, ref) 
 
   return (
     <TextfieldRoot
-    ref={ref}
+      ref={ref}
       className={clsx(
         variant,
-        disabled && "-disabled",
-        error && "-error",
-        fullWidth && "-fullWidth",
-        required && "-required"
+        disabled && getClassNames("SimsUiTextField").disabled,
+        error && getClassNames("SimsUiTextField").error,
+        fullWidth && getClassNames("SimsUiTextField").fullWidth,
+        required && getClassNames("SimsUiTextField").required
       )}
       {...other}
     >

@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useCallback, useState } from "react";
+import * as React from "react";
 
 interface Modal {
   mount: Element;
@@ -10,12 +10,12 @@ interface ModalContextProps {
   remove: (modal: Modal) => number;
 }
 
-export const ModalContext = createContext({} as ModalContextProps);
+export const ModalContext = React.createContext({} as ModalContextProps);
 
-const ModalProvider = ({ children }: { children: ReactNode }): JSX.Element => {
-  const [modals, setModals] = useState<Modal[]>([]);
+const ModalProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+  const [modals, setModals] = React.useState<Modal[]>([]);
 
-  const add = useCallback(
+  const add = React.useCallback(
     (modal: Modal) => {
       let modalIndex = modals.indexOf(modal);
       if (modalIndex !== -1) {
@@ -30,7 +30,7 @@ const ModalProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     [modals]
   );
 
-  const remove = useCallback(
+  const remove = React.useCallback(
     (modal: Modal) => {
       const modalIndex = modals.indexOf(modal);
 

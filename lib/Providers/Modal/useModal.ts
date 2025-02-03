@@ -20,26 +20,12 @@ export const useModal = (props: UseModalProps) => {
     return modal.current;
   };
 
-  const handleOpen = React.useCallback(() => {
-    context.add(getModal());
-  }, []);
-
-  const handleClose = React.useCallback(() => {
-    onClose?.();
-    context.remove(getModal());
-  }, []);
-
-  React.useEffect(() => {
-    return () => {
-      handleClose();
-    };
-  }, [handleClose]);
-
   React.useEffect(() => {
     if (open) {
-      handleOpen();
+      context.add(getModal());
     } else {
-      handleClose();
+      onClose?.();
+      context.remove(getModal());
     }
   }, [open]);
 };
