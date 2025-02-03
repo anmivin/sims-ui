@@ -24,3 +24,4 @@ export { default as Tooltip } from "./Display/Tooltip/Tooltip";
 export { AlertOld } from "./Surfaces/Alert/Old";
 export { AlertModern } from "./Surfaces/Alert/Modern";
 export { default as SimsThemeProvider } from "./Providers/Theme/ThemeContext";
+export {default as ColorInput} from './Inputs/ColorInput/ColorInput'

@@ -12,7 +12,7 @@ import {
 import { assocRefToPropRef } from './shared/helpers/ref'
 import { TinyColor } from '@ctrl/tinycolor'
 import InputAdornment from '@mui/material/InputAdornment'
-import type { PopoverProps } from '@mui/material/Popover'
+import type { PopoverProps } from '../../Surfaces/Popover/Popover.types'
 import type {
   MuiColorButtonProps,
   MuiColorInputColors,
