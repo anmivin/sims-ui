@@ -19,11 +19,11 @@ const Popper = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref)
     let top = anchorRect.top + element.offsetHeight;
     let left = anchorRect.left;
 
-    const rightPlacement = anchorRect.left + anchorRect.width;
+    const rightPlacement = anchorRect.left + anchorRect.width + (arrow ? 10 : 0);
     const centerPlacement = anchorRect.left + (anchorRect.width / 2 - element.offsetWidth / 2);
-    const leftPlacement = anchorRect.left - element.offsetWidth;
+    const leftPlacement = anchorRect.left - element.offsetWidth - (arrow ? 10 : 0);
 
-    const topPlacement = anchorRect.top - element.offsetHeight;
+    const topPlacement = anchorRect.top - element.offsetHeight - (arrow ? 10 : 0);
     const middlePlacement = anchorRect.top + (anchorRect.height / 2 - element.offsetHeight / 2);
     const bottomPlacement = anchorRect.top + anchorRect.height + (arrow ? 10 : 0);
     switch (placement) {
@@ -80,9 +80,10 @@ const Popper = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref)
   }, [open]);
 
   return (
-    <div ref={ref} style={{ display: open ? "block" : "none" }}>
+    
+    <div ref={ref} style={{ display: open ? "flex" : "none" }}>
       <Styles.PopoverPaper ref={paperRef}>{children}</Styles.PopoverPaper>
-      {arrow && <Styles.PopoverArrow css={Styles.arrowStyles("top")} />}
+      {arrow && <Styles.PopoverArrow className={clsx(placement)} />}
     </div>
   );
 });

@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { css, Interpolation, CSSObject } from "@emotion/react";
-import { BasePlacement, BetweenPlacement } from "./Popper.types";
+
 export const PopoverPaper = styled("div")({
   position: "absolute",
   overflowY: "auto",
@@ -13,51 +12,26 @@ export const PopoverPaper = styled("div")({
   backgroundColor: "red",
 });
 
-export const arrowStyles = (placement: BasePlacement | BetweenPlacement) => {
-  let rotation = 0;
 
-  switch (placement) {
-    case "left":
-      rotation = 90;
-      break;
-    case "right":
-      rotation = -90;
-      break;
-    case "top":
-      rotation = 180;
-  }
-  return css`
-    transform: rotate(${rotation}deg);
-  `;
-};
-export const PopoverArrow = styled("span")<{ css: Interpolation<CSSObject> }>({
+export const PopoverArrow = styled("div")({
   width: "0px",
   height: "0px",
   borderStyle: "solid",
-  borderWidth: "0 100px 150px 100px",
-  borderColor: "transparent transparent #FF4532 transparent",
-  "&.bottom": {
-    transform: "rotate(90deg)",
+    "&.bottom": {
+      borderWidth: "0 10px 20px 10px",
+      borderColor: "transparent transparent #FF4532 transparent",
   },
-  ".top": {
-    bottom: 0,
-    marginBottom: "-0.71em",
-    "&::before": {
-      transformOrigin: "100% 0",
-    },
+  "&.top": {
+    borderWidth: "150px 100px 0px 100px",
+    borderColor: "#FF4532 transparent transparent transparent",
+    
+  }, 
+  "&.right": {
+    borderWidth: "10px 20px 10px 0px",
+    borderColor: "transparent #FF4532 transparent  transparent",
   },
-  ".right": {
-    height: "1em",
-    width: "0.71em",
-    "&::before": {
-      transformOrigin: "100% 100%",
-    },
-  },
-  ".left": {
-    height: "1em",
-    width: "0.71em",
-    "&::before": {
-      transformOrigin: "0 0",
-    },
+  "&.left": {
+ borderWidth: "10px 0px 10px 20px",
+    borderColor: "transparent transparent  transparent #FF4532",
   },
 });

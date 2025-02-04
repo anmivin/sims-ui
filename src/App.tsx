@@ -24,18 +24,21 @@ import {
   AlertOld,
   SimsThemeProvider,
   ColorInput,
+  ModernTextfield
 } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 
 import { useRef, useState } from "react";
+
 function App() {
   const [open, setOpen] = useState(false);
   const [popopen, setPopOpen] = useState(false);
   const butRef = useRef<HTMLButtonElement | null>(null);
   return (
-    <div style={{ padding: "10px" /*  background: "#8ccbff" */ }}>
+    <div style={{ padding: "100px" /*  background: "#8ccbff" */ }}>
       <SimsThemeProvider>
         <ModalProvider>
+         {/*  <ModernTextfield variant="filled"/> */}
           {/*    <ColorInput /> */}
           {/*           <AlertModern className='success'>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor

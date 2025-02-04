@@ -15,7 +15,7 @@ export const TooltipTooltip = styled("div")({
   backgroundColor: "red",
   borderRadius: "8px",
   color: "white",
-  padding: "4px 8px",
+ padding: "4px 8px",
   maxWidth: 300,
   margin: 2,
   wordWrap: "break-word",
