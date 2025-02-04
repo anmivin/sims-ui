@@ -9,36 +9,6 @@ export const TooltipPoper = styled(Popper)({
   "-closed": {
     pointerEvents: "none",
   },
-  "-arrow": {
-    [`&[data-popper-placement*="bottom"] .arrow`]: {
-      top: 0,
-      marginTop: "-0.71em",
-      "&::before": {
-        transformOrigin: "0 100%",
-      },
-    },
-    [`&[data-popper-placement*="top"] .arrow`]: {
-      bottom: 0,
-      marginBottom: "-0.71em",
-      "&::before": {
-        transformOrigin: "100% 0",
-      },
-    },
-    [`&[data-popper-placement*="right"] .arrow`]: {
-      height: "1em",
-      width: "0.71em",
-      "&::before": {
-        transformOrigin: "100% 100%",
-      },
-    },
-    [`&[data-popper-placement*="left"] .arrow`]: {
-      height: "1em",
-      width: "0.71em",
-      "&::before": {
-        transformOrigin: "0 0",
-      },
-    },
-  },
 });
 
 export const TooltipTooltip = styled("div")({

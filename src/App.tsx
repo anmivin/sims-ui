@@ -23,6 +23,7 @@ import {
   AlertModern,
   AlertOld,
   SimsThemeProvider,
+  ColorInput,
 } from "sims-ui";
 import "../lib/fonts/simsSans.css";
 
@@ -35,16 +36,17 @@ function App() {
     <div style={{ padding: "10px" /*  background: "#8ccbff" */ }}>
       <SimsThemeProvider>
         <ModalProvider>
+          {/*    <ColorInput /> */}
           {/*           <AlertModern className='success'>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
           </AlertModern> */}
-          <AlertOld>
+          {/*          <AlertOld>
             <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
               incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
             </div>
-          </AlertOld>
+          </AlertOld> */}
           {/*         <Autocomplete
           options={[
             { id: "1", label: "привет" },

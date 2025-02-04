@@ -25,26 +25,21 @@ const StyledButton = styled(Button)({
   },
 });
 
-export const ModernButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({
-  children,
-  disabled,
-  endIcon,
-  fullWidth,
-  href,
-  startIcon,
-  onClick,
-}, ref) => {
-  return (
-    <StyledButton
-    ref={ref}
-      onClick={onClick}
-      fullWidth={fullWidth}
-      disabled={disabled}
-      startIcon={startIcon}
-      endIcon={endIcon}
-      href={href}
-    >
-      {children}
-    </StyledButton>
-  );
-});
+export const ModernButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, disabled, endIcon, fullWidth, href, startIcon, onClick, ...props }, ref) => {
+    return (
+      <StyledButton
+        {...props}
+        ref={ref}
+        onClick={onClick}
+        fullWidth={fullWidth}
+        disabled={disabled}
+        startIcon={startIcon}
+        endIcon={endIcon}
+        href={href}
+      >
+        {children}
+      </StyledButton>
+    );
+  }
+);

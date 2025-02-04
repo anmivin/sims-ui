@@ -1,10 +1,11 @@
 import * as React from "react";
-
+import { css } from "@emotion/react";
 import * as Types from "./Popper.types";
 import * as Styles from "./Popper.styles";
+import clsx from "clsx";
 
 const Popper = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref) => {
-  const { anchorEl, children, open, placement = "bottom" } = props;
+  const { anchorEl, children, open, arrow, placement = "bottom" } = props;
 
   const paperRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -24,7 +25,7 @@ const Popper = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref)
 
     const topPlacement = anchorRect.top - element.offsetHeight;
     const middlePlacement = anchorRect.top + (anchorRect.height / 2 - element.offsetHeight / 2);
-    const bottomPlacement = anchorRect.top + anchorRect.height;
+    const bottomPlacement = anchorRect.top + anchorRect.height + (arrow ? 10 : 0);
     switch (placement) {
       case "top": {
         top = topPlacement;
@@ -70,7 +71,7 @@ const Popper = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref)
 
     element.style.top = `${Math.round(top)}px`;
     element.style.left = `${Math.round(left)}px`;
-  }, [anchorEl, placement]);
+  }, [anchorEl, placement, arrow]);
 
   React.useEffect(() => {
     if (open) {
@@ -79,9 +80,10 @@ const Popper = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref)
   }, [open]);
 
   return (
-    <Styles.Pop ref={ref} style={{ display: open ? "block" : "none" }}>
+    <div ref={ref} style={{ display: open ? "block" : "none" }}>
       <Styles.PopoverPaper ref={paperRef}>{children}</Styles.PopoverPaper>
-    </Styles.Pop>
+      {arrow && <Styles.PopoverArrow css={Styles.arrowStyles("top")} />}
+    </div>
   );
 });
 

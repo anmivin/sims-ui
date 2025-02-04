@@ -30,23 +30,19 @@ export class Timeout {
 
 const Tooltip = (props: Types.TooltipProps) => {
   const { children, placement = "bottom", title } = props;
-  const [openState, setOpenState] = React.useState(true);
+  const [openState, setOpenState] = React.useState(false);
   React.useEffect(() => console.log("children", children), [children]);
   const handleMouseOver = () => {
-    setOpenState(true);
-    //settimeout
+    setTimeout(() => setOpenState(true), 300);
   };
 
   const handleMouseLeave = () => {
-    //settimeout
-    setOpenState(false);
+    /*  setTimeout(() => setOpenState(false), 300); */
   };
 
   if (!title && title !== 0) {
     setOpenState(false);
   }
-
-  React.useEffect(() => console.log("openState", openState), [openState]);
 
   return (
     <React.Fragment>
@@ -58,11 +54,9 @@ const Tooltip = (props: Types.TooltipProps) => {
         placement={placement}
         anchorEl={(children as any).ref.current}
         open={children ? openState : false}
+        arrow
       >
-        <Styles.TooltipTooltip>
-          {title}
-          <Styles.TooltipArrow />
-        </Styles.TooltipTooltip>
+        <Styles.TooltipTooltip>{title}</Styles.TooltipTooltip>
       </Styles.TooltipPoper>
     </React.Fragment>
   );
