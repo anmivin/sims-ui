@@ -1,6 +1,6 @@
-import IconWrapper, { IconWrapperProps } from '@ui/IconWrapper';
+import IconWrapper, { IconProps } from '../IconWrapper';
 
-const ToggleLeftIcon = (props: IconWrapperProps) => {
+const ToggleLeftIcon = (props: IconProps) => {
   return (
     <IconWrapper {...props}>
       <path d="M2 12C2 8.68629 4.68629 6 8 6H16C19.3137 6 22 8.68629 22 12C22 15.3137 19.3137 18 16 18H8C4.68629 18 2 15.3137 2 12Z" />

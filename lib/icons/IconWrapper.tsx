@@ -5,7 +5,7 @@ export interface IconProps extends HTMLAttributes<SVGSVGElement> {
   size?: number;
   viewBox?: string;
   color?: string;
-  isLineIcon?: boolean;
+  isFilledIcon?: boolean;
   responsive?: boolean;
   children?: ReactNode;
 }
@@ -34,11 +34,14 @@ const IconWrapper: IconComponent = ({
 };
 
 const StyledSvg = styled("svg")<IconProps>`
-  ${({ isLineIcon, color, responsive }) => {
+  ${({ isFilledIcon, color, responsive }) => {
     const cssColor = color ?? "currentColor";
 
-    return isLineIcon
-      ? `
+    return isFilledIcon ?`
+       fill: ${cssColor}; 
+          max-height: ${responsive ? "100%" : ""};
+        `
+      : `
           fill: none;
           stroke: ${cssColor};
           stroke-width: 2;
@@ -46,10 +49,7 @@ const StyledSvg = styled("svg")<IconProps>`
             stroke-linecap: round;
   stroke-linejoin: round;
         `
-      : `
-       fill: ${cssColor}; 
-          max-height: ${responsive ? "100%" : ""};
-        `;
+      ;
   }}
 `;
 

@@ -2,7 +2,7 @@ import IconWrapper, {IconProps} from "../IconWrapper";
 import * as React from 'react';
 const CheckBoxUnchecked = (props: IconProps) => {
   return (
-    <IconWrapper {...props} >
+    <IconWrapper {...props} isFilledIcon>
         <defs>
     <linearGradient id="checkbox-unchecked" x1="0%" x2="0%" y1="0%" y2="100%">
       <stop offset="0%" stopColor="#f9f9f9" />

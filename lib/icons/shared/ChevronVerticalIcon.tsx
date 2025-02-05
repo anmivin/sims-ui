@@ -1,8 +1,8 @@
-import IconWrapper, { IconWrapperProps } from '@ui/IconWrapper';
+import IconWrapper, { IconProps } from '../IconWrapper';
 
-const ChevronVerticalIcon = (props: IconWrapperProps) => {
+const ChevronVerticalIcon = (props: IconProps) => {
   return (
-    <IconWrapper {...props}>
+    <IconWrapper {...props} >
       <path d="M7 15L12 20L17 15M7 9L12 4L17 9" />
     </IconWrapper>
   );

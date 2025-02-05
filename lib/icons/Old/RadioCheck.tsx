@@ -3,7 +3,7 @@ import React from "react";
 
 const RadioCheckIcon = (props: IconProps) => {
   return (
-    <IconWrapper {...props} isLineIcon>
+    <IconWrapper {...props} >
       <path
         fill-rule='evenodd'
         clip-rule='evenodd'

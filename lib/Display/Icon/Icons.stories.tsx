@@ -3,12 +3,11 @@ import { fn } from "@storybook/test";
 import * as icons from "../../icons/index";
 import * as Old from "../../icons/Old/index";
 import * as Modern from "../../icons/Modern/index";
-import React from "react";
 
 export const ActionsData = {};
 
 export default {
-  component: (
+  component: () => (
     <div>
       <icons.AlertBlankIcon />
       <icons.AlertCheckIcon />
@@ -109,4 +108,8 @@ export default {
   args: {
     ...ActionsData,
   },
+};
+
+export const s = {
+
 };

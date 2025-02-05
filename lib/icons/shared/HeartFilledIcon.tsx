@@ -1,6 +1,6 @@
-import IconWrapper, { IconWrapperProps } from '@ui/IconWrapper';
+import IconWrapper, { IconProps } from '../IconWrapper';
 
-const HeartFilledIcon = (props: IconWrapperProps) => {
+const HeartFilledIcon = (props: IconProps) => {
   return (
     <IconWrapper {...props}>
       <path

@@ -1,4 +1,4 @@
-import IconWrapper, {IconProps} from "./IconWrapper";
+import IconWrapper, {IconProps} from "../IconWrapper";
 
 const CheckIcon = (props: IconProps) => {
   return (

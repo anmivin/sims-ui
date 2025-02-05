@@ -1,6 +1,6 @@
-import IconWrapper, { IconWrapperProps } from '@ui/IconWrapper';
+import IconWrapper, { IconProps } from '../IconWrapper';
 
-const PlusIcon = (props: IconWrapperProps) => {
+const PlusIcon = (props: IconProps) => {
   return (
     <IconWrapper {...props}>
       <path d="M 12 4 L 12 20 M 4 12 L 20 12" />
