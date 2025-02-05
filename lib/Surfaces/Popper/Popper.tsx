@@ -1,5 +1,4 @@
 import * as React from "react";
-import { css } from "@emotion/react";
 import * as Types from "./Popper.types";
 import * as Styles from "./Popper.styles";
 import clsx from "clsx";
@@ -80,7 +79,6 @@ const Popper = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref)
   }, [open]);
 
   return (
-    
     <div ref={ref} style={{ display: open ? "flex" : "none" }}>
       <Styles.PopoverPaper ref={paperRef}>{children}</Styles.PopoverPaper>
       {arrow && <Styles.PopoverArrow className={clsx(placement)} />}

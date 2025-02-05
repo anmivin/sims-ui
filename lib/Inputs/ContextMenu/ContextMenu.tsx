@@ -1,62 +1,30 @@
-import styled from "@emotion/styled";
-import Button from "../Button/Button";
-import React from "react";
-import { css } from "@emotion/react";
+import * as React from "react";
+import * as Styles from "./ContextMenu.styles";
+import * as Types from "./ContextMenu.types";
 import clsx from "clsx";
-import Modal, { ModalProps } from "../../Internal/Modal";
-const createStyles = (numberItems: number) => {
-  const pathStyles = {};
-  const diff = 360 / numberItems;
-  for (let i = 0; i < numberItems; i += 1) {
-    pathStyles[`.menuItem_${i}`] = css`
-      position: absolute;
-      transform: translate(-50%, -50%);
-      left: calc(50% + 120px * cos(${i * diff - 90}deg));
-      top: calc(50% + 120px * sin(${i * diff - 90}deg));
-    `;
-  }
-  return pathStyles;
-};
 
-const MenuContent = styled("div")<{ numberItems: number }>(({ numberItems }) => ({
-  position: "relative",
-  width: "400px",
-  height: "400px",
-  borderRadius: "50%",
-  backgroundColor: "#f0f0f0",
-  ...createStyles(numberItems),
-
-  ".menuComponent": {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "40px",
-    height: "20px",
-  },
-}));
-
-export interface ContextMenuProps {
-  options: { item: string; action: () => void }[];
-  component: React.ReactNode;
-  open: boolean;
-}
-export const ContextMenu = ({ open, options, component }: ContextMenuProps) => {
+const ContextMenu = React.forwardRef<HTMLElement, Types.ContextMenuProps>((props) => {
+  const { defaultOpen, options, variant, component } = props;
+  const [open, setOpen] = React.useState(defaultOpen);
   return (
     <>
-      <MenuContent numberItems={options.length}>
-        {component},{/* <Modal open={open} hideBackdrop> */}
+      <Styles.MenuContent numberItems={options.length}>
+        {React.cloneElement(component, {
+          onClick: () => setOpen(true),
+        })}
+        ,{/* <Modal open={open} hideBackdrop> */}
         {open && (
           <>
             {options.map((item, index) => (
-              <Button key={index} className={clsx(`menuItem_${index}`, "contextMenuButton")}>
+              <Styles.MenuButton key={index} className={clsx(`menuItem_${index}`, variant)}>
                 {item.item}
-              </Button>
+              </Styles.MenuButton>
             ))}
           </>
         )}
         {/* </Modal> */}
-      </MenuContent>
+      </Styles.MenuContent>
     </>
   );
-};
+});
+export default ContextMenu;

@@ -1,55 +1,24 @@
 import * as React from "react";
+import * as Styles from "./Checkbox.styles";
+import * as Types from "./Checkbox.types";
 
-import styled from "@emotion/styled";
 import clsx from "clsx";
+import CheckBox from "../../icons/Old/CheckBoxUnchecked";
+import CheckBoxCross from "../../icons/Old/CheckBoxCross";
 
-export interface CheckboxProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "type"> {
-  defaultChecked?: boolean;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  required?: boolean;
-  checked?: boolean;
-  checkedIcon?: React.ReactNode;
-  icon?: React.ReactNode;
-  disabled?: boolean;
-}
-
-const CheckboxRoot = styled("button")({
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  position: "relative",
-  boxSizing: "border-box",
-  backgroundColor: "transparent",
-  outline: 0,
-  border: 0,
-  margin: 0,
-  borderRadius: 0,
-  padding: 0,
-  cursor: "pointer",
-  textDecoration: "none",
-  color: "inherit",
-  ".disabled": {
-    pointerEvents: "none",
-    cursor: "default",
-  },
-});
-
-const CheckboxInput = styled("input")({
-  cursor: "inherit",
-  position: "absolute",
-  opacity: 0,
-  width: "100%",
-  height: "100%",
-  top: 0,
-  left: 0,
-  margin: 0,
-  padding: 0,
-  zIndex: 1,
-});
-
-const Checkbox = (props: CheckboxProps) => {
-  const { checkedIcon, icon, onChange, disabled, defaultChecked, required, ...other } = props;
+const Checkbox = React.forwardRef<HTMLButtonElement, Types.CheckboxProps>((props) => {
+  const {
+    checkedIcon,
+    icon,
+    onChange,
+    disabled,
+    defaultChecked,
+    required,
+    variant = "modern",
+    label,
+    size,
+    ...other
+  } = props;
   const [checked, setCheckedState] = React.useState(defaultChecked);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,9 +29,17 @@ const Checkbox = (props: CheckboxProps) => {
     }
   };
 
+  const checkedComponent =
+    variant === "modern" ? <Styles.CheckedIcon /> : <CheckBoxCross color='#121B61' />;
+  const uncheckedComponent =
+    variant === "modern" ? <Styles.UncheckedIcon /> : <CheckBox color='#121B61' />;
   return (
-    <CheckboxRoot disabled={disabled} className={clsx(disabled && 'disabled')}{...other}>
-      <CheckboxInput
+    <Styles.CheckboxRoot
+      disabled={disabled}
+      className={clsx(disabled && "disabled", variant)}
+      {...other}
+    >
+      <Styles.CheckboxInput
         checked={checked}
         defaultChecked={defaultChecked}
         disabled={disabled}
@@ -70,9 +47,10 @@ const Checkbox = (props: CheckboxProps) => {
         required={required}
         type='checkbox'
       />
-      {checked ? checkedIcon : icon}
-    </CheckboxRoot>
+      {checked ? checkedComponent : uncheckedComponent}
+      {label && <span>{label}</span>}
+    </Styles.CheckboxRoot>
   );
-};
+});
 
 export default Checkbox;

@@ -1,3 +1,5 @@
+import { Variant } from "../../shared/types";
+
 export interface ValueType {
   id: string;
   label: string;
@@ -52,4 +54,5 @@ export interface AutocompleteProps<Value>
   loadingText?: React.ReactNode;
   noOptionsText?: React.ReactNode;
   openText?: string;
+  variant?: Variant;
 }

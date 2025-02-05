@@ -1,17 +1,9 @@
 import * as React from "react";
+import * as Types from "./TextField.types";
+import * as Styles from "./TextField.styles";
 import clsx from "clsx";
-import { getClassNames } from "../../utils/getClassNames";
-import {
-  HelperText,
-  TextfieldArea,
-  TextfieldInput,
-  TextfieldLabelRoot,
-  TextfieldRoot,
-  Input,
-} from "./TextField.styled";
-import { TextfieldProps } from "./TextField.types";
 
-const TextField = React.forwardRef<HTMLDivElement, TextfieldProps>((props, ref) => {
+const TextField = React.forwardRef<HTMLDivElement, Types.TextfieldProps>((props, ref) => {
   const {
     defaultValue,
     disabled = false,
@@ -25,57 +17,55 @@ const TextField = React.forwardRef<HTMLDivElement, TextfieldProps>((props, ref) 
     placeholder,
     rows,
     startAdornment,
-    value,
     required,
-    variant = "standard",
+    variant = "modern",
+    appearence = "standard",
     ...other
   } = props;
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event);
     }
   };
 
   return (
-    <TextfieldRoot
+    <Styles.TextfieldRoot
       ref={ref}
       className={clsx(
         variant,
-        disabled && getClassNames("SimsUiTextField").disabled,
-        error && getClassNames("SimsUiTextField").error,
-        fullWidth && getClassNames("SimsUiTextField").fullWidth,
-        required && getClassNames("SimsUiTextField").required
+        disabled && "disabled",
+        error && "error",
+        fullWidth && "fullWidth",
+        required && "required"
       )}
       {...other}
     >
-      {label && <TextfieldLabelRoot>{label}</TextfieldLabelRoot>}
+      {label && <Styles.TextfieldLabelRoot>{label}</Styles.TextfieldLabelRoot>}
 
       {
         <>
           {multiline ? (
-            <TextfieldArea rows={rows} className={clsx("multiline")} />
+            <Styles.TextfieldArea rows={rows} className={clsx("multiline")} />
           ) : (
-            <TextfieldInput {...other} className={clsx("inputBase", `input-${variant}`)}>
+            <Styles.TextfieldInput {...other} className={clsx(variant, appearence)}>
               {startAdornment}
-              <Input
-                className={clsx("input")}
+              <Styles.Input
                 type='text'
                 defaultValue={defaultValue}
                 disabled={disabled}
                 placeholder={placeholder}
                 required={required}
-                value={value}
                 onChange={handleChange}
               />
               {endAdornment}
-            </TextfieldInput>
+            </Styles.TextfieldInput>
           )}
         </>
       }
 
-      {helperText && <HelperText>{helperText}</HelperText>}
-    </TextfieldRoot>
+      {helperText && <Styles.HelperText>{helperText}</Styles.HelperText>}
+    </Styles.TextfieldRoot>
   );
 });
 

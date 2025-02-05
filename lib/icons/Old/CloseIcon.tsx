@@ -1,6 +1,6 @@
 import IconWrapper, { IconProps } from "../IconWrapper";
 import React from "react";
-export const CloseIcon = (props: IconProps) => {
+const CloseIcon = (props: IconProps) => {
   return (
     <IconWrapper {...props}>
       <path
@@ -11,3 +11,4 @@ export const CloseIcon = (props: IconProps) => {
     </IconWrapper>
   );
 };
+export default CloseIcon;

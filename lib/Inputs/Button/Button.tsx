@@ -1,74 +1,38 @@
 import * as React from "react";
+import * as Styles from "./Button.styles";
+import * as Types from "./Button.types";
 
-import styled from "@emotion/styled";
 import clsx from "clsx";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode;
-  disabled?: boolean;
-  endIcon?: React.ReactNode;
-  fullWidth?: boolean;
-  href?: string;
-  startIcon?: React.ReactNode;
-}
-
-const ButtonRoot = styled("button")({
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
- backgroundColor: "transparent",
-  outline: 0,
-  border: 0,
-  margin: 0,
-  borderRadius: 0,
-  padding: 0,
-  cursor: "pointer",
-  textDecoration: "none",
-  color: "inherit",
-  '.fullwidth': {
-width: '100%'
-  },
-  ".disabled": {
-    pointerEvents: "none",
-    cursor: "default",
-  },
-  "&:hover": {
-    textDecoration: "none",
-  },
-});
-
-const ButtonStartIcon = styled("span")({
-  display: "inherit",
-  marginRight: 8,
-  marginLeft: -4,
-});
-
-const ButtonEndIcon = styled("span")({
-  display: "inherit",
-  marginRight: -4,
-  marginLeft: 8,
-});
-
-const Button = React.forwardRef<HTMLButtonElement , ButtonProps>((props, ref) => {
+const Button = React.forwardRef<HTMLButtonElement, Types.ButtonProps>((props, ref) => {
   const {
     children,
     disabled = false,
     endIcon: endIconProp,
     fullWidth = false,
     startIcon: startIconProp,
+    variant = "modern",
+    size = "m",
     ...other
   } = props;
 
-  const startIcon = startIconProp && <ButtonStartIcon>{startIconProp}</ButtonStartIcon>;
+  const startIcon = startIconProp && (
+    <Styles.ButtonStartIcon>{startIconProp}</Styles.ButtonStartIcon>
+  );
 
-  const endIcon = endIconProp && <ButtonEndIcon>{endIconProp}</ButtonEndIcon>;
+  const endIcon = endIconProp && <Styles.ButtonEndIcon>{endIconProp}</Styles.ButtonEndIcon>;
 
   return (
-    <ButtonRoot ref={ref} disabled={disabled} className={clsx(fullWidth && 'fullwidth')}{...other}>
+    <Styles.ButtonRoot
+      ref={ref}
+      disabled={disabled}
+      className={clsx(fullWidth && "fullwidth", disabled && "disabled", variant, size)}
+      {...other}
+    >
       {startIcon}
       {children}
       {endIcon}
-    </ButtonRoot>
+    </Styles.ButtonRoot>
   );
 });
 

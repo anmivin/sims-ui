@@ -1,6 +1,7 @@
-import React from "react";
+import * as React from "react";
+import { Variant } from "../../shared/types";
 
-export type TextFieldVariants = "outlined" | "standard" | "filled";
+export type TextFieldAppearence = "outlined" | "standard" | "filled";
 
 export interface TextfieldProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "defaultValue" | "onChange"> {
@@ -15,9 +16,8 @@ export interface TextfieldProps
   required?: boolean;
   rows?: number;
   startAdornment?: React.ReactNode;
-  value?: string | number;
   helperText?: React.ReactNode;
   label?: React.ReactNode;
-  variant?: TextFieldVariants;
-  className?: string;
+  appearence?: TextFieldAppearence;
+  variant?: Variant;
 }

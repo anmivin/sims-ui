@@ -1,9 +1,8 @@
 import * as React from "react";
-import TextField from "../TextField/TextField";
-
 import * as Styles from "./Autocomplete.styles";
 import * as Types from "./Autocomplete.types";
-
+import TextField from "../TextField/TextField";
+import ChevronDownIcon from "../../icons/ChevronDownIcon";
 import { useAutocomplete } from "./useAutocomplete";
 
 const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompleteProps<Value>) => {
@@ -20,6 +19,7 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
     openText = "Open",
     options,
     value: valueProp,
+    variant = "modern",
   } = props;
 
   const {
@@ -77,15 +77,17 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
     <React.Fragment>
       <Styles.AutocompleteRoot>
         <TextField
+          variant={variant}
           ref={setAnchorEl}
           defaultValue={inputValue}
           disabled={disabled}
           fullWidth
-          value={valueInput}
+          /* value={valueInput} */
           startAdornment={startAdornment}
           onChange={(e) => {
             onInputChange(e.target.value);
           }}
+          appearence='filled'
           onMouseDown={() => onMouseDown()}
           endAdornment={
             <Styles.AutocompleteEndAdornment>
@@ -103,7 +105,7 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
                     onClickIndicator();
                   }}
                 >
-                  {<>popupIcon</>}
+                  {<ChevronDownIcon />}
                 </Styles.AutocompletePopupIndicator>
               ) : null}
             </Styles.AutocompleteEndAdornment>
@@ -114,14 +116,6 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
         placement='bottom'
         open={expanded}
         anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
         /*         onClose={() => setIsOpen(false)}
         onBackdropClick={() => setIsOpen(false)} */
         hideBackdrop
