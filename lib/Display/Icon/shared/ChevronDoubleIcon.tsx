@@ -1,0 +1,12 @@
+import IconWrapper from "../Icon";
+import { IconProps } from "../Icon.types";
+
+const ChevronDownDoubleIcon = (props: IconProps) => {
+  return (
+    <IconWrapper {...props}>
+      <path d='M7 13L12 18L17 13M7 6L12 11L17 6' />
+    </IconWrapper>
+  );
+};
+
+export default ChevronDownDoubleIcon;

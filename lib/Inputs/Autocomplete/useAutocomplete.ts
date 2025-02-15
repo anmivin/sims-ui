@@ -8,7 +8,7 @@ export const useAutocomplete = <Value extends Types.ValueType>(
     defaultValue = props.multiple ? [] : null,
     getOptionDisabled,
     getOptionLabel = (option) => option.label,
-    multiple = true,
+    multiple,
     onChange,
     options,
   } = props;
@@ -21,11 +21,8 @@ export const useAutocomplete = <Value extends Types.ValueType>(
   const resetSingleInputValue = React.useCallback(
     (newValue: Value) => {
       if (newValue === null) return;
-
       const optionLabel = getOptionLabel(newValue);
-
       if (inputValue === optionLabel) return;
-
       setInputValueState(optionLabel);
     },
     [getOptionLabel, inputValue, setInputValueState]
@@ -34,11 +31,8 @@ export const useAutocomplete = <Value extends Types.ValueType>(
   const resetMultipleInputValue = React.useCallback(
     (newValue: Value[]) => {
       if (!Array.isArray(value)) return;
-
       if (value.length >= newValue.length) return;
-
       if (inputValue === "") return;
-
       setInputValueState("");
     },
     [inputValue, setInputValueState, value]
@@ -73,12 +67,10 @@ export const useAutocomplete = <Value extends Types.ValueType>(
   );
 
   const handleOpen = () => {
-    console.log("open");
     !open && setOpenState(true);
   };
 
   const handleClose = () => {
-    console.log("close");
     open && setOpenState(false);
   };
 
@@ -128,16 +120,7 @@ export const useAutocomplete = <Value extends Types.ValueType>(
     selectNewValue(filteredOptions[index]);
   };
 
-  const handleTagDelete = (index: number) => (event) => {
-    const newValue = value.slice();
-    newValue.splice(index, 1);
-    handleValue(newValue, {
-      option: value[index],
-    });
-  };
-
   const handlePopupIndicator = () => {
-    console.log("pop");
     open ? handleClose() : handleOpen();
   };
 
@@ -152,18 +135,13 @@ export const useAutocomplete = <Value extends Types.ValueType>(
     filteredOptions,
     valueInput: inputValue,
     onInputChange: handleInputChange,
-    onMouseDown: handleOpen,
     onClickClear: handleClear,
+    onOpen: handleOpen,
+    onClose: handleClose,
     onClickIndicator: handlePopupIndicator,
-    getTagProps: (index) => ({
-      key: index,
-      "data-tag-index": index,
-      onDelete: handleTagDelete(index),
-    }),
-
-    getOptionProps: (option, index) => {
+    optionProps: (option, index) => {
       HTMLLIElement;
-      const selected = (multiple ? value : [value]).some(
+      const selected = (multiple ? (value as Value[]) : [value as Value]).some(
         (value2) => value2 != null && isOptionEqualToValue(option, value2)
       );
       const disabled = getOptionDisabled ? getOptionDisabled(option) : false;

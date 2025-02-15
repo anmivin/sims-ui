@@ -35,5 +35,31 @@ export const l = {
     children: <>кнопа</>,
     variant: "old",
     size: "l",
+    disabled: true,
+  },
+};
+
+export const sm = {
+  args: {
+    children: <>кнопа</>,
+    variant: "modern",
+    size: "s",
+    disabled: true,
+  },
+};
+
+export const mm = {
+  args: {
+    children: <>кнопа</>,
+    variant: "modern",
+    size: "m",
+  },
+};
+
+export const lm = {
+  args: {
+    children: <>кнопа</>,
+    variant: "modern",
+    size: "l",
   },
 };

@@ -1,52 +1,47 @@
 import * as React from "react";
-
-import styled from "@emotion/styled";
+import * as Types from "./Tabs.types";
+import * as Styles from "./Tabs.styles";
 import clsx from "clsx";
-
-import Tab from "./Tab";
-
-export interface TabsProps {
-  onChange?: (value: any) => void;
-  orientation?: "horizontal" | "vertical";
-  value?: any;
-  options: { label: string; value: any }[];
-}
-
-const TabsRoot = styled("div")({
-  overflow: "hidden",
-  minHeight: 48,
-  display: "flex",
-  ".vertical": {
-    flexDirection: "column",
-  },
-});
-
-const FlexContainer = styled("div")({
-  display: "flex",
-  justifyContent: "center",
-  ".vertical": {
-    flexDirection: "column",
-  },
-});
-
-const Tabs = (props: TabsProps) => {
-  const { onChange, orientation = "horizontal", value, options, ...other } = props;
-
+const Tabs = React.forwardRef<HTMLDivElement, Types.TabsProps>((props) => {
+  const {
+    onChange,
+    orientation = "horizontal",
+    variant,
+    value,
+    options,
+    iconPosition = "start",
+    ...other
+  } = props;
+  const [selected, setSelected] = React.useState(0);
   return (
-    <TabsRoot className={clsx(orientation === "vertical" && "vertical")} {...other}>
-      <FlexContainer className={clsx("tabs-container", orientation === "vertical" && "vertical")}>
-        {options.map((option) => (
-          <Tab
+    <Styles.TabsRoot className={clsx(orientation, variant)} {...other}>
+      {options.map((option) => (
+        <Styles.TabRoot
           key={option.value}
-            label={option.label}
-            value={option.value}
-            selected={value === option.value}
-            onClick={onChange}
-          />
-        ))}
-      </FlexContainer>
-    </TabsRoot>
+          disabled={option.disabled}
+          onClick={() => setSelected(option.value)}
+          className={clsx(
+            variant,
+            selected === option.value && "selected",
+            option.disabled && "disabled"
+          )}
+          {...other}
+        >
+          {iconPosition === "start" ? (
+            <React.Fragment>
+              {option.icon}
+              {option.label}
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {option.label}
+              {option.icon}
+            </React.Fragment>
+          )}
+        </Styles.TabRoot>
+      ))}
+    </Styles.TabsRoot>
   );
-};
+});
 
 export default Tabs;

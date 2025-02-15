@@ -2,7 +2,7 @@ import * as React from "react";
 
 import styled from "@emotion/styled";
 
-import ButtonBase from "../Internal/ButtonBase";
+import ButtonBase from "../Internal/DefaultButton";
 
 const MenuItemRoot = styled(ButtonBase)({
   display: "flex",

@@ -3,8 +3,12 @@ import * as Styles from "./Checkbox.styles";
 import * as Types from "./Checkbox.types";
 
 import clsx from "clsx";
-import CheckBox from "../../icons/Old/CheckBoxUnchecked";
-import CheckBoxCross from "../../icons/Old/CheckBoxCross";
+import OldUnchecked from "./OldUnchecked";
+import OldChecked from "./OldChecked";
+import ModernChecked from "./ModernChecked";
+import ModernUnchecked from "./ModernUnchecked";
+import DefaultButton from "../../Internal/DefaultButton";
+import DefaultInput from "../../Internal/DefaultInput";
 
 const Checkbox = React.forwardRef<HTMLButtonElement, Types.CheckboxProps>((props) => {
   const {
@@ -29,17 +33,11 @@ const Checkbox = React.forwardRef<HTMLButtonElement, Types.CheckboxProps>((props
     }
   };
 
-  const checkedComponent =
-    variant === "modern" ? <Styles.CheckedIcon /> : <CheckBoxCross color='#121B61' />;
-  const uncheckedComponent =
-    variant === "modern" ? <Styles.UncheckedIcon /> : <CheckBox color='#121B61' />;
+  const checkedComponent = variant === "modern" ? <ModernChecked /> : <OldChecked />;
+  const uncheckedComponent = variant === "modern" ? <ModernUnchecked /> : <OldUnchecked />;
   return (
-    <Styles.CheckboxRoot
-      disabled={disabled}
-      className={clsx(disabled && "disabled", variant)}
-      {...other}
-    >
-      <Styles.CheckboxInput
+    <DefaultButton disabled={disabled} className={clsx(disabled && "disabled")} {...other}>
+      <DefaultInput
         checked={checked}
         defaultChecked={defaultChecked}
         disabled={disabled}
@@ -48,8 +46,8 @@ const Checkbox = React.forwardRef<HTMLButtonElement, Types.CheckboxProps>((props
         type='checkbox'
       />
       {checked ? checkedComponent : uncheckedComponent}
-      {label && <span>{label}</span>}
-    </Styles.CheckboxRoot>
+      {label && <Styles.StyledLabel>{label}</Styles.StyledLabel>}
+    </DefaultButton>
   );
 });
 

@@ -19,7 +19,7 @@ const TextField = React.forwardRef<HTMLDivElement, Types.TextfieldProps>((props,
     startAdornment,
     required,
     variant = "modern",
-    appearence = "standard",
+    appearence = "primary",
     ...other
   } = props;
 
@@ -64,7 +64,9 @@ const TextField = React.forwardRef<HTMLDivElement, Types.TextfieldProps>((props,
         </>
       }
 
-      {helperText && <Styles.HelperText>{helperText}</Styles.HelperText>}
+      {helperText && (
+        <Styles.HelperText className={clsx(error && "error")}>{helperText}</Styles.HelperText>
+      )}
     </Styles.TextfieldRoot>
   );
 });

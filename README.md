@@ -2,10 +2,11 @@
 
 ## Inputs
 
-- [ ] Autocomplete
+- [x] Autocomplete
 - [x] Button
 - [x] Checkbox
-- [ ] Coloricker
+- [ ] Colorpicker
+- [ ] FileUploader
 - [x] Radio
 - [ ] Rating
 - [ ] Select
@@ -13,21 +14,24 @@
 - [ ] Switch
 - [x] Text Field
 - [ ] Transfer List
+- [ ] DatePicker
+- [ ] DateTimePicker
+- [ ] TimePicker
 
-## Data display
+## Display
 
-- [ ] Alert
+- [x] Alert
 - [ ] Badge
 - [x] Circular Progress
 - [ ] Chip
 - [ ] Divider
-- [ ] Icon
+- [x] Icon
 - [ ] Icon set
 - [ ] Image component
 - [ ] Linear Progress
 - [ ] Stepper
-- [ ] Tooltip
-- [ ] Typography
+- [x] Text
+- [x] Tooltip
 
 ## Surfaces
 
@@ -35,6 +39,7 @@
 - [x] Dialog
 - [ ] Drawer
 - [x] Popover
+- [x] Popper
 - [x] Scrollable
 
 ## Navigation
@@ -44,13 +49,9 @@
 - [ ] Menu
 - [ ] Tabs
 
-## Pickers
-
-- [ ] DatePicker
-- [ ] DateTimePicker
-- [ ] TimePicker
-
 ## Providers
 
 - [x] ModalProvider
-- [ ] ThemeProvider
+- [x] ThemeProvider
+- [x] ToastProvider
+- [x] VariantProvider

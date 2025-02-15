@@ -1,27 +1,18 @@
 import styled from "@emotion/styled";
-
-export const ButtonRoot = styled("button")({
-  /*   display: "inline-flex", */
-  alignItems: "center",
-  justifyContent: "center",
-  outline: 0,
-  border: 0,
-  margin: 0,
-  padding: 0,
-  cursor: "pointer",
-  textDecoration: "none",
-
-  "&.s": {
+import DefaultButton from "../../Internal/DefaultButton";
+export const ButtonRoot = styled(DefaultButton)(({ theme }) => ({
+  position: "relative",
+  "&.small": {
     fontSize: "18px",
     height: "32px",
     minWidth: "32px",
   },
-  "&.m": {
+  "&.medium": {
     fontSize: "22px",
     height: "44px",
     minWidth: "44px",
   },
-  "&.l": {
+  "&.large": {
     fontSize: "28px",
     height: "56px",
     minWidth: "56px",
@@ -31,8 +22,18 @@ export const ButtonRoot = styled("button")({
     width: "100%",
   },
   "&.disabled": {
-    pointerEvents: "none",
-    cursor: "default",
+    "&.modern": {
+      color: theme.color.disabledText,
+      background: theme.color.disabledGradient,
+    },
+    "&.old": {
+      color: theme.color.disabledTextOld,
+      borderColor: theme.color.disabledTextOld,
+      backgroundColor: "#b9bcc7",
+      "&:before": {
+        borderColor: theme.color.disabledTextOld,
+      },
+    },
   },
   "&:hover": {
     textDecoration: "none",
@@ -40,19 +41,19 @@ export const ButtonRoot = styled("button")({
 
   "&.modern": {
     color: "#0949ab",
-    background: "linear-gradient(180deg, #fbfbfb 20%, #d9d9d9)",
+    background: theme.color.buttonGradient,
     transition: "transform 0.1s ease-in-out",
-    "&.s": {
+    "&.small": {
       padding: "0 16px",
       borderRadius: "16px",
       boxShadow: "0 2px 4px 0 #606164",
     },
-    "&.m": {
+    "&.medium": {
       padding: "0 24px",
       borderRadius: "22px",
       boxShadow: "0 3px 5px 0 #606164",
     },
-    "&.l": {
+    "&.large": {
       padding: "0 32px",
       borderRadius: "28px",
       boxShadow: "0 4px 6px 0 #606164",
@@ -73,39 +74,59 @@ export const ButtonRoot = styled("button")({
     borderColor: "#000d60",
     borderStyle: "solid",
     backgroundColor: "#95a6de",
-    "&.s": {
+    "&.small": {
       padding: "0 8px",
-      borderWidth: "2px",
-      borderRadius: "8px",
-    },
-    "&.m": {
-      padding: "0 12px",
       borderWidth: "3px",
-      borderRadius: "12px",
+      borderRadius: "8px",
+      "&:before": {
+        top: "-2px",
+        bottom: "-2px",
+        left: "-2px",
+        right: "-2px",
+        borderRadius: "7px",
+        borderWidth: "1px",
+      },
     },
-    "&.l": {
+    "&.medium": {
+      padding: "0 12px",
+      borderWidth: "4px",
+      borderRadius: "12px",
+      "&:before": {
+        top: "-3px",
+        bottom: "-3px",
+        left: "-3px",
+        right: "-3px",
+        borderRadius: "11px",
+        borderWidth: "2px",
+      },
+    },
+    "&.large": {
       padding: "0 16px",
       borderWidth: "4px",
       borderRadius: "16px",
+      "&:before": {
+        top: "-3px",
+        bottom: "-3px",
+        left: "-3px",
+        right: "-3px",
+        borderRadius: "15px",
+        borderWidth: "2px",
+      },
     },
-    /*     "&:before": {
+    "&:before": {
       content: '""',
       position: "absolute",
-      top: "0px",
-      left: "0px",
-      width: "100%",
-      height: "100%",
-      border: "2px solid #000d60",
-      borderRadius: "14px",
-    }, */
+      borderColor: "#000d60",
+      borderStyle: "solid",
+    },
     "&:hover:before": {
-      border: "2px solid white",
+      borderColor: "white",
     },
     "&:active:before": {
-      border: "2px solid #00ff00",
+      borderColor: theme.color.greenBase,
     },
   },
-});
+}));
 
 export const ButtonStartIcon = styled("span")({
   display: "inherit",

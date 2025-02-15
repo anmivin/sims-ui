@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { css, SerializedStyles } from "@emotion/react";
-
+import DefaultButton from "../../Internal/DefaultButton";
 const createStyles = (numberItems: number) => {
   const pathStyles: { [key: string]: SerializedStyles } = {};
   const diff = 360 / numberItems;
@@ -33,15 +33,7 @@ export const MenuContent = styled("div")<{ numberItems: number }>(({ numberItems
   },
 }));
 
-export const MenuButton = styled("button")({
-  alignItems: "center",
-  justifyContent: "center",
-  outline: 0,
-  border: 0,
-  margin: 0,
-  padding: 0,
-  cursor: "pointer",
-  textDecoration: "none",
+export const MenuButton = styled(DefaultButton)({
   "&.modern": {
     fontFamily: "The Sims Sans",
     fontSize: "16px",

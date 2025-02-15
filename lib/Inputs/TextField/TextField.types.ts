@@ -18,6 +18,6 @@ export interface TextfieldProps
   startAdornment?: React.ReactNode;
   helperText?: React.ReactNode;
   label?: React.ReactNode;
-  appearence?: TextFieldAppearence;
+  appearence?: "primary" | "secondary";
   variant?: Variant;
 }

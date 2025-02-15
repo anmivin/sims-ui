@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useForkRef from "../utils/useForkRef";
 
-import ButtonBase, { ButtonBaseProps } from "../Internal/ButtonBase";
+import ButtonBase, { ButtonBaseProps } from "../Internal/DefaultButton";
 import styled from "@emotion/styled";
 
 const ChipRoot = styled("div")({

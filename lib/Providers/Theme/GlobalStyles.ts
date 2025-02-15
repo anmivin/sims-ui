@@ -1,6 +1,6 @@
-import { css, Theme } from "@emotion/react";
-import { ThemeName, MyTheme } from "./theme/theme.types";
-export const globalStyles = (variant: ThemeName, theme: MyTheme) => css`
+import { css } from "@emotion/react";
+import { ThemeName, MyTheme } from "./theme.types";
+export const globalStyles = (theme: MyTheme, variant?: ThemeName) => css`
   body {
     margin: 0;
     font-family: ${variant === ThemeName.modern ? "The Sims Sans" : "Comic Sans Ms"}, sans-serif;
@@ -16,5 +16,14 @@ export const globalStyles = (variant: ThemeName, theme: MyTheme) => css`
   *:before,
   *:after {
     box-sizing: border-box;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  #storybook-docs {
+    height: 100vh;
+    overflow: auto;
   }
 `;

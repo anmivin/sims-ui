@@ -1,6 +1,7 @@
 import { fn } from "@storybook/test";
 
 import TextField from "./TextField";
+import { ChainIcon, DiceIcon } from "../../Display/Icon";
 
 export const ActionsData = {};
 
@@ -14,60 +15,45 @@ export default {
   },
 };
 
-export const filledold = {
+export const primaryold = {
   args: {
-    appearence: "filled",
+    appearence: "primary",
     variant: "old",
     placeholder: "placeholder",
     label: "label",
     helperText: "sdadad",
+    error: true,
+    startAdornment: <ChainIcon />,
   },
 };
-
-export const standardold = {
+export const secondaryold = {
   args: {
-    appearence: "standard",
+    appearence: "secondary",
     variant: "old",
     placeholder: "placeholder",
     label: "label",
     helperText: "sdadad",
-  },
-};
-export const outlinedold = {
-  args: {
-    appearence: "outlined",
-    variant: "old",
-    placeholder: "placeholder",
-    label: "label",
-    helperText: "sdadad",
+    endAdornment: <DiceIcon />,
   },
 };
 
-export const filledmodern = {
+export const primarymodern = {
   args: {
-    appearence: "filled",
+    appearence: "primary",
     variant: "modern",
     placeholder: "placeholder",
     label: "label",
     helperText: "sdadad",
+    endAdornment: <DiceIcon />,
   },
 };
-export const standardmodern = {
+export const secondarymodern = {
   args: {
-    appearence: "standard",
+    appearence: "secondary",
     variant: "modern",
     placeholder: "placeholder",
     label: "label",
     helperText: "sdadad",
-  },
-};
-
-export const outlinedmodern = {
-  args: {
-    appearence: "outlined",
-    variant: "modern",
-    placeholder: "placeholder",
-    label: "label",
-    helperText: "sdadad",
+    startAdornment: <ChainIcon />,
   },
 };

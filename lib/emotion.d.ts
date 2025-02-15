@@ -1,4 +1,4 @@
-import { MyTheme } from "./Providers/Theme/theme/theme.types";
+import { MyTheme } from "./Providers/Theme/theme.types";
 import "@emotion/react";
 
 declare module "@emotion/react" {

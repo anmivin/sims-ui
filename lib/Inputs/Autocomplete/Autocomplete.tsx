@@ -1,9 +1,13 @@
 import * as React from "react";
 import * as Styles from "./Autocomplete.styles";
 import * as Types from "./Autocomplete.types";
-import TextField from "../TextField/TextField";
-import ChevronDownIcon from "../../icons/ChevronDownIcon";
+
 import { useAutocomplete } from "./useAutocomplete";
+import clsx from "clsx";
+
+import TextField from "../TextField/TextField";
+import { ChevronDownIcon, CloseIcon } from "../../Display/Icon";
+import IconButton from "../IconButton/IconButton";
 
 const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompleteProps<Value>) => {
   const {
@@ -11,14 +15,10 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
     disabled,
     getOptionDisabled,
     getOptionLabel = (option: Value) => option.label,
-    inputValue: inputValueProp,
-    multiple = false,
+    multiple,
     noOptionsText = "No options",
     onChange,
-    open = false,
-    openText = "Open",
     options,
-    value: valueProp,
     variant = "modern",
   } = props;
 
@@ -28,13 +28,12 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
     dirty,
     expanded,
     filteredOptions,
-    valueInput,
     onInputChange,
-    onMouseDown,
+    onOpen,
+    onClose,
     onClickClear,
     onClickIndicator,
-    getTagProps,
-    getOptionProps,
+    optionProps,
   } = useAutocomplete({
     defaultValue,
     getOptionDisabled,
@@ -46,89 +45,91 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
-  const hasClearIcon = !disabled && dirty;
-  const hasPopupIcon = true;
-
-  let startAdornment;
-
-  if (multiple && value.length > 0) {
-    startAdornment = value.map((option, index) => {
-      return <p key={index}>{getOptionLabel(option)}</p>;
-    });
-  }
-
-  const renderOption = (props, option) => {
-    const { key, ...otherProps } = props;
+  const renderOption = (props: Types.OptionProps, option: Value) => {
+    const { key, selected, ...otherProps } = props;
 
     return (
-      <Styles.AutocompleteListItem key={key} {...otherProps}>
+      <Styles.AutocompleteOption
+        key={key}
+        {...otherProps}
+        className={clsx(variant, selected && "selected")}
+      >
         {getOptionLabel(option)}
-      </Styles.AutocompleteListItem>
+      </Styles.AutocompleteOption>
     );
   };
 
-  const renderListOption = (option, index) => {
-    const optionProps = getOptionProps(option, index);
-
-    return renderOption(optionProps, option);
+  const renderListOption = (option: Value, index: number) => {
+    const props = optionProps(option, index);
+    return renderOption(props, option);
   };
+
+  const tags = React.useMemo(() => {
+    if (multiple) {
+      const typedValue = value as Value[];
+      return typedValue.map((option) => getOptionLabel(option)).join(", ");
+    }
+  }, [multiple, value, getOptionLabel]);
 
   return (
     <React.Fragment>
-      <Styles.AutocompleteRoot>
-        <TextField
-          variant={variant}
-          ref={setAnchorEl}
-          defaultValue={inputValue}
-          disabled={disabled}
-          fullWidth
-          /* value={valueInput} */
-          startAdornment={startAdornment}
-          onChange={(e) => {
-            onInputChange(e.target.value);
-          }}
-          appearence='filled'
-          onMouseDown={() => onMouseDown()}
-          endAdornment={
-            <Styles.AutocompleteEndAdornment>
-              {hasClearIcon ? (
-                <Styles.AutocompleteClearIndicator onClick={() => onClickClear()}>
-                  {<>clearIcon</>}
-                </Styles.AutocompleteClearIndicator>
-              ) : null}
+      <TextField
+        variant={variant}
+        ref={setAnchorEl}
+        defaultValue={inputValue}
+        disabled={disabled}
+        fullWidth
+        startAdornment={
+          <Styles.AutocompleteStartAdornment>{tags}</Styles.AutocompleteStartAdornment>
+        }
+        onChange={(e) => {
+          onInputChange(e.target.value);
+        }}
+        appearence='primary'
+        onClick={onOpen}
+        endAdornment={
+          <Styles.AutocompleteEndAdornment>
+            {!disabled && dirty && (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickClear();
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
 
-              {hasPopupIcon ? (
-                <Styles.AutocompletePopupIndicator
-                  disabled={disabled}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClickIndicator();
-                  }}
-                >
-                  {<ChevronDownIcon />}
-                </Styles.AutocompletePopupIndicator>
-              ) : null}
-            </Styles.AutocompleteEndAdornment>
-          }
-        />
-      </Styles.AutocompleteRoot>
+            <IconButton
+              disabled={disabled}
+              className={clsx(expanded && "open", disabled && "desabled")}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClickIndicator();
+              }}
+              style={{ transform: expanded ? "rotate(180deg)" : undefined }}
+            >
+              <ChevronDownIcon />
+            </IconButton>
+          </Styles.AutocompleteEndAdornment>
+        }
+      />
       <Styles.AutocompletePopper
         placement='bottom'
         open={expanded}
+        onClose={onClose}
         anchorEl={anchorEl}
-        /*         onClose={() => setIsOpen(false)}
-        onBackdropClick={() => setIsOpen(false)} */
-        hideBackdrop
+        textfieldWidth={anchorEl?.offsetWidth}
       >
-        <Styles.AutocompletePaper>
+        <Styles.AutocompletePaper className={clsx(variant)} textfieldWidth={anchorEl?.offsetWidth}>
           {!filteredOptions.length ? (
             <Styles.AutocompleteNoOptions>{noOptionsText}</Styles.AutocompleteNoOptions>
           ) : (
-            <Styles.AutocompleteListbox>
+            <>
               {filteredOptions.map((option, index) => {
                 return renderListOption(option, index);
               })}
-            </Styles.AutocompleteListbox>
+            </>
           )}
         </Styles.AutocompletePaper>
       </Styles.AutocompletePopper>

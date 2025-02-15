@@ -8,19 +8,13 @@ const Button = React.forwardRef<HTMLButtonElement, Types.ButtonProps>((props, re
   const {
     children,
     disabled = false,
-    endIcon: endIconProp,
+    endIcon,
     fullWidth = false,
-    startIcon: startIconProp,
+    startIcon,
     variant = "modern",
-    size = "m",
+    size = "medium",
     ...other
   } = props;
-
-  const startIcon = startIconProp && (
-    <Styles.ButtonStartIcon>{startIconProp}</Styles.ButtonStartIcon>
-  );
-
-  const endIcon = endIconProp && <Styles.ButtonEndIcon>{endIconProp}</Styles.ButtonEndIcon>;
 
   return (
     <Styles.ButtonRoot
@@ -29,9 +23,9 @@ const Button = React.forwardRef<HTMLButtonElement, Types.ButtonProps>((props, re
       className={clsx(fullWidth && "fullwidth", disabled && "disabled", variant, size)}
       {...other}
     >
-      {startIcon}
+      {startIcon && <Styles.ButtonStartIcon>{startIcon}</Styles.ButtonStartIcon>}
       {children}
-      {endIcon}
+      {endIcon && <Styles.ButtonEndIcon>{endIcon}</Styles.ButtonEndIcon>}
     </Styles.ButtonRoot>
   );
 });

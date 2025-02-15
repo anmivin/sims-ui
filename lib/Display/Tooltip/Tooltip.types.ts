@@ -1,7 +1,10 @@
 import * as React from "react";
+import { PopperProps } from "../../Internal/Popper";
+import { Variant } from "../../shared/types";
 
-export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+export interface TooltipProps extends Omit<PopperProps, "children" | "anchorEl" | "open"> {
   children: React.ReactElement;
   placement?: "bottom" | "left" | "right" | "top";
-  title: React.ReactNode;
+  text?: React.ReactNode;
+  variant?: Variant;
 }

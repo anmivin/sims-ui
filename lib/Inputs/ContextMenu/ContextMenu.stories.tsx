@@ -24,7 +24,7 @@ export const s = {
       { item: "five", action: () => {} },
     ],
     component: <>kkdkd</>,
-    defaultOpen: true,
+    defaultOpen: false,
     variant: "modern",
   },
 };
@@ -39,7 +39,7 @@ export const m = {
       { item: "five", action: () => {} },
     ],
     component: <>kkdkd</>,
-    defaultOpen: true,
+    defaultOpen: false,
     variant: "old",
   },
 };

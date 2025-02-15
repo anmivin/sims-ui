@@ -1,52 +1,52 @@
 import styled from "@emotion/styled";
-
-import Popper from "../../Surfaces/Popper/Popper";
-
-export const TooltipPoper = styled(Popper)({
-  backgroundColor: "blue",
-  zIndex: 10,
+import Popper from "../../Internal/Popper";
+export const TooltipPopper = styled(Popper)({
   pointerEvents: "none",
-  "-closed": {
-    pointerEvents: "none",
+  "&.modern": {
+    color: "white",
+  },
+  "&.old": {
+    color: "#ccc78f",
   },
 });
 
-export const TooltipTooltip = styled("div")({
-  backgroundColor: "red",
-  borderRadius: "8px",
-  color: "white",
- padding: "4px 8px",
+export const TooltipPaper = styled("div")(({ theme }) => ({
+  padding: "8px",
+
   maxWidth: 300,
-  margin: 2,
   wordWrap: "break-word",
-  fontWeight: 100,
-  "-popper-left": {
-    transformOrigin: "right center",
+  "&.modern": {
+    color: "blue",
+    backgroundColor: theme.color.tooltipGradient,
+    border: `1px solid ${theme.color.tooltipBorder}`,
+    borderRadius: "8px",
   },
-  "-popper-right": {
-    transformOrigin: "left center",
+  "&.old": {
+    color: "black",
+    backgroundColor: "#ccc78f",
+    border: "1px solid black",
   },
-  "-popper-top": {
-    transformOrigin: "center bottom",
-    marginBottom: "14px",
-  },
-  "-popper-bottom": {
-    transformOrigin: "center top",
-    marginTop: "14px",
-  },
-  "-arrow": {
-    position: "relative",
-    margin: 0,
-  },
-});
 
-export const TooltipArrow = styled("span")({
+  "&.left": {
+    marginRight: "0.71em",
+  },
+  "&.right": {
+    marginLeft: "0.71em",
+  },
+  "&.top": {
+    marginBottom: "0.71em",
+  },
+  "&.bottom": {
+    marginTop: "0.71em",
+  },
+}));
+
+export const TooltipArrow = styled("span")(({ theme }) => ({
   overflow: "hidden",
   position: "absolute",
   width: "1em",
   height: "0.71em",
-  boxSizing: "border-box",
-  color: "rgba(0,0,0,0.5)",
+  color: "inherit",
   "&::before": {
     content: '""',
     margin: "auto",
@@ -56,4 +56,48 @@ export const TooltipArrow = styled("span")({
     backgroundColor: "currentColor",
     transform: "rotate(45deg)",
   },
-});
+  "&.modern": {
+    "&::before": {
+      border: `1px solid ${theme.color.tooltipBorder}`,
+    },
+  },
+  "&.old": {
+    "&::before": {
+      border: "1px solid black",
+    },
+  },
+  "&.bottom": {
+    top: 1,
+    right: "calc(50% - 1em / 2)",
+    "&::before": {
+      transformOrigin: "0 100%",
+    },
+  },
+
+  "&.top": {
+    bottom: 1,
+    right: "calc(50% - 1em / 2)",
+    "&::before": {
+      transformOrigin: "100% 0",
+    },
+  },
+
+  "&.right": {
+    height: "1em",
+    width: "0.71em",
+    left: 1,
+    top: "calc(50% - 1em / 2)",
+    "&::before": {
+      transformOrigin: "100% 100%",
+    },
+  },
+  "&.left": {
+    height: "1em",
+    width: "0.71em",
+    right: 1,
+    top: "calc(50% - 1em / 2)",
+    "&::before": {
+      transformOrigin: "0 0",
+    },
+  },
+}));

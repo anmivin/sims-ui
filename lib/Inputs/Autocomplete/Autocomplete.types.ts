@@ -12,9 +12,15 @@ export interface UseAutocompleteProps<Value> {
   inputValue?: string;
   multiple?: boolean;
   onChange?: (value: Value | Value[] | null) => void;
-  open?: boolean;
   options: Value[];
-  value?: Value | Value[];
+}
+
+export interface OptionProps {
+  key: string;
+  onClick: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
+  "data-option-index": number;
+  disabled: boolean;
+  selected: boolean;
 }
 
 export interface UseAutocompleteReturnValue<Value> {
@@ -25,25 +31,11 @@ export interface UseAutocompleteReturnValue<Value> {
   expanded: boolean;
   filteredOptions: Value[];
   onInputChange: (value: string) => void;
-  onMouseDown: () => void;
+  onOpen: () => void;
+  onClose: () => void;
   onClickClear: () => void;
   onClickIndicator: () => void;
-  getTagProps: (index: number) => {
-    key: number;
-    "data-tag-index": number;
-    onDelete: (index: number) => void;
-  };
-
-  getOptionProps: (
-    option: Value,
-    index: number
-  ) => {
-    key: string;
-    onClick: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
-    "data-option-index": number;
-    disabled: boolean;
-    selected: boolean;
-  };
+  optionProps: (option: Value, index: number) => OptionProps;
 }
 
 export interface AutocompleteProps<Value>

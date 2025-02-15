@@ -1,82 +1,54 @@
 import * as React from "react";
-import styled from "@emotion/styled";
+import * as Styles from "./Radio.styles";
+import * as Types from "./Radio.types";
 
-export interface RadioProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "type"> {
-  defaultChecked?: boolean;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  checked?: boolean;
-  checkedIcon?: React.ReactNode;
-  icon?: React.ReactNode;
-  disabled?: boolean;
-}
+import DefaultButton from "../../Internal/DefaultButton";
+import DefaultInput from "../../Internal/DefaultInput";
+import ModernRadioCheckIcon from "./ModernRadioCheck";
+import ModernRadioUncheckedIcon from "./ModernRadioUnchecked";
+import OldRadioCheck from "./OldRadioCheck";
+import OldRadioUnchecked from "./OldRadioUnchecked";
+import clsx from "clsx";
 
-const SwitchBaseRoot = styled("button")({
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  position: "relative",
-  boxSizing: "border-box",
-  backgroundColor: "transparent",
-  outline: 0,
-  border: 0,
-  margin: 0,
-  borderRadius: 0,
-  padding: 0,
-  cursor: "pointer",
-  textDecoration: "none",
-  color: "inherit",
-  "-disabled": {
-    pointerEvents: "none",
-    cursor: "default",
-  },
-});
-
-const SwitchBaseInput = styled("input")({
-  cursor: "inherit",
-  position: "absolute",
-  opacity: 0,
-  width: "100%",
-  height: "100%",
-  top: 0,
-  left: 0,
-  margin: 0,
-  padding: 0,
-  zIndex: 1,
-});
-
-const defaultCheckedIcon = <></>;
-const defaultIcon = <></>;
-
-const Radio = (props: RadioProps) => {
+const Radio = <T,>(props: Types.RadioGroupProps<T>) => {
   const {
-    checked,
-    checkedIcon = defaultCheckedIcon,
-    icon = defaultIcon,
+    defaultValue,
+    row,
+    options,
     onChange,
-    disabled,
-    defaultChecked,
+    variant = "modern",
+    getOptionDisabled,
     ...other
   } = props;
 
-  const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const newChecked = event.target.checked;
-    if (onChange) {
-      onChange(event, newChecked);
-    }
-  }, []);
+  const [value, setValueState] = React.useState(defaultValue);
+
+  const uncheckedIconComponent =
+    variant === "modern" ? <ModernRadioUncheckedIcon /> : <OldRadioUnchecked />;
+  const checkedIconComponent = variant === "modern" ? <ModernRadioCheckIcon /> : <OldRadioCheck />;
 
   return (
-    <SwitchBaseRoot disabled={disabled} {...other}>
-      <SwitchBaseInput
-        checked={checked}
-        defaultChecked={defaultChecked}
-        disabled={disabled}
-        onChange={handleInputChange}
-        type='radio'
-      />
-      {checked ? checkedIcon : icon}
-    </SwitchBaseRoot>
+    <Styles.RadioGroupRoot {...other} className={clsx(row && "row")}>
+      {options.map((option, index) => (
+        <Styles.RadioGroupItem key={index}>
+          <DefaultButton disabled={option.disabled}>
+            <DefaultInput
+              checked={value === option.value}
+              disabled={option.disabled}
+              onChange={(e) => {
+                const newChecked = e.target.checked;
+                if (newChecked) setValueState(option.value);
+              }}
+              type='radio'
+            />
+            {value === option.value ? checkedIconComponent : uncheckedIconComponent}
+          </DefaultButton>
+          <Styles.RadioLable className={clsx(option.disabled && "disabled")}>
+            {option.label}
+          </Styles.RadioLable>
+        </Styles.RadioGroupItem>
+      ))}
+    </Styles.RadioGroupRoot>
   );
 };
 

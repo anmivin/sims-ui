@@ -2,7 +2,7 @@ import * as React from "react";
 
 import styled from "@emotion/styled";
 
-import ButtonBase from "../Internal/ButtonBase";
+import ButtonBase from "../Internal/DefaultButton";
 import AccordionContext from "./Accordion";
 
 const AccordionSummaryRoot = styled(ButtonBase)({

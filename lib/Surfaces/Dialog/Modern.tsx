@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-import CloseIcon from "../../icons/Modern/CloseIcon";
+import CloseIcon from "../../Display/Icon/Modern/CloseIcon";
 import { ModernButton } from "../../Inputs/Button/Modern";
-import Dialog, {DialogProps} from "./Dialog";
+import Dialog, { DialogProps } from "./Dialog";
 import { IconButtonModern } from "sims-ui";
 const StyledWrapper = styled("div")({
   fontFamily: "The Sims Sans",
@@ -16,72 +16,67 @@ const StyledWrapper = styled("div")({
 });
 
 const Content = styled("div")({
-  display: 'flex',
+  display: "flex",
   flexDirection: "column",
-  justifyContent: 'center',
-  alignItems: 'center',
+  justifyContent: "center",
+  alignItems: "center",
   gap: "20px",
   borderRadius: "3% 3% 0px 0px",
   backgroundColor: "#fff",
   color: "#1e81e0",
-
-
 });
 
 const Body = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "20px",
-   padding: '20px',
+  padding: "20px",
   color: "#1e81e0",
 });
 
-const Footer = styled('div')({  
-  borderRadius: '3% 3% 0px 0px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '16px',
-  gap: '16px'
+const Footer = styled("div")({
+  borderRadius: "3% 3% 0px 0px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "16px",
+  gap: "16px",
 });
 
-const Header = styled('div')({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent:'space-between',
-  gap: '20px',
-  padding: '16px',
+const Header = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: "20px",
+  padding: "16px",
 });
 
-
-interface ModernDialogProps extends DialogProps{
+interface ModernDialogProps extends DialogProps {
   title?: string;
-  actions?: {title: string, action: () => void}[]
-
+  actions?: { title: string; action: () => void }[];
 }
 export const DialogModern = ({ title, children, open, onClose, actions }: ModernDialogProps) => {
   return (
     <Dialog open={open} onBackdropClick={onClose} fullScreen={true}>
       <StyledWrapper>
-
-        <Content>      
+        <Content>
           <Header>
             <h2 style={{ color: "#0949ab", margin: 0 }}>{title}</h2>
-            
-            {onClose &&             <IconButtonModern onClick={() => onClose?.()}>
-              <CloseIcon  />
-            </IconButtonModern>}
+
+            {onClose && (
+              <IconButtonModern onClick={() => onClose?.()}>
+                <CloseIcon />
+              </IconButtonModern>
+            )}
           </Header>
           <Body> {children}</Body>
-
         </Content>
         <Footer>
-        {actions?.map((item) => (
-          <ModernButton onClick={item.action}>{item.title}</ModernButton>
+          {actions?.map((item) => (
+            <ModernButton onClick={item.action}>{item.title}</ModernButton>
           ))}
-
         </Footer>
       </StyledWrapper>
     </Dialog>
