@@ -1,10 +1,8 @@
 import styled from "@emotion/styled";
-import React from "react";
 
-import CloseIcon from "../../Display/Icon/Modern/CloseIcon";
-import { ModernButton } from "../../Inputs/Button/Modern";
+import Button from "../../Inputs/Button/Button";
 import Dialog, { DialogProps } from "./Dialog";
-import { IconButtonModern } from "sims-ui";
+/* import { IconButtonModern } from "sims-ui"; */
 const StyledWrapper = styled("div")({
   fontFamily: "The Sims Sans",
   width: "600px",
@@ -65,17 +63,17 @@ export const DialogModern = ({ title, children, open, onClose, actions }: Modern
           <Header>
             <h2 style={{ color: "#0949ab", margin: 0 }}>{title}</h2>
 
-            {onClose && (
+            {/*             {onClose && (
               <IconButtonModern onClick={() => onClose?.()}>
                 <CloseIcon />
               </IconButtonModern>
-            )}
+            )} */}
           </Header>
           <Body> {children}</Body>
         </Content>
         <Footer>
           {actions?.map((item) => (
-            <ModernButton onClick={item.action}>{item.title}</ModernButton>
+            <Button onClick={item.action}>{item.title}</Button>
           ))}
         </Footer>
       </StyledWrapper>

@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import React from "react";
+
 import Dialog, { DialogProps } from "./Dialog";
 
 import IconButton from "../../Inputs/IconButton/IconButton";
 import CloseIcon from "../../Display/Icon/Modern/CloseIcon";
-import { OldButton } from "../../Inputs/Button/Old";
+import Button from "../../Inputs/Button/Button";
 
 const StyledWrapper = styled("div")({
   fontFamily: "Comic Sans Ms",
@@ -80,7 +80,7 @@ export const DialogOld = ({ title, children, open, onClose, actions }: OldDialog
         </Content>
         <Footer>
           {actions?.map((item) => (
-            <OldButton onClick={item.action}>{item.title}</OldButton>
+            <Button onClick={item.action}>{item.title}</Button>
           ))}
         </Footer>
       </StyledWrapper>

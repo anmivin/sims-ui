@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import Radio from "./Radio";
 
 export const ActionsData = {};
@@ -22,7 +20,7 @@ export const s = {
       { label: "df", value: 4, disabled: true },
     ],
     variant: "old",
-    onChange: (e) => console.log(e),
+    onChange: () => {},
   },
 };
 

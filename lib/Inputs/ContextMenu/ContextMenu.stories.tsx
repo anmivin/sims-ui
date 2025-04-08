@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import ContextMenu from "./ContextMenu";
 
 export const ActionsData = {};

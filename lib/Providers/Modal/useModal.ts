@@ -9,7 +9,7 @@ export interface UseModalProps {
 export const useModal = (props: UseModalProps) => {
   const { open, onClose } = props;
   const context = useContext(ModalContext);
-
+  //@ts-expect-error
   const modal = React.useRef<{ modalRef: HTMLDivElement; mount: HTMLElement }>({});
   const mountNodeRef = React.useRef<HTMLElement | null>(null);
   const modalRef = React.useRef<HTMLDivElement>(null);

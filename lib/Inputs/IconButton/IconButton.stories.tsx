@@ -1,4 +1,3 @@
-import { fn } from "@storybook/test";
 import { CloseIcon } from "../../Display/Icon";
 import IconButton from "./IconButton";
 

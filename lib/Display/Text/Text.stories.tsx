@@ -30,6 +30,8 @@ export default {
   },
 };
 
-export const s = {
-  args: {},
+export const text = {
+  args: {
+    variant: "body1",
+  },
 };

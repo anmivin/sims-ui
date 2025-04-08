@@ -17,7 +17,7 @@ export interface PopperProps extends React.HTMLAttributes<HTMLDivElement> {
   placement?: Placement;
 }
 
-const Popper = React.forwardRef<HTMLDivElement, PopperProps>((props, ref) => {
+const Popper = React.forwardRef<HTMLDivElement, PopperProps>((props, _ref) => {
   const { anchorEl, children, open, className, onClose, placement = "bottom" } = props;
 
   const popperRef = React.useRef<HTMLDivElement | null>(null);
@@ -78,6 +78,7 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>((props, ref) => {
 
   React.useEffect(() => {
     const handleClick = (e: MouseEvent) => {
+      //@ts-expect-error
       if (open && !anchorEl?.contains(e.target)) {
         onClose?.();
       }

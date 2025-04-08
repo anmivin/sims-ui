@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import Scrollable from "./Scrollable";
 
 export const ActionsData = {};

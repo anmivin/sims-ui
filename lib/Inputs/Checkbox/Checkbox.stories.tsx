@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import Checkbox from "./Checkbox";
 
 export const ActionsData = {};

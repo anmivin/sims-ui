@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import DefaultButton from "../../Internal/DefaultButton";
-import { theme } from "../../Providers/Theme";
 
 export const TabRoot = styled(DefaultButton)(({ theme }) => ({
   maxWidth: 360,

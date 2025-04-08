@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import ColorInput from "./ColorInput";
 
 export const ActionsData = {};
@@ -15,9 +13,5 @@ export default {
 };
 
 export const s = {
-  args: {},
-};
-
-export const m = {
   args: {},
 };

@@ -1,5 +1,4 @@
 import * as React from "react";
-import ownerDocument from "../../w/utils/ownerDocument";
 
 import * as Types from "./Popover.types";
 import * as Styles from "./Popover.styles";
@@ -58,7 +57,9 @@ const Popover = React.forwardRef<HTMLDivElement, Types.PopoverProps>((props, ref
     );
 
     const anchorElement =
-      anchorEl && anchorEl.nodeType === 1 ? anchorEl : ownerDocument(paperRef.current).body;
+      anchorEl && anchorEl.nodeType === 1
+        ? anchorEl
+        : (paperRef.current?.ownerDocument ?? document).body;
     const anchorRect = anchorElement.getBoundingClientRect();
     const anchorOffset = getOffset(anchorElement.getBoundingClientRect(), anchorOrigin);
 

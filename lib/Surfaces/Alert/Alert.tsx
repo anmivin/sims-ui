@@ -1,4 +1,3 @@
-import * as React from "react";
 import AlertOld from "./Old";
 import AlertModern from "./Modern";
 
@@ -11,14 +10,6 @@ const Alert = (props: Types.AlertProps) => {
   return (
     <Component {...other} level={level}>
       {children}
-      {/*  <AlertMessage>{children}</AlertMessage>
-      {onClose ? (
-        <AlertAction>
-          <IconButton size='small' color='inherit' onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </AlertAction>
-      ) : null} */}
     </Component>
   );
 };

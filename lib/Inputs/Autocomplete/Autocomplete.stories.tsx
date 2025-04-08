@@ -1,15 +1,9 @@
-import { fn } from "@storybook/test";
-
 import Autocomplete from "./Autocomplete";
 
 export const ActionsData = {};
 
 export default {
-  component: (props) => (
-    <div style={{ padding: "100px" }}>
-      <Autocomplete {...props} />
-    </div>
-  ),
+  component: Autocomplete,
   title: "Autocomplete",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,

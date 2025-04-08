@@ -1,4 +1,5 @@
 import ThemeProvider from "../lib/Providers/Theme/ThemeContext";
+import ModalProvider from "../lib/Providers/Modal/ModalProvider";
 import "../lib/Providers/Theme/fonts/simsSans.css";
 import * as React from "react";
 
@@ -15,7 +16,9 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <ThemeProvider>
-      <Story />
+      <ModalProvider>
+        <Story />
+      </ModalProvider>
     </ThemeProvider>
   ),
 ];

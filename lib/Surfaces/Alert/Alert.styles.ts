@@ -40,17 +40,22 @@ export const OldAlert = styled("div")({
   zIndex: 3,
 });
 
-export const OldAlertContent = styled("div")(({ theme }) => ({
+export const OldAlertContent = styled("div")(() => ({
   padding: "16px",
   width: "360px",
-  color: "white",
+  color: "#2f385f",
   borderRadius: "16px",
-  backgroundColor: theme.color.alertBrown,
-  border: "1px solid #9B8752",
+  backgroundColor: "#e3daa3",
+  border: "1px solid #48320b",
   boxShadow: "0px 2px 2px 1px rgba(0,0,0,0.5)",
+
+  "&.success, &.info": {
+    backgroundColor: "#d2e3f6",
+    borderColor: "#223a44",
+  },
 }));
 
-export const Icon = styled("div")(({ theme }) => ({
+export const Icon = styled("div")(() => ({
   width: "52px",
   height: "52px",
   borderRadius: "50%",
@@ -90,13 +95,11 @@ export const Third = styled("div")(({ theme }) => ({
   borderLeft: "none",
 }));
 
-export const StyledPath = styled("path")(({ theme }) => ({
-  cursor: "pointer",
+export const StyledPath = styled("path")(() => ({
   fill: "#A9BCFF",
   stroke: "#162C88",
   strokeWidth: 2,
   "&:hover": {
-    fill: "#199c2c",
-    /*     transform: "scale(1.02)", */
+    fill: "#d2e3f6",
   },
 }));

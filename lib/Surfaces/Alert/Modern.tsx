@@ -1,5 +1,3 @@
-import React from "react";
-
 import IconButton from "../../Inputs/IconButton/IconButton";
 import CloseIcon from "../../Display/Icon/Modern/CloseIcon";
 
@@ -12,7 +10,7 @@ const AlertModern = (props: Types.AlertProps) => {
   return (
     <Styles.ModernAlert className={clsx(level)} {...other}>
       <Styles.ModernAlertHeader>
-        <IconButton variant='modern' size='s'>
+        <IconButton variant='modern' size='small'>
           <CloseIcon color='#9f1a1f' width={18} />
         </IconButton>
       </Styles.ModernAlertHeader>

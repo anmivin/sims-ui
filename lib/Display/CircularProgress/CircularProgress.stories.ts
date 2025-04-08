@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import CircularProgress from "./CircularProgress";
 
 export const ActionsData = {};
@@ -7,6 +5,8 @@ export const ActionsData = {};
 export default {
   component: CircularProgress,
   title: "CircularProgress",
+  tags: ["autodocs"],
+  excludeStories: /.*Data$/,
   args: {
     ...ActionsData,
   },

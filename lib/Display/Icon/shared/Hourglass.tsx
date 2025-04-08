@@ -1,5 +1,6 @@
-import IconWrapper, { IconProps } from "./IconWrapper";
-import React from "react";
+import IconWrapper from "../Icon";
+import { IconProps } from "../Icon.types";
+
 const HourglassIcon = (props: IconProps) => {
   return (
     <IconWrapper {...props}>

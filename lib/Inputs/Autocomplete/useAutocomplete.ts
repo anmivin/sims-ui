@@ -125,6 +125,7 @@ export const useAutocomplete = <Value extends Types.ValueType>(
   };
 
   let dirty = inputValue.length > 0;
+  //@ts-expect-error
   dirty = dirty || (multiple ? value?.length > 0 : value !== null);
 
   return {

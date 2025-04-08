@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import TextField from "./TextField";
 import { ChainIcon, DiceIcon } from "../../Display/Icon";
 

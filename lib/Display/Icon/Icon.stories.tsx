@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import * as icons from "./index";
 import * as Old from "./Old/index";
 import * as Modern from "./Modern/index";
@@ -73,11 +71,6 @@ export default {
     </div>
   ),
   title: "Icon",
-  tags: ["autodocs"],
-  excludeStories: /.*Data$/,
-  args: {
-    ...ActionsData,
-  },
 };
 
 export const s = {};

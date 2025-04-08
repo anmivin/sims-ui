@@ -44,4 +44,5 @@ export { default as Scrollable } from "./Surfaces/Scrollable/Scrollable";
 export { default as ModalProvider } from "./Providers/Modal/ModalProvider";
 export { default as ThemeProvider } from "./Providers/Theme/ThemeContext";
 export { default as ToastProvider } from "./Providers/Toast/ToastProvider";
+export { useToast, ToastContext } from "./Providers/Toast/ToastProvider";
 export { default as VariantProvider } from "./Providers/Theme/VariantContext";

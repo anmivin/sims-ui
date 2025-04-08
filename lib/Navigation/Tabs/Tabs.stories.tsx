@@ -1,5 +1,3 @@
-import { fn } from "@storybook/test";
-
 import Tabs from "./Tabs";
 
 export const ActionsData = {};

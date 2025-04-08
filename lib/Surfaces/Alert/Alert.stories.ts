@@ -1,7 +1,4 @@
-import { fn } from "@storybook/test";
-
 import Alert from "./Alert";
-import { AlertProps } from "./Alert.types";
 
 export const ActionsData = {};
 
