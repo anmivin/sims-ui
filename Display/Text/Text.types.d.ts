@@ -1,3 +1,4 @@
+import { Variant } from '../../shared/types';
 export declare enum TextVariant {
     body1 = "body1",
     body2 = "body2",
@@ -20,6 +21,7 @@ export type TextType = keyof typeof TextVariant;
 export type TitleType = keyof typeof TitleVariant;
 export interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
     children: string;
-    variant: TextType | TitleType;
+    type: TextType | TitleType;
+    variant?: Variant;
     noWrap?: boolean;
 }

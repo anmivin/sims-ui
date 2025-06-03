@@ -4,8 +4,14 @@ declare const meta: {
     component: import('../../../node_modules/react').ForwardRefExoticComponent<import('./Text.types').TextProps & import('../../../node_modules/react').RefAttributes<HTMLSpanElement>>;
     title: string;
     argTypes: {
-        variant: {
+        type: {
             options: (TextVariant | TitleVariant)[];
+            control: {
+                type: "radio";
+            };
+        };
+        variant: {
+            options: string[];
             control: {
                 type: "radio";
             };
