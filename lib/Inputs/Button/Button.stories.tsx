@@ -7,6 +7,7 @@ export default {
   title: "Button",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
+  argTypes: {},
   args: {
     ...ActionsData,
   },

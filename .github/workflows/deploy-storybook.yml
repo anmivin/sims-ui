@@ -3,7 +3,7 @@ name: gh-pages storybook deploy
 on:
   push:
     branches:
-      - 2205_1
+      - 2025_1
 
 jobs:
   deploy:
