@@ -9,7 +9,9 @@ import TextField from "../TextField/TextField";
 import { ChevronDownIcon, CloseIcon } from "../../Display/Icon";
 import IconButton from "../IconButton/IconButton";
 
-const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompleteProps<Value>) => {
+const Autocomplete = <Value extends Types.ValueType>(
+  props: Types.AutocompleteProps<Value>
+) => {
   const {
     defaultValue,
     disabled,
@@ -80,17 +82,20 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
         disabled={disabled}
         fullWidth
         startAdornment={
-          <Styles.AutocompleteStartAdornment>{tags}</Styles.AutocompleteStartAdornment>
+          <Styles.AutocompleteStartAdornment>
+            {tags}
+          </Styles.AutocompleteStartAdornment>
         }
         onChange={(e) => {
           onInputChange(e.target.value);
         }}
-        appearence='primary'
+        appearence="primary"
         onClick={onOpen}
         endAdornment={
           <Styles.AutocompleteEndAdornment>
             {!disabled && dirty && (
               <IconButton
+                size="small"
                 onClick={(e) => {
                   e.stopPropagation();
                   onClickClear();
@@ -115,15 +120,20 @@ const Autocomplete = <Value extends Types.ValueType>(props: Types.AutocompletePr
         }
       />
       <Styles.AutocompletePopper
-        placement='bottom'
+        placement="bottom"
         open={expanded}
         onClose={onClose}
         anchorEl={anchorEl}
         textfieldWidth={anchorEl?.offsetWidth}
       >
-        <Styles.AutocompletePaper className={clsx(variant)} textfieldWidth={anchorEl?.offsetWidth}>
+        <Styles.AutocompletePaper
+          className={clsx(variant)}
+          textfieldWidth={anchorEl?.offsetWidth}
+        >
           {!filteredOptions.length ? (
-            <Styles.AutocompleteNoOptions>{noOptionsText}</Styles.AutocompleteNoOptions>
+            <Styles.AutocompleteNoOptions>
+              {noOptionsText}
+            </Styles.AutocompleteNoOptions>
           ) : (
             <>
               {filteredOptions.map((option, index) => {

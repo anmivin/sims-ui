@@ -13,7 +13,6 @@
 - [ ] Slider
 - [ ] Switch
 - [x] Text Field
-- [ ] Transfer List
 - [ ] DatePicker
 - [ ] DateTimePicker
 - [ ] TimePicker
@@ -24,11 +23,8 @@
 - [ ] Badge
 - [x] Circular Progress
 - [ ] Chip
-- [ ] Divider
 - [x] Icon
-- [ ] Icon set
-- [ ] Image component
-- [ ] Linear Progress
+- [x] Linear Progress
 - [ ] Stepper
 - [x] Text
 - [x] Tooltip
@@ -47,7 +43,7 @@
 - [ ] Breadcrumbs
 - [ ] Link
 - [ ] Menu
-- [ ] Tabs
+- [x] Tabs
 
 ## Providers
 

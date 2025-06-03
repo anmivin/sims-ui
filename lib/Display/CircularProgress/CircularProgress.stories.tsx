@@ -1,25 +1,24 @@
-import Radio from "./Radio";
+import CircularProgress from "./CircularProgress";
+
 import type { Meta } from "@storybook/react";
 export const ActionsData = {
-  options: [
-    { label: "www", value: 2 },
-    { label: "df", value: 3 },
-    { label: "df", value: 4, disabled: true },
-  ],
+  size: 80,
 };
-
 const meta = {
-  component: Radio,
-  title: "Radio",
+  component: CircularProgress,
+  title: "CircularProgress",
   argTypes: {
     variant: {
       options: ["old", "modern"],
       control: { type: "radio" },
     },
+    size: {
+      control: "number",
+    },
   },
   args: {
     ...ActionsData,
   },
-} satisfies Meta<typeof Radio>;
+} satisfies Meta<typeof CircularProgress>;
 
 export default meta;

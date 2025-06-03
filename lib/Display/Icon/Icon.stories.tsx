@@ -1,10 +1,10 @@
 import * as icons from "./index";
 import * as Old from "./Old/index";
 import * as Modern from "./Modern/index";
-
+import type { Meta } from "@storybook/react";
 export const ActionsData = {};
 
-export default {
+const meta = {
   component: () => (
     <div>
       <icons.AlertBlankIcon />
@@ -73,4 +73,4 @@ export default {
   title: "Icon",
 };
 
-export const s = {};
+export default meta;

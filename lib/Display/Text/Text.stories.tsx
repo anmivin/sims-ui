@@ -1,37 +1,26 @@
 import Text from "./Text";
+import type { Meta } from "@storybook/react";
+import { TitleVariant, TextVariant } from "./Text.types";
 export const ActionsData = {};
 
-export default {
-  component: () => (
-    <div style={{ display: "flex", flexDirection: "column", width: "200px" }}>
-      <Text variant='h1' noWrap>
-        ляляляляляля
-      </Text>
-      <Text variant='h2'>ляляля</Text>
-      <Text variant='h3'>ляляля</Text>
-      <Text variant='h4'>ляляля</Text>
-      <Text variant='h5'>ляляля</Text>
-      <Text variant='h6'>ляляля</Text>
-      <Text variant='subtitle1'>ляляля</Text>
-      <Text variant='subtitle2'>ляляля</Text>
-      <Text variant='body1'>ляляля</Text>
-      <Text variant='body2'>ляляля</Text>
-      <Text variant='body3'>ляляля</Text>
-      <Text variant='button'>ляляля</Text>
-      <Text variant='caption'>ляляля</Text>
-      <Text variant='mini'>ляляля</Text>
-    </div>
-  ),
+const meta = {
+  component: Text,
   title: "Text",
-  tags: ["autodocs"],
-  excludeStories: /.*Data$/,
+  argTypes: {
+    variant: {
+      options: [...Object.values(TextVariant), ...Object.values(TitleVariant)],
+      control: { type: "radio" },
+    },
+    children: {
+      control: "text",
+    },
+    noWrap: {
+      control: { type: "check" },
+    },
+  },
   args: {
     ...ActionsData,
   },
-};
+} satisfies Meta<typeof Text>;
 
-export const text = {
-  args: {
-    variant: "body1",
-  },
-};
+export default meta;

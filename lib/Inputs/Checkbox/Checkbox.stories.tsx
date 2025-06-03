@@ -1,27 +1,21 @@
 import Checkbox from "./Checkbox";
-
+import type { Meta } from "@storybook/react";
 export const ActionsData = {};
 
-export default {
+const meta = {
   component: Checkbox,
   title: "Checkbox",
-  tags: ["autodocs"],
-  excludeStories: /.*Data$/,
   args: {
     ...ActionsData,
   },
-};
+  argTypes: {
+    variant: {
+      options: ["old", "modern"],
+      control: { type: "radio" },
+    },
 
-export const s = {
-  args: {
-    children: <>кнопа</>,
-    variant: "old",
+    label: { control: "text" },
   },
-};
+} satisfies Meta<typeof Checkbox>;
 
-export const m = {
-  args: {
-    label: "hdhdkd",
-    variant: "modern",
-  },
-};
+export default meta;

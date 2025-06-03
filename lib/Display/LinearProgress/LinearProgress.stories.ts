@@ -1,27 +1,22 @@
 import LinearProgress from "./LinearProgress";
-
+import type { Meta } from "@storybook/react";
 export const ActionsData = {};
 
-export default {
+const meta = {
   component: LinearProgress,
   title: "LinearProgress",
-  tags: ["autodocs"],
-  excludeStories: /.*Data$/,
+  argTypes: {
+    variant: {
+      options: ["old", "modern"],
+      control: { type: "radio" },
+    },
+    value: {
+      control: "number",
+    },
+  },
   args: {
     ...ActionsData,
   },
-};
+} satisfies Meta<typeof LinearProgress>;
 
-export const s = {
-  args: {
-    variant: "old",
-    value: 90,
-  },
-};
-
-export const m = {
-  args: {
-    variant: "modern",
-    value: 50,
-  },
-};
+export default meta;

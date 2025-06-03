@@ -4,7 +4,11 @@ import { TooltipProps } from "./Tooltip.types";
 export default {
   component: (props: TooltipProps) => (
     <Tooltip {...props}>
-      <div style={{ margin: "20px", padding: "4px", border: "1px solid black" }}>привет</div>
+      <div
+        style={{ margin: "20px", padding: "4px", border: "1px solid black" }}
+      >
+        привет
+      </div>
     </Tooltip>
   ),
   title: "Tooltip",

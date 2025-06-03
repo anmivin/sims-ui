@@ -1,35 +1,28 @@
 import Autocomplete from "./Autocomplete";
+import type { Meta } from "@storybook/react";
+export const ActionsData = {
+  options: [
+    { id: "1", label: "sss" },
+    { id: "2", label: "dfs" },
+    { id: "3", label: "tyuur" },
+  ],
+};
 
-export const ActionsData = {};
-
-export default {
+const meta = {
   component: Autocomplete,
   title: "Autocomplete",
-  tags: ["autodocs"],
-  excludeStories: /.*Data$/,
+  argTypes: {
+    variant: {
+      options: ["old", "modern"],
+      control: { type: "radio" },
+    },
+    noOptionsText: {
+      control: "text",
+    },
+  },
   args: {
     ...ActionsData,
   },
-};
+} satisfies Meta<typeof Autocomplete>;
 
-export const s = {
-  args: {
-    options: [
-      { id: "1", label: "sss" },
-      { id: "2", label: "dfs" },
-      { id: "3", label: "tyuur" },
-    ],
-    variant: "old",
-  },
-};
-
-export const m = {
-  args: {
-    options: [
-      { id: "1", label: "sss" },
-      { id: "2", label: "dfs" },
-      { id: "3", label: "tyuur" },
-    ],
-    variant: "modern",
-  },
-};
+export default meta;
