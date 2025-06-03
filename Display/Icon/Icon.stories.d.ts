@@ -1,10 +1,6 @@
 export declare const ActionsData: {};
-declare const _default: {
+declare const meta: {
     component: () => import("react/jsx-runtime").JSX.Element;
     title: string;
-    tags: string[];
-    excludeStories: RegExp;
-    args: {};
 };
-export default _default;
-export declare const s: {};
+export default meta;

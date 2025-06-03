@@ -1,27 +1,28 @@
-export declare const ActionsData: {};
-declare const _default: {
-    component: (props: any) => import("react/jsx-runtime").JSX.Element;
+export declare const ActionsData: {
+    options: {
+        id: string;
+        label: string;
+    }[];
+};
+declare const meta: {
+    component: <Value extends import('./Autocomplete.types').ValueType>(props: import('./Autocomplete.types').AutocompleteProps<Value>) => import("react/jsx-runtime").JSX.Element;
     title: string;
-    tags: string[];
-    excludeStories: RegExp;
-    args: {};
-};
-export default _default;
-export declare const s: {
+    argTypes: {
+        variant: {
+            options: string[];
+            control: {
+                type: "radio";
+            };
+        };
+        noOptionsText: {
+            control: "text";
+        };
+    };
     args: {
         options: {
             id: string;
             label: string;
         }[];
-        variant: string;
     };
 };
-export declare const m: {
-    args: {
-        options: {
-            id: string;
-            label: string;
-        }[];
-        variant: string;
-    };
-};
+export default meta;

@@ -1,21 +1,18 @@
 export declare const ActionsData: {};
-declare const _default: {
+declare const meta: {
     component: (props: import('./LinearProgress.types').LinearProgressProps) => import("react/jsx-runtime").JSX.Element;
     title: string;
-    tags: string[];
-    excludeStories: RegExp;
+    argTypes: {
+        variant: {
+            options: string[];
+            control: {
+                type: "radio";
+            };
+        };
+        value: {
+            control: "number";
+        };
+    };
     args: {};
 };
-export default _default;
-export declare const s: {
-    args: {
-        variant: string;
-        value: number;
-    };
-};
-export declare const m: {
-    args: {
-        variant: string;
-        value: number;
-    };
-};
+export default meta;

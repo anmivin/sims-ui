@@ -10,6 +10,3 @@ export default _default;
 export declare const s: {
     args: {};
 };
-export declare const m: {
-    args: {};
-};

@@ -1,12 +1,24 @@
+import { TitleVariant, TextVariant } from './Text.types';
 export declare const ActionsData: {};
-declare const _default: {
-    component: () => import("react/jsx-runtime").JSX.Element;
+declare const meta: {
+    component: import('../../../node_modules/react').ForwardRefExoticComponent<import('./Text.types').TextProps & import('../../../node_modules/react').RefAttributes<HTMLSpanElement>>;
     title: string;
-    tags: string[];
-    excludeStories: RegExp;
+    argTypes: {
+        variant: {
+            options: (TextVariant | TitleVariant)[];
+            control: {
+                type: "radio";
+            };
+        };
+        children: {
+            control: "text";
+        };
+        noWrap: {
+            control: {
+                type: "check";
+            };
+        };
+    };
     args: {};
 };
-export default _default;
-export declare const s: {
-    args: {};
-};
+export default meta;

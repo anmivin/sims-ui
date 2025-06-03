@@ -1,17 +1,22 @@
-export declare const ActionsData: {};
-declare const _default: {
+export declare const ActionsData: {
+    size: number;
+};
+declare const meta: {
     component: import('../../../node_modules/react').ForwardRefExoticComponent<import('./CircularProgress.types').CircularProgressProps & import('../../../node_modules/react').RefAttributes<HTMLElement>>;
     title: string;
-    args: {};
-};
-export default _default;
-export declare const s: {
+    argTypes: {
+        variant: {
+            options: string[];
+            control: {
+                type: "radio";
+            };
+        };
+        size: {
+            control: "number";
+        };
+    };
     args: {
-        variant: string;
+        size: number;
     };
 };
-export declare const m: {
-    args: {
-        variant: string;
-    };
-};
+export default meta;

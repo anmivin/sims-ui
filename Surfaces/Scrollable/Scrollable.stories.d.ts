@@ -1,25 +1,25 @@
-export declare const ActionsData: {};
-declare const _default: {
+export declare const ActionsData: {
+    width: number;
+    height: number;
+    children: string;
+};
+declare const meta: {
     component: import('../../../node_modules/react').ForwardRefExoticComponent<import('./Scrollable.types').ScrollableProps & import('../../../node_modules/react').RefAttributes<HTMLDivElement>>;
     title: string;
     tags: string[];
     excludeStories: RegExp;
-    args: {};
-};
-export default _default;
-export declare const successOld: {
     args: {
-        variant: string;
-        width: string;
-        height: string;
+        width: number;
+        height: number;
         children: string;
     };
-};
-export declare const successModern: {
-    args: {
-        variant: string;
-        width: string;
-        height: string;
-        children: string;
+    argTypes: {
+        variant: {
+            options: string[];
+            control: {
+                type: "radio";
+            };
+        };
     };
 };
+export default meta;
