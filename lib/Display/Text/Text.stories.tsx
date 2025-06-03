@@ -7,8 +7,12 @@ const meta = {
   component: Text,
   title: "Text",
   argTypes: {
-    variant: {
+    type: {
       options: [...Object.values(TextVariant), ...Object.values(TitleVariant)],
+      control: { type: "radio" },
+    },
+    variant: {
+      options: ["old", "modern"],
       control: { type: "radio" },
     },
     children: {

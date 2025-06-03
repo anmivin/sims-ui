@@ -2,6 +2,12 @@ import styled from "@emotion/styled";
 
 export const TextRoot = styled("span")({
   margin: 0,
+  "&.old": {
+    fontFamily: "Comic Sans Ms",
+  },
+  "&.modern": {
+    fontFamily: "The Sims Sans",
+  },
   "&.h1": {
     fontSize: 40,
     lineHeight: "48px",

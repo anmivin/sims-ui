@@ -4,17 +4,17 @@ import * as Types from "./Text.types";
 import * as React from "react";
 
 const Text = React.forwardRef<HTMLSpanElement, Types.TextProps>((props) => {
-  const { children, variant, noWrap, ...other } = props;
+  const { children, type, variant = "modern", noWrap, ...other } = props;
 
   return (
     <Styles.TextRoot
       {...other}
       as={
-        Object.keys(Types.TitleVariant).includes(variant)
-          ? Types.TitleVariant[variant as Types.TitleVariant]
+        Object.keys(Types.TitleVariant).includes(type)
+          ? Types.TitleVariant[type as Types.TitleVariant]
           : "p"
       }
-      className={clsx(variant, noWrap && "noWrap")}
+      className={clsx(type, variant, noWrap && "noWrap")}
     >
       {children}
     </Styles.TextRoot>
